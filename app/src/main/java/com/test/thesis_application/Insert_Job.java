@@ -12,6 +12,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
 public class Insert_Job extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private DrawerLayout drawer_reg;
     Button start,end;
@@ -51,6 +54,12 @@ public class Insert_Job extends AppCompatActivity implements DatePickerDialog.On
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR,year);
+        cal.set(Calendar.MONTH,month);
+        cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
 
+        String datepickerstring = DateFormat.getDateInstance(DateFormat.FULL).format(cal.getTime());
+        start.setText(datepickerstring);
     }
 }
