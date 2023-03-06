@@ -12,6 +12,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 
+import com.test.thesis_application.fragments.DatePickerFragment;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 
@@ -34,13 +36,13 @@ public class Insert_Job extends AppCompatActivity implements DatePickerDialog.On
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment datepicker = new DialogFragment();
+                DialogFragment datepicker = new DatePickerFragment();
                 datepicker.show(getSupportFragmentManager(),"Date Picker");
             }
         });
     }
 
-    @Override
+    @Override // for back icon in register
     public void onBackPressed(){
         if (drawer_reg.isDrawerOpen(GravityCompat.START)){
             drawer_reg.closeDrawer(GravityCompat.START);
@@ -53,11 +55,11 @@ public class Insert_Job extends AppCompatActivity implements DatePickerDialog.On
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    public void onDateSet(DatePicker view, int i1, int i2, int i3) {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR,year);
-        cal.set(Calendar.MONTH,month);
-        cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        cal.set(Calendar.YEAR,i1);
+        cal.set(Calendar.MONTH,i2);
+        cal.set(Calendar.DAY_OF_MONTH,i3);
 
         String datepickerstring = DateFormat.getDateInstance(DateFormat.FULL).format(cal.getTime());
         start.setText(datepickerstring);
