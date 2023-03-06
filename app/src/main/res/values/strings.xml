@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Thesis_Application</string>
+    <string name="menu_Open">Open</string>
+    <string name="menu_Close">Close</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">close navigation drawer</string>
+
+    <string name="text_register_button">Don`t have an account?</string>
+    <string name="textview_login">Login</string>
+    <string name="textview_password">Password (min 6 characters)</string>
+    <string name="textview_email">Email</string>
+    <string name="email">sample@gmail.com</string>
+    <string name="username">Username</string>
+    <string name="Fname">Full name</string>
+    <string name="ContactNum">Contact Number</string>
+    <string name="age">Age</string>
+    <string name="password">Password</string>
+    <string name="check_password">Re-enter password</string>
+    <string name="get_Address">Address</string>
+    <string name="zip_Code">Zip Code</string>
+    <string name="Contact_Number">Contact Number</string>
+    <string name="gender">Gender :</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string-array name="userTypes">
+        <item>Choose type of user.</item>
+        <item>Clients</item>
+        <item>Employees</item>
+
+    </string-array>
+    <string-array name="job_types">
+        <item>Select job type.</item>
+        <item>Renovation</item>
+        <item>Repair</item>
+        <item>Installation</item>
+        <item>Painting</item>
+
+    </string-array>
+    <string name="job_order">JOB ORDER.</string>
+    <string name="register">Register</string>
+    <string name="Error_Username">Username cannot be blank.</string>
+    <string name="Error_Email">Email address cannot be blank.</string>
+    <string name="Error_Password">Password Cannot be blank.</string>
+    <string name="Error_Age">Age cannot be blank.</string>
+    <string name="Error_Address">Address cannot be blank.</string>
+    <string name="Error_firstName">First Name cannot be blank.</string>
+    <string name="Error_lastName">Last Name cannot be blank.</string>
+    <string name="house_number">House number and Lot number</string>
+    <string name="barangay">Barangay</string>
+    <string name="city">City</string>
+    <string name="province">Province</string>
+    <string name="zip_code">Zip code</string>
+    <string name="err_address">Please input all required address field.</string>
+    <string name="resume">Resume:</string>
+    <string name="upload">Upload.</string>
+    <string name="filepath">File Path.</string>
+    <string name="err_filepath">No file uploaded.</string>
+    <string name="avatar">Add profile picture:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:text="Engineers Available."
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView2"
+            app:layout_constraintStart_toStartOf="@+id/horizontalScrollView2" />
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_engineer1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="engineer1"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_engineer1"
+                        app:layout_constraintStart_toStartOf="@+id/IV_engineer1"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_engineer1" />
+
+                    <ImageView
+                        android:id="@+id/IV_engineer1"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/emslogo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_engineer4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="engineer4"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_engineer4"
+                        app:layout_constraintStart_toStartOf="@+id/IV_engineer4"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_engineer4" />
+
+                    <ImageView
+                        android:id="@+id/IV_engineer4"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/emslogo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_engineer5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="engineer5"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_engineer5"
+                        app:layout_constraintStart_toStartOf="@+id/IV_engineer5"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_engineer5" />
+
+                    <ImageView
+                        android:id="@+id/IV_engineer5"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/emslogo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_engineer6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="engineer6"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_engineer6"
+                        app:layout_constraintStart_toStartOf="@+id/IV_engineer6"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_engineer6" />
+
+                    <ImageView
+                        android:id="@+id/IV_engineer6"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/emslogo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_engineer3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="engineer3"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_engineer3"
+                        app:layout_constraintStart_toStartOf="@+id/IV_engineer3"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_engineer3" />
+
+                    <ImageView
+                        android:id="@+id/IV_engineer3"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/emslogo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_engineer2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="engineer2"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_engineer2"
+                        app:layout_constraintStart_toStartOf="@+id/IV_engineer2"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_engineer2" />
+
+                    <ImageView
+                        android:id="@+id/IV_engineer2"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/emslogo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Job types."
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+            app:layout_constraintStart_toStartOf="@+id/horizontalScrollView" />
+
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_repair"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Repair"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_repair"
+                        app:layout_constraintStart_toStartOf="@+id/IV_repair"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_repair" />
+
+                    <ImageView
+                        android:id="@+id/IV_repair"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_home_repair_service_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_renovation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Plumbing"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_renovation"
+                        app:layout_constraintStart_toStartOf="@+id/IV_renovation"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_renovation" />
+
+                    <ImageView
+                        android:id="@+id/IV_renovation"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_add_home_work_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_tae"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Installation"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_tae"
+                        app:layout_constraintStart_toStartOf="@+id/IV_tae"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_tae" />
+
+                    <ImageView
+                        android:id="@+id/IV_tae"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_add_business_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_wiring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Plumbing"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_wiring"
+                        app:layout_constraintStart_toStartOf="@+id/IV_wiring"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_wiring" />
+
+                    <ImageView
+                        android:id="@+id/IV_wiring"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_add_home_work_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_plumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Plumbing"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_plumber"
+                        app:layout_constraintStart_toStartOf="@+id/IV_plumber"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_plumber" />
+
+                    <ImageView
+                        android:id="@+id/IV_plumber"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_plumbing_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_painter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Painting"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/IV_painter"
+                        app:layout_constraintStart_toStartOf="@+id/IV_painter"
+                        app:layout_constraintTop_toBottomOf="@+id/IV_painter" />
+
+                    <ImageView
+                        android:id="@+id/IV_painter"
+                        android:layout_width="74dp"
+                        android:layout_height="75dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_format_paint_24" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" DASHBOARD FRAGMENT"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

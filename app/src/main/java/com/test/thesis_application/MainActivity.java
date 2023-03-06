@@ -1,0 +1,220 @@
+package com.test.thesis_application;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import io.realm.Realm;
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.Credentials;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
+
+public class MainActivity extends AppCompatActivity {
+    //for request permission
+    private boolean isReadPermissionGranted = false;
+    private boolean isWritePermissionGranted = false;
+    private boolean isLocationPermissionGranted = false;
+    ActivityResultLauncher<String[]> mPermissionResultLauncher;
+
+    //mongodb
+    String Appid = "employeems-mcwma";
+    MongoDatabase mongoDatabase;
+    MongoClient mongoClient;
+    MongoCollection<Document> mongoCollection;
+
+    //viewBinding requirements
+    private Button loginClientAccount;
+    private EditText get_email, get_password;
+    private TextView registerButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Realm.init(this);
+
+        loginClientAccount = findViewById(R.id.click_login);
+        get_email = findViewById(R.id.get_email);
+        get_password = findViewById(R.id.get_password);
+        registerButton = findViewById(R.id.btn_register);
+
+        mPermissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
+            @Override
+            public void onActivityResult(Map<String, Boolean> result) {
+
+                if (result.get(android.Manifest.permission.READ_EXTERNAL_STORAGE) != null) {
+                    isReadPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_EXTERNAL_STORAGE));
+                }
+                if (result.get(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != null) {
+                    isWritePermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+                }
+                if (result.get(android.Manifest.permission.ACCESS_FINE_LOCATION) != null) {
+                    isLocationPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.ACCESS_FINE_LOCATION));
+                }
+
+            }
+
+        });
+
+        App app = new App(new AppConfiguration.Builder(Appid).build());
+        app.loginAsync(Credentials.emailPassword("everyoneusingtheapp@gmail.com", "Ems2023"), new App.Callback<User>() {
+            @Override
+            public void onResult(App.Result<User> result) {
+                if (result.isSuccess()) {
+                    Log.v("user", "database now accessible");
+                    User user = app.currentUser();
+                    mongoClient = user.getMongoClient("mongodb-atlas");
+                    mongoDatabase = mongoClient.getDatabase("CourseData");
+                } else {
+                    Log.v("user", "Cannot Access Database");
+                }
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent R = new Intent(MainActivity.this,Register_Form.class);
+                startActivity(R);
+
+            }
+        });
+
+        loginClientAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (get_email.getText().toString().equals("") || get_password.getText().toString().equals("")) {
+                        Toast.makeText(MainActivity.this, "Username Or Password Cannot be blank.", Toast.LENGTH_LONG).show();
+                    } else if (!get_email.getText().toString().equals("") || !get_password.getText().toString().equals("")) {
+
+                        mongoCollection = mongoDatabase.getCollection("clients");
+
+                        Document email = new Document().append("email", get_email.getText().toString()).append("password", get_password.getText().toString());
+
+                        mongoCollection.findOne(email).getAsync(result -> {
+                            try {
+                                //Testing admin accounts
+
+                                Toast.makeText(getApplicationContext(), "Testing Clients", Toast.LENGTH_LONG).show();
+
+                                Document resultData = result.get();
+                                Log.v("Account", resultData.getString("user"));
+                                if (resultData.getString("user").equals("Client")) {
+                                    Toast.makeText(getApplicationContext(), "Client Logged in", Toast.LENGTH_LONG).show();
+                                    Log.v("resultAccount", "Found in Client");
+                                    Intent home_screen = new Intent(MainActivity.this, client_home.class);
+                                    home_screen.putExtra ( "username",resultData.getString("username") );
+                                    home_screen.putExtra("name",resultData.getString("name"));
+                                    home_screen.putExtra("avatar", resultData.getString("avatar"));
+
+                                    startActivity(home_screen);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                    Log.v("resultAccount", "Client not found in Database");
+
+                                }
+
+                            } catch (Exception client) {
+                                //Testing Employee Accounts
+                                Toast.makeText(getApplicationContext(), "Testing Clients", Toast.LENGTH_LONG).show();
+
+                                mongoCollection = mongoDatabase.getCollection("employees");
+
+                                mongoCollection.findOne(email).getAsync(result1 -> {
+                                    try {
+                                        Document resultData1 = result1.get();
+                                        Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
+
+                                        if (resultData1.getString("user").equals("Employees")) {
+                                            Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
+                                            Log.v("resultAccount", "Found in Employee");
+                                            Intent home_screen = new Intent(MainActivity.this, client_home.class);
+                                            home_screen.putExtra ( "username",resultData1.getString("username") )
+                                                    .putExtra("name",resultData1.getString("name"))
+                                                    .putExtra("user_Type","clients")
+                                                    .putExtra("avatar", "avatar")
+                                                    .putExtra("resume", "resume");
+                                            startActivity(home_screen);
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                            Log.v("resultAccount", "Wala sa Employee");
+
+                                        }
+                                    } catch (Exception employee) {
+                                        employee.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),"No user existing.",Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        requestPermission();
+    }// end of onCreate
+
+    private void requestPermission() {
+
+        Log.v("Result", "Requesting Permission");
+
+        boolean minSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+
+        isReadPermissionGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        isLocationPermissionGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+        isWritePermissionGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        isWritePermissionGranted = isWritePermissionGranted || minSDK;
+
+        List<String> permissionRequest = new ArrayList<String>();
+
+        if (!isReadPermissionGranted) {
+
+            permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        }
+        if (!isWritePermissionGranted) {
+
+            permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!isLocationPermissionGranted) {
+
+            permissionRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (!permissionRequest.isEmpty()) {
+
+            mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+        }
+
+    }
+}
