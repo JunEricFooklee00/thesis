@@ -22,6 +22,7 @@
     <string name="gender">Gender :</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="usertype">Type of user.</string>
     <string-array name="userTypes">
         <item>Choose type of user.</item>
         <item>Clients</item>

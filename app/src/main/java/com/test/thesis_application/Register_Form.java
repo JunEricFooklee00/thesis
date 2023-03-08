@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -57,11 +59,12 @@ public class Register_Form extends AppCompatActivity {
     private boolean isReadPermissionGranted = false;
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
 
-    private TextInputLayout email, username, password, name, confirmpassword, contactnumber;
+    private TextInputLayout email, username, password, name, confirmpassword, contactnumber, address, housenumber, barangay, city, zipcode,province,age;
     private Spinner userType;
     private RadioGroup gender;
     private RadioButton rbgender;
     private Button register;
+    private AutoCompleteTextView autoCompleteTextView;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -92,159 +95,248 @@ public class Register_Form extends AppCompatActivity {
         //button
         register = findViewById(R.id.btn_register);
 
+        //materialspinner
+        String[] job = getResources().getStringArray(R.array.userTypes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Register_Form.this, R.layout.drop_down_item, job);
+        autoCompleteTextView = findViewById(R.id.filled_exposed);
+        autoCompleteTextView.setAdapter(adapter);
 
         //Text Input Layout
+        address = findViewById(R.id.TIL_address);
+        housenumber = findViewById(R.id.TIL_houseNumber);
+        barangay = findViewById(R.id.TIL_Barangay);
+        city = findViewById(R.id.TIL_City);
+        zipcode = findViewById(R.id.TIL_ZipCode);
         contactnumber = findViewById(R.id.TIL_ContactNumber);
         email = findViewById(R.id.TIL_Email);
         username = findViewById(R.id.TIL_Username);
         password = findViewById(R.id.TIL_Password);
         name = findViewById(R.id.TIL_FullName);
         confirmpassword = findViewById(R.id.TIL_ConfirmPassword);
-
-//        //spinner
-        userType = findViewById(R.id.getUserType);
-//        userType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                switch (userType.getSelectedItem().toString()) {
-//                    case "Clients":
-//
-//
-//                        break;
-//                    case "Employees":
-//
-//                        break;
-//                    case "Choose type of user.":
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });//end of spinner
+        age = findViewById(R.id.TIL_Age);
+        province = findViewById(R.id.TIL_province);
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateemail() | !validatePassword()| !validatecontactnum() | !validateusername() | !validatefullname()| !validateConfirmPassword() | !validateusertype()){
+                if (!validateemail() | !validatePassword() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() |
+                        !validateusertype() |!validatezipcode() |!validateaddress() |!validatehousenumber()|!validatebarangay()|!validatecity()|!validateprovince()|!validateage()) {
                     return;
                 }
 
-                Toast.makeText(Register_Form.this,"input",Toast.LENGTH_LONG).show();
+                Toast.makeText(Register_Form.this, "input", Toast.LENGTH_LONG).show();
 
                 registerAccount();
-//                String input = "Email: " + email.getEditText().getText().toString();
-//                input += "\n";
-//                input += "Password: " +password.getEditText().getText().toString();
-//                input += "\n";
-//                input += "Contact Number: "+contactnumber.getEditText().getText().toString();
-//                Toast.makeText(Register_Form.this,input,Toast.LENGTH_LONG).show();
 
             }
         });
     }// end of onCreate
-    private boolean validateusertype(){
-        if (userType.getSelectedItem().toString().equals("Clients")){
+
+    private boolean validateusertype() {
+        if (autoCompleteTextView.getText().toString().equals("Clients")) {
+            autoCompleteTextView.setError(null);
+
             return true;
-        }else if (userType.getSelectedItem().toString().equals("Employees")){
+        } else if (autoCompleteTextView.getText().toString().equals("Employees")) {
             return true;
         } else {
-            Toast.makeText(Register_Form.this,"Please Select Valid UserType.",Toast.LENGTH_LONG).show();
+            autoCompleteTextView.setError("Please Choose a user type.");
             return false;
         }
     }
+    private boolean validateage() {
+        String str_age = age.getEditText().getText().toString().trim();
+        if (str_age.isEmpty()) {
+            age.setError("Field Empty");
+            return false;
 
+        } else {
+            age.setError(null);
+            age.setErrorEnabled(false);
+            return true;
+        }
+    }
     private boolean validateemail() {
         String emailinput = email.getEditText().getText().toString().trim();
-        if (emailinput.isEmpty()){
+        if (emailinput.isEmpty()) {
             email.setError("Field Empty");
             return false;
 
-        }else {
+        } else {
             email.setError(null);
             email.setErrorEnabled(false);
             return true;
         }
     }
+
     private boolean validateusername() {
         String usernameInput = username.getEditText().getText().toString().trim();
-        if (usernameInput.isEmpty()){
+        if (usernameInput.isEmpty()) {
             username.setError("Field Empty");
             return false;
 
-        }else {
+        } else {
             username.setError(null);
             username.setErrorEnabled(false);
             return true;
         }
     }
+
     private boolean validatefullname() {
         String fullnameInput = name.getEditText().getText().toString().trim();
-        if (fullnameInput.isEmpty()){
+        if (fullnameInput.isEmpty()) {
             name.setError("Field Empty");
             return false;
 
-        }else {
+        } else {
             name.setError(null);
             name.setErrorEnabled(false);
             return true;
         }
     }
+
+    private boolean validateaddress() {
+        String str_address = address.getEditText().getText().toString();
+        String str_barangay = barangay.getEditText().getText().toString();
+        String str_housenumber = housenumber.getEditText().getText().toString();
+        String str_city = city.getEditText().getText().toString();
+        String str_zipcode = zipcode.getEditText().getText().toString();
+
+        if (str_address.isEmpty()) {
+            address.setError("Field Empty");
+            return false;
+
+        } else {
+            address.setError(null);
+            address.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validatebarangay() {
+        String str_barangay = barangay.getEditText().getText().toString();
+        String str_housenumber = housenumber.getEditText().getText().toString();
+        String str_city = city.getEditText().getText().toString();
+        String str_zipcode = zipcode.getEditText().getText().toString();
+
+        if (str_barangay.isEmpty()) {
+            barangay.setError("Field Empty");
+            return false;
+
+        } else {
+            barangay.setError(null);
+            barangay.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validatehousenumber() {
+        String str_housenumber = housenumber.getEditText().getText().toString();
+        String str_city = city.getEditText().getText().toString();
+        String str_zipcode = zipcode.getEditText().getText().toString();
+
+        if (str_housenumber.isEmpty()) {
+            housenumber.setError("Field Empty");
+            return false;
+
+        } else {
+            housenumber.setError(null);
+            housenumber.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validatecity() {
+        String str_city = city.getEditText().getText().toString();
+        String str_zipcode = zipcode.getEditText().getText().toString();
+
+        if (str_city.isEmpty()) {
+            city.setError("Field Empty");
+            return false;
+
+        } else {
+            city.setError(null);
+            city.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validatezipcode() {
+        String str_zipcode = zipcode.getEditText().getText().toString();
+
+        if (str_zipcode.isEmpty()) {
+            zipcode.setError("Field Empty");
+            return false;
+
+        } else {
+            zipcode.setError(null);
+            zipcode.setErrorEnabled(false);
+            return true;
+        }
+    }
+    private boolean validateprovince() {
+        String str_province = province.getEditText().getText().toString();
+
+        if (str_province.isEmpty()) {
+            province.setError("Field Empty");
+            return false;
+
+        } else {
+            province.setError(null);
+            province.setErrorEnabled(false);
+            return true;
+        }
+    }
+
     private boolean validatePassword() {
         String PasswordInput = password.getEditText().getText().toString().trim();
         String confirmPasswordInput = confirmpassword.getEditText().getText().toString().trim();
-        if (PasswordInput.isEmpty()){
+        if (PasswordInput.isEmpty()) {
             password.setError("Field Empty");
             return false;
 
-        }else if (PasswordInput.equals(confirmPasswordInput)){
+        } else if (PasswordInput.equals(confirmPasswordInput)) {
             password.setError(null);
             password.setErrorEnabled(false);
-            return  true;
-        }else {
+            return true;
+        } else {
             password.setError("Password Doesn't match");
             return false;
         }
     }
+
     private boolean validateConfirmPassword() {
         String PasswordInput = password.getEditText().getText().toString().trim();
         String confirmPasswordInput = confirmpassword.getEditText().getText().toString().trim();
-        if (confirmPasswordInput.isEmpty()){
+        if (confirmPasswordInput.isEmpty()) {
             confirmpassword.setError("Field Empty");
             return false;
 
-        }else if (confirmPasswordInput.equals(confirmPasswordInput)){
+        } else if (confirmPasswordInput.equals(confirmPasswordInput)) {
             confirmpassword.setError(null);
             confirmpassword.setErrorEnabled(false);
-            return  true;
-        }else {
+            return true;
+        } else {
             confirmpassword.setError("Password Doesn't match");
             return false;
         }
     }
+
     private boolean validatecontactnum() {
         String ContactNumberInput = contactnumber.getEditText().getText().toString().trim();
-        if (ContactNumberInput.isEmpty()){
+        if (ContactNumberInput.isEmpty()) {
             contactnumber.setError("Field Empty");
             return false;
 
-        }else if (ContactNumberInput.length() >10){
+        } else if (ContactNumberInput.length() > 10) {
             contactnumber.setError("Contact Number is Too long");
             return false;
 
-        }else if (ContactNumberInput.length()<=9){
+        } else if (ContactNumberInput.length() <= 9) {
             contactnumber.setError("Contact Number is Too short");
             return false;
-        }
-        else {
+        } else {
             contactnumber.setError(null);
             contactnumber.setErrorEnabled(false);
             return true;
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -294,62 +386,25 @@ public class Register_Form extends AppCompatActivity {
 
     }
 
-//    private void initCongif() {
 //
-//        config.put("cloud_name", "dsuuylodx");
-//        config.put("api_key", "643975753735143");
-//        config.put("api_secret", "8lmznwULEA4x8DwBk5LHU-Hg0xw");
-////        config.put("secure", true);
-//
-//        MediaManager.init(this, config);
-//    }
-//
-////    private void getImage() {
-////        if (isReadPermissionGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-////
-////            selectImage();
-////
-////        } else {
-////            requestPermission();
-////        }
-////    }
-////
-////    private void selectImage() {
-////        Intent intent = new Intent();
-////        intent.setType("image/*");
-////        intent.setAction(Intent.ACTION_GET_CONTENT);
-////        someActivityResultLauncher.launch(intent);
-////    }
-////
-////    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-////            new ActivityResultContracts.StartActivityForResult(),
-////            new ActivityResultCallback<ActivityResult>() {
-////                @Override
-////                public void onActivityResult(ActivityResult result) {
-////                    if (result.getResultCode() == Activity.RESULT_OK) {
-////                        // There are no request codes
-////                        Intent data = result.getData();
-////                        imagePath = data.getData();
-////                    }
-////                }
-////            });
 
     private void registerAccount() {
-        mongoCollection = mongoDatabase.getCollection(userType.getSelectedItem().toString().toLowerCase(Locale.ROOT));
-        Document registerAccount = new Document().append("user", userType.getSelectedItem().toString())
+        mongoCollection = mongoDatabase.getCollection(autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT));
+        Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
                 .append("email", email.getEditText().getText().toString().trim())
-                .append("username",username.getEditText().getText().toString().trim())
+                .append("username", username.getEditText().getText().toString().trim())
                 .append("name", name.getEditText().getText().toString().trim())
                 .append("contactNumber", contactnumber.getEditText().getText().toString().trim())
-                .append("password", password.getEditText().getText().toString().trim());
-//                .append("age", Integer.parseInt(Age.getText().toString()))
-//                .append("address", house_number.getText().toString() + "," +
-//                barangay.getText().toString() + "," + city.getText().toString() + "," + province.getText().toString())
-//                .append("zipcode", zipcode.getText().toString()).append("resume", tv_filepath.getText().toString());
+                .append("password", password.getEditText().getText().toString().trim())
+                .append("age", Integer.parseInt(age.getEditText().getText().toString()))
+                .append("address", housenumber.getEditText().getText().toString() + "," +
+                barangay.getEditText().getText().toString() + "," + city.getEditText().getText().toString() + "," + province.getEditText().getText().toString())
+                .append("zipcode", zipcode.getEditText().getText().toString());
+//                .append("resume", tv_filepath.getText().toString());
         mongoCollection.insertOne(registerAccount).getAsync(result -> {
 
             if (result.isSuccess()) {
-                Toast.makeText(Register_Form.this,result.get().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
                 Log.v("Data", "Data successfully addedd");
             } else {
                 Log.v("Data", "Error:" + result.getError().toString());
