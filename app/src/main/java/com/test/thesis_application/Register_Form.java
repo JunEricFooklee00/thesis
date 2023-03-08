@@ -2,6 +2,7 @@ package com.test.thesis_application;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -22,12 +24,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.test.thesis_application.fragments.DatePickerFragment;
 
 import org.bson.Document;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +47,7 @@ import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 
-public class Register_Form extends AppCompatActivity {
+public class Register_Form extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private DrawerLayout drawer_reg;
 
     String Appid = "employeems-mcwma";
@@ -59,7 +66,8 @@ public class Register_Form extends AppCompatActivity {
     private boolean isReadPermissionGranted = false;
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
 
-    private TextInputLayout email, username, password, name, confirmpassword, contactnumber, address, housenumber, barangay, city, zipcode,province,age;
+    private TextInputEditText TietAge;
+    private TextInputLayout email, username, password, name, confirmpassword, contactnumber, address, housenumber, barangay, city, zipcode,province,tilAge;
     private Spinner userType;
     private RadioGroup gender;
     private RadioButton rbgender;
@@ -113,8 +121,17 @@ public class Register_Form extends AppCompatActivity {
         password = findViewById(R.id.TIL_Password);
         name = findViewById(R.id.TIL_FullName);
         confirmpassword = findViewById(R.id.TIL_ConfirmPassword);
-        age = findViewById(R.id.TIL_Age);
+        tilAge= findViewById(R.id.TIL_Age);
+        TietAge= findViewById(R.id.TIET_age);
         province = findViewById(R.id.TIL_province);
+
+        TietAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dp = new DatePickerFragment();
+                dp.show(getSupportFragmentManager(),"Date Picker");
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,14 +162,14 @@ public class Register_Form extends AppCompatActivity {
         }
     }
     private boolean validateage() {
-        String str_age = age.getEditText().getText().toString().trim();
+        String str_age = tilAge.getEditText().getText().toString().trim();
         if (str_age.isEmpty()) {
-            age.setError("Field Empty");
+            tilAge.setError("Field Empty");
             return false;
 
         } else {
-            age.setError(null);
-            age.setErrorEnabled(false);
+            tilAge.setError(null);
+            tilAge.setErrorEnabled(false);
             return true;
         }
     }
@@ -396,7 +413,7 @@ public class Register_Form extends AppCompatActivity {
                 .append("name", name.getEditText().getText().toString().trim())
                 .append("contactNumber", contactnumber.getEditText().getText().toString().trim())
                 .append("password", password.getEditText().getText().toString().trim())
-                .append("age", Integer.parseInt(age.getEditText().getText().toString()))
+                .append("age", Integer.parseInt(TietAge.getText().toString()))
                 .append("address", housenumber.getEditText().getText().toString() + "," +
                 barangay.getEditText().getText().toString() + "," + city.getEditText().getText().toString() + "," + province.getEditText().getText().toString())
                 .append("zipcode", zipcode.getEditText().getText().toString());
@@ -410,6 +427,17 @@ public class Register_Form extends AppCompatActivity {
                 Log.v("Data", "Error:" + result.getError().toString());
             }
         });
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR,year);
+        cal.set(Calendar.MONTH,month);
+        cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+
+        String datepickerstring = DateFormat.getDateInstance(DateFormat.LONG).format(cal.getTime());
+        TietAge.setText(datepickerstring);
     }
 //
 
