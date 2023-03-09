@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -35,10 +36,8 @@ import org.bson.Document;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -57,8 +56,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
 
-    Map config = new HashMap();
-    //    private static final int IMAGE_REQ = 1;
+//    Map config = new HashMap();
+    private static final int IMAGE_REQ = 1;
     private static final String TAG = "Upload ###";
     private Uri imagePath;
 
@@ -84,7 +83,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         User user = app.currentUser();
 
         requestPermission(); // request permission
-//        initCongif(); //access cloudinary
 
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
@@ -124,7 +122,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         tilAge= findViewById(R.id.TIL_Age);
         TietAge= findViewById(R.id.TIET_age);
         province = findViewById(R.id.TIL_province);
-
         TietAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +176,11 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             email.setError("Field Empty");
             return false;
 
-        } else {
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()){
+            email.setError("Email Invalid");
+            return false;
+        }
+        else {
             email.setError(null);
             email.setErrorEnabled(false);
             return true;
@@ -367,6 +368,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
     }
 
+
+
     private void requestPermission() {
 
         Log.v("Result", "Requesting Permission");
@@ -413,7 +416,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                 .append("name", name.getEditText().getText().toString().trim())
                 .append("contactNumber", contactnumber.getEditText().getText().toString().trim())
                 .append("password", password.getEditText().getText().toString().trim())
-                .append("age", Integer.parseInt(TietAge.getText().toString()))
+                .append("age", tilAge.getEditText().getText().toString())
                 .append("address", housenumber.getEditText().getText().toString() + "," +
                 barangay.getEditText().getText().toString() + "," + city.getEditText().getText().toString() + "," + province.getEditText().getText().toString())
                 .append("zipcode", zipcode.getEditText().getText().toString());

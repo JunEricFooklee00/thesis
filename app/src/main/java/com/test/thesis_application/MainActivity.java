@@ -6,9 +6,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +17,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.bson.Document;
 
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     //viewBinding requirements
     private Button loginClientAccount;
-    private EditText get_email, get_password;
+    private TextInputLayout get_email, get_password;
     private TextView registerButton;
 
     @Override
@@ -58,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         Realm.init(this);
 
         loginClientAccount = findViewById(R.id.click_login);
-        get_email = findViewById(R.id.get_email);
-        get_password = findViewById(R.id.get_password);
+        get_email = findViewById(R.id.TIL_Emailinput);
+        get_password = findViewById(R.id.TIL_PasswordInput);
         registerButton = findViewById(R.id.btn_register);
 
         mPermissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
@@ -108,14 +110,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (get_email.getText().toString().equals("") || get_password.getText().toString().equals("")) {
-                        Toast.makeText(MainActivity.this, "Username Or Password Cannot be blank.", Toast.LENGTH_LONG).show();
-                    } else if (!get_email.getText().toString().equals("") || !get_password.getText().toString().equals("")) {
-
+                    if (!validateemail() | !validatePassword() ) {
+                        return;
+                    }
                         mongoCollection = mongoDatabase.getCollection("clients");
-
-                        Document email = new Document().append("email", get_email.getText().toString()).append("password", get_password.getText().toString());
-
+                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password", get_password.getEditText().getText().toString());
                         mongoCollection.findOne(email).getAsync(result -> {
                             try {
                                 //Testing admin accounts
@@ -172,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                                 });
                             }
                         });
-                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -182,6 +181,36 @@ public class MainActivity extends AppCompatActivity {
         requestPermission();
     }// end of onCreate
 
+    private boolean validateemail() {
+        String emailinput = get_email.getEditText().getText().toString().trim();
+        if (emailinput.isEmpty()) {
+            get_email.setError("Field Empty");
+            return false;
+
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()){
+            get_email.setError("Email Invalid");
+            return false;
+        }
+        else {
+            get_email.setError(null);
+            get_email.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validatePassword() {
+        String PasswordInput = get_password.getEditText().getText().toString().trim();
+        if (PasswordInput.isEmpty()) {
+            get_password.setError("Field Empty");
+            return false;
+
+        }
+        else {
+            get_password.setError(null);
+            get_password.setErrorEnabled(false);
+            return true;
+        }
+    }
     private void requestPermission() {
 
         Log.v("Result", "Requesting Permission");
