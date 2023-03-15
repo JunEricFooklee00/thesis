@@ -78,6 +78,9 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         new fragment_maps()).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
+//                Intent GoogleMaps = new Intent(client_home.this,MapsActivity.class);
+//                startActivity(GoogleMaps);
+
                 break;
             case R.id.nav_myproject:
 
@@ -104,7 +107,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 //                        new fragment_profile()).commit();
                 break;
             case R.id.nav_logout:
-                Intent logout = new Intent(client_home  .this,MainActivity.class);
+                Intent logout = new Intent(client_home.this,MainActivity.class);
                 startActivity(logout);
                 finish();
                 break;
