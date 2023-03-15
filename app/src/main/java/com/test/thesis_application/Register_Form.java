@@ -3,6 +3,7 @@ package com.test.thesis_application;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -426,6 +427,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             if (result.isSuccess()) {
                 Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
                 Log.v("Data", "Data successfully addedd");
+                Intent intent = new Intent(Register_Form.this,splashScreen.class);
+                startActivity(intent);
             } else {
                 Log.v("Data", "Error:" + result.getError().toString());
             }

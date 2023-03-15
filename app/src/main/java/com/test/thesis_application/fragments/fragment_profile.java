@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,13 @@ public class fragment_profile extends Fragment {
 
         TextView tv_profilename = view.findViewById(R.id.profile_name);
         TextView tv_profileEmail = view.findViewById(R.id.profile_email);
+        button = view.findViewById(R.id.fragment_profile_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"working",Toast.LENGTH_LONG).show();
+            }
+        });
         Bundle data = getArguments();
         if (data != null){
             name = data.getString("name");
