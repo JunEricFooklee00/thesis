@@ -50,8 +50,8 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         Intent username = getIntent(), name = getIntent(),user_type = getIntent(), user_avatar = getIntent();
 
         View headerView = navigationView.getHeaderView(0); //used for calling the navigation items
-        navName = (TextView) headerView.findViewById(R.id.user_name);
-        navUsername = (TextView) headerView.findViewById(R.id.user_username);
+        navName = headerView.findViewById(R.id.user_name);
+        navUsername = headerView.findViewById(R.id.user_username);
         ImageView nav_avatar = headerView.findViewById(R.id.user_profilePic);
 
         String usertype = user_type.getStringExtra("user_Type");
