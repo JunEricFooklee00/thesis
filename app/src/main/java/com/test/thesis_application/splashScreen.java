@@ -1,10 +1,10 @@
 package com.test.thesis_application;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class splashScreen extends AppCompatActivity {
 
@@ -20,6 +20,6 @@ public class splashScreen extends AppCompatActivity {
                 startActivity(new Intent(splashScreen.this,MainActivity.class));
                 finish();
             }
-        },3000);
+        },1500);
     }
 }

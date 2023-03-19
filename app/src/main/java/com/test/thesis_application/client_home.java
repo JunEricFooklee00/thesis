@@ -16,16 +16,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 import com.test.thesis_application.fragments.fragment_Dashboard;
 import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 public class client_home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     private NavigationView navigationView;
     TextView navName,navUsername;
-    String imagepath;
+    private String imagepath,str_email,str_contact,str_birthday,str_address,str_zipcode;
+    ImageView nav_avatar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,24 +45,37 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        View headerView = navigationView.getHeaderView(0); //used for calling the navigation items
+        navName = headerView.findViewById(R.id.user_name);
+        navUsername = headerView.findViewById(R.id.user_username);
+        nav_avatar = headerView.findViewById(R.id.user_profilePic);
+
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new fragment_Dashboard()).commit();
             navigationView.setCheckedItem(R.id.nav_dashboard);
         }
 
-        Intent username = getIntent(), name = getIntent(),user_type = getIntent(), user_avatar = getIntent();
+        Intent username = getIntent(), name = getIntent(),user_type = getIntent(), user_avatar = getIntent(), email=getIntent(),contact = getIntent(),birthday = getIntent()
+                ,address = getIntent(),zipcode = getIntent();
+//        home_screen.putExtra("email", resultData.getString("email"));
+//        home_screen.putExtra("contactNumber", resultData.getString("contactNumber"));
+//        home_screen.putExtra("age", resultData.getString("age"));
+//        home_screen.putExtra("address", resultData.getString("address"));
+//        home_screen.putExtra("zipcode", resultData.getString("zipcode"));
 
-        View headerView = navigationView.getHeaderView(0); //used for calling the navigation items
-        navName = headerView.findViewById(R.id.user_name);
-        navUsername = headerView.findViewById(R.id.user_username);
-        ImageView nav_avatar = headerView.findViewById(R.id.user_profilePic);
 
-        String usertype = user_type.getStringExtra("user_Type");
+        str_email = email.getStringExtra("email");
+        str_birthday = birthday.getStringExtra("age");
+        str_contact = contact.getStringExtra("contact");
+        str_zipcode = zipcode.getStringExtra("user_Type");
+        str_address = address.getStringExtra("address");
+
+//        String usertype = user_type.getStringExtra("user_Type");
         navUsername.setText(username.getStringExtra("username"));
         navName.setText(name.getStringExtra("name"));
-        imagepath = user_avatar.getStringExtra("avatar");
-
+        imagepath = user_avatar.getStringExtra("resume");
+        Picasso.get().load(imagepath).resize(200,200).transform(new CropCircleTransformation()).into(nav_avatar);
 
 
     }// end of onCreate
@@ -99,6 +116,13 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 Bundle data = new Bundle();
                 data.putString("username",navUsername.getText().toString());
                 data.putString("name",navName.getText().toString());
+                data.putString("resume",imagepath);
+                data.putString("email",str_email);
+                data.putString("birthday",str_birthday);
+                data.putString("contactNumber",str_contact);
+                data.putString("zipcode",str_zipcode);
+                data.putString("address",str_address);
+
                 profile_fragment.setArguments(data);
                 fragmentTransaction.replace(R.id.fragment_container,profile_fragment).setReorderingAllowed(true)
                         .addToBackStack(null)

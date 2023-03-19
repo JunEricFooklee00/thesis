@@ -115,9 +115,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                         mongoCollection = mongoDatabase.getCollection("clients");
                         Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password", get_password.getEditText().getText().toString());
+
                         mongoCollection.findOne(email).getAsync(result -> {
                             try {
-                                //Testing admin accounts
+                                //Testing Client accounts
 
                                 Toast.makeText(getApplicationContext(), "Testing Clients", Toast.LENGTH_LONG).show();
 
@@ -129,7 +130,13 @@ public class MainActivity extends AppCompatActivity {
                                     Intent home_screen = new Intent(MainActivity.this, client_home.class);
                                     home_screen.putExtra ( "username",resultData.getString("username") );
                                     home_screen.putExtra("name",resultData.getString("name"));
-                                    home_screen.putExtra("avatar", resultData.getString("avatar"));
+                                    home_screen.putExtra("email", resultData.getString("email"));
+                                    home_screen.putExtra("contactNumber", resultData.getString("contactNumber"));
+                                    home_screen.putExtra("age", resultData.getString("age"));
+                                    home_screen.putExtra("address", resultData.getString("address"));
+                                    home_screen.putExtra("zipcode", resultData.getString("zipcode"));
+                                    home_screen.putExtra("resume", resultData.getString("resume"));
+
 
                                     startActivity(home_screen);
                                 } else {
@@ -153,11 +160,13 @@ public class MainActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
                                             Log.v("resultAccount", "Found in Employee");
                                             Intent home_screen = new Intent(MainActivity.this, client_home.class);
-                                            home_screen.putExtra ( "username",resultData1.getString("username") )
-                                                    .putExtra("name",resultData1.getString("name"))
-                                                    .putExtra("user_Type","clients")
-                                                    .putExtra("avatar", "avatar")
-                                                    .putExtra("resume", "resume");
+                                            home_screen.putExtra ( "username",resultData1.getString("username"));
+                                            home_screen  .putExtra("name",resultData1.getString("name"))
+                                                    .putExtra("email", resultData1.getString("email"));
+                                            home_screen .putExtra("age",resultData1.getString("age"));
+                                            home_screen.putExtra("contact",resultData1.getString("contactNumber"))
+                                                    .putExtra("address", resultData1.getString("address"))
+                                                    .putExtra("resume", resultData1.getString("resume"));
                                             startActivity(home_screen);
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();

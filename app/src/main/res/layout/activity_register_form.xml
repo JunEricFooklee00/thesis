@@ -55,6 +55,31 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_SPINNERGender"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_Age"
+
+                    android:hint="@string/gender"
+                    app:errorEnabled="true"
+
+                    app:startIconDrawable="@drawable/ic_baseline_person_24">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/filled_exposedgender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_Email"
@@ -147,8 +172,8 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
-                    android:clickable="true"
                     android:layout_marginBottom="32dp"
+                    android:clickable="true"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_ContactNumber"
                     app:startIconDrawable="@drawable/ic_baseline_calendar_month_24">
@@ -192,7 +217,7 @@
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="32dp"
                     android:textColorHint="@color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_Age"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_SPINNERGender"
                     app:startIconDrawable="@drawable/ic_baseline_edit_location_24">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -320,15 +345,39 @@
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_picture"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:clickable="true"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_ConfirmPassword"
+
+                    app:startIconDrawable="@drawable/ic_baseline_add_photo_alternate_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TIET_Picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="upload Resume"
+                     />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <Button
                     android:id="@+id/btn_register"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="Register"
-                    app:layout_constraintEnd_toEndOf="@+id/TIL_ConfirmPassword"
-                    app:layout_constraintStart_toStartOf="@+id/TIL_ConfirmPassword"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_ConfirmPassword" />
+                    app:layout_constraintEnd_toEndOf="@+id/TIL_picture"
+                    app:layout_constraintStart_toStartOf="@+id/TIL_picture"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_picture" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
