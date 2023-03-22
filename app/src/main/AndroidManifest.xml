@@ -8,11 +8,11 @@
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
         android:name=".MainApplication"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -24,9 +24,7 @@
         tools:targetApi="31">
         <activity
             android:name=".splashScreen"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -59,9 +57,7 @@
             android:name=".Register_Form"
             android:exported="false"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.Thesis_Application.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.Thesis_Application.NoActionBar"></activity>
         <activity
             android:name=".client_home"
             android:exported="false"
@@ -84,7 +80,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+    <activity android:name=".employee.employee_home">
 
+    </activity>
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://643975753735143:8lmznwULEA4x8DwBk5LHU-Hg0xw@dsuuylodx" />

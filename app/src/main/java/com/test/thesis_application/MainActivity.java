@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.test.thesis_application.employee.employee_home;
 
 import org.bson.Document;
 
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Document resultData = result.get();
                                 Log.v("Account", resultData.getString("user"));
-                                if (resultData.getString("user").equals("Client")) {
+                                if (resultData.getString("user").equals("Clients")) {
                                     Toast.makeText(getApplicationContext(), "Client Logged in", Toast.LENGTH_LONG).show();
                                     Log.v("resultAccount", "Found in Client");
                                     Intent home_screen = new Intent(MainActivity.this, client_home.class);
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (resultData1.getString("user").equals("Employees")) {
                                             Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
                                             Log.v("resultAccount", "Found in Employee");
-                                            Intent home_screen = new Intent(MainActivity.this, client_home.class);
+                                            Intent home_screen = new Intent(MainActivity.this, employee_home.class);
                                             home_screen.putExtra ( "username",resultData1.getString("username"));
                                             home_screen  .putExtra("name",resultData1.getString("name"))
                                                     .putExtra("email", resultData1.getString("email"));
