@@ -57,7 +57,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         }
 
         Intent username = getIntent(), name = getIntent(),user_type = getIntent(), user_avatar = getIntent(), email=getIntent(),contact = getIntent(),birthday = getIntent()
-                ,address = getIntent(),zipcode = getIntent();
+                ,address = getIntent(),zipcode = getIntent(), userid = getIntent();
 //        home_screen.putExtra("email", resultData.getString("email"));
 //        home_screen.putExtra("contactNumber", resultData.getString("contactNumber"));
 //        home_screen.putExtra("age", resultData.getString("age"));
@@ -67,12 +67,12 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 
         str_email = email.getStringExtra("email");
         str_birthday = birthday.getStringExtra("age");
-        str_contact = contact.getStringExtra("contact");
-        str_zipcode = zipcode.getStringExtra("user_Type");
+        str_contact = contact.getStringExtra("contactNumber");
+        str_zipcode = zipcode.getStringExtra("zipcode");
         str_address = address.getStringExtra("address");
-
 //        String usertype = user_type.getStringExtra("user_Type");
-        navUsername.setText(username.getStringExtra("username"));
+//        navUsername.setText(username.getStringExtra("username"));
+        navUsername.setText(userid.getStringExtra("user_ID"));
         navName.setText(name.getStringExtra("name"));
         imagepath = user_avatar.getStringExtra("resume");
         Picasso.get().load(imagepath).resize(200,200).transform(new CropCircleTransformation()).into(nav_avatar);

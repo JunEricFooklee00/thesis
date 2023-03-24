@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent R = new Intent(MainActivity.this,Register_Form.class);
+                Intent R = new Intent(MainActivity.this, Register_Form.class);
                 startActivity(R);
 
             }
@@ -111,76 +111,77 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (!validateemail() | !validatePassword() ) {
+                    if (!validateemail() | !validatePassword()) {
                         return;
                     }
-                        mongoCollection = mongoDatabase.getCollection("clients");
-                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password", get_password.getEditText().getText().toString());
+                    mongoCollection = mongoDatabase.getCollection("clients");
+                    Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password", get_password.getEditText().getText().toString());
 
-                        mongoCollection.findOne(email).getAsync(result -> {
-                            try {
-                                //Testing Client accounts
+                    mongoCollection.findOne(email).getAsync(result -> {
+                        try {
+                            //Testing Client accounts
 
-                                Toast.makeText(getApplicationContext(), "Testing Clients", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Testing Clients", Toast.LENGTH_LONG).show();
 
-                                Document resultData = result.get();
-                                Log.v("Account", resultData.getString("user"));
-                                if (resultData.getString("user").equals("Clients")) {
-                                    Toast.makeText(getApplicationContext(), "Client Logged in", Toast.LENGTH_LONG).show();
-                                    Log.v("resultAccount", "Found in Client");
-                                    Intent home_screen = new Intent(MainActivity.this, client_home.class);
-                                    home_screen.putExtra ( "username",resultData.getString("username") );
-                                    home_screen.putExtra("name",resultData.getString("name"));
-                                    home_screen.putExtra("email", resultData.getString("email"));
-                                    home_screen.putExtra("contactNumber", resultData.getString("contactNumber"));
-                                    home_screen.putExtra("age", resultData.getString("age"));
-                                    home_screen.putExtra("address", resultData.getString("address"));
-                                    home_screen.putExtra("zipcode", resultData.getString("zipcode"));
-                                    home_screen.putExtra("resume", resultData.getString("resume"));
+                            Document resultData = result.get();
+                            Log.v("Account", resultData.getString("user"));
+                            if (resultData.getString("user").equals("Clients")) {
+                                Toast.makeText(getApplicationContext(), "Client Logged in", Toast.LENGTH_LONG).show();
+                                Log.v("resultAccount", "Found in Client");
+                                Intent home_screen = new Intent(MainActivity.this, client_home.class);
+                                home_screen.putExtra("username", resultData.getString("username"))
+                                        .putExtra("name", resultData.getString("name"))
+                                        .putExtra("email", resultData.getString("email"))
+                                        .putExtra("contactNumber", resultData.getString("contactNumber"))
+                                        .putExtra("age", resultData.getString("age"))
+                                        .putExtra("address", resultData.getString("address"))
+                                        .putExtra("zipcode", resultData.getString("zipcode"))
+                                        .putExtra("resume", resultData.getString("resume"));
 
 
-                                    startActivity(home_screen);
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                    Log.v("resultAccount", "Client not found in Database");
+                                startActivity(home_screen);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                Log.v("resultAccount", "Client not found in Database");
 
-                                }
-
-                            } catch (Exception client) {
-                                //Testing Employee Accounts
-                                Toast.makeText(getApplicationContext(), "Testing Clients", Toast.LENGTH_LONG).show();
-
-                                mongoCollection = mongoDatabase.getCollection("employees");
-
-                                mongoCollection.findOne(email).getAsync(result1 -> {
-                                    try {
-                                        Document resultData1 = result1.get();
-                                        Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
-
-                                        if (resultData1.getString("user").equals("Employees")) {
-                                            Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
-                                            Log.v("resultAccount", "Found in Employee");
-                                            Intent home_screen = new Intent(MainActivity.this, employee_home.class);
-                                            home_screen.putExtra ( "username",resultData1.getString("username"));
-                                            home_screen  .putExtra("name",resultData1.getString("name"))
-                                                    .putExtra("email", resultData1.getString("email"));
-                                            home_screen .putExtra("age",resultData1.getString("age"));
-                                            home_screen.putExtra("contact",resultData1.getString("contactNumber"))
-                                                    .putExtra("address", resultData1.getString("address"))
-                                                    .putExtra("resume", resultData1.getString("resume"));
-                                            startActivity(home_screen);
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                            Log.v("resultAccount", "Wala sa Employee");
-
-                                        }
-                                    } catch (Exception employee) {
-                                        employee.printStackTrace();
-                                        Toast.makeText(getApplicationContext(),"No user existing.",Toast.LENGTH_LONG).show();
-                                    }
-                                });
                             }
-                        });
+
+                        } catch (Exception client) {
+                            //Testing Employee Accounts
+                            Toast.makeText(getApplicationContext(), "Testing Employees", Toast.LENGTH_LONG).show();
+
+                            mongoCollection = mongoDatabase.getCollection("employees");
+                            mongoCollection.findOne(email).getAsync(result1 -> {
+                                try {
+                                    Document resultData1 = result1.get();
+                                    Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
+
+                                    if (resultData1.getString("user").equals("Employees")) {
+                                        Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
+                                        Log.v("resultAccount", "Found in Employee");
+                                        Intent home_screen = new Intent(MainActivity.this, employee_home.class);
+                                        home_screen.putExtra("username", resultData1.getString("username"))
+                                                .putExtra("name", resultData1.getString("name"))
+                                                .putExtra("user_ID",resultData1.getObjectId("_id").toString())
+                                                .putExtra("email", resultData1.getString("email"))
+                                                .putExtra("contactNumber", resultData1.getString("contactNumber"))
+                                                .putExtra("age", resultData1.getString("age"))
+                                                .putExtra("address", resultData1.getString("address"))
+                                                .putExtra("zipcode", resultData1.getString("zipcode"))
+                                                .putExtra("resume", resultData1.getString("resume"));
+                                        startActivity(home_screen);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                        Log.v("resultAccount", "Wala sa Employee");
+
+                                    }
+                                } catch (Exception employee) {
+                                    employee.printStackTrace();
+                                    Toast.makeText(getApplicationContext(), "No user existing.", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -197,11 +198,10 @@ public class MainActivity extends AppCompatActivity {
             get_email.setError("Field Empty");
             return false;
 
-        } else if(!Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()) {
             get_email.setError("Email Invalid");
             return false;
-        }
-        else {
+        } else {
             get_email.setError(null);
             get_email.setErrorEnabled(false);
             return true;
@@ -214,13 +214,13 @@ public class MainActivity extends AppCompatActivity {
             get_password.setError("Field Empty");
             return false;
 
-        }
-        else {
+        } else {
             get_password.setError(null);
             get_password.setErrorEnabled(false);
             return true;
         }
     }
+
     private void requestPermission() {
 
         Log.v("Result", "Requesting Permission");

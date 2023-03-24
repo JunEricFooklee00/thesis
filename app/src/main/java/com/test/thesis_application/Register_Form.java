@@ -87,8 +87,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_register_form);
-        App app = new App(new AppConfiguration.Builder(Appid).build());
-        User user = app.currentUser();
+         app = new App(new AppConfiguration.Builder(Appid).build());
+         user = app.currentUser();
 
         requestPermission(); // request permission
 

@@ -70,7 +70,7 @@ public class fragment_profile extends Fragment {
         tv_username = view.findViewById(R.id.profile_username);
         tv_contactNumber = view.findViewById(R.id.db_contact);
         tv_address = view.findViewById(R.id.db_address);
-//        tv_zipcode = view.findViewById(R.id.profile_username);
+        tv_zipcode = view.findViewById(R.id.db_zipcode);
         button = view.findViewById(R.id.fragment_profile_button);
         profile_pic = view.findViewById(R.id.profile_picture);
 
@@ -94,11 +94,11 @@ public class fragment_profile extends Fragment {
 //            birthday = data.getString("birthday");
             contactNumber = data.getString("contactNumber");
             address = data.getString("address");
-//            zipcode = data.getString("zipcode");
+            zipcode = data.getString("zipcode");
         }
         tv_contactNumber.setText(contactNumber);
         tv_address.setText(address);
-
+        tv_zipcode.setText(zipcode);
         tv_username.setText(username);
         tv_profilename.setText(name);
         tv_profileEmail.setText(email);

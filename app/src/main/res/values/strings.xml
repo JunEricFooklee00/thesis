@@ -16,21 +16,19 @@
     <string name="age">Birth Date</string>
     <string name="password">Password</string>
     <string name="check_password">Re-enter password</string>
-    <string name="get_Address">Address</string>
+    <string name="get_Address">Street / Subdivision / Compound</string>
     <string name="zip_Code">Zip Code</string>
     <string name="Contact_Number">Contact Number</string>
     <string name="gender">Gender</string>
     <string name="usertype">Type of user.</string>
     <string-array name="gender">
         <item>Male</item>
-
         <item>Female</item>
     </string-array>
     <string-array name="userTypes">
         <item>Choose type of user.</item>
         <item>Clients</item>
         <item>Employees</item>
-
     </string-array>
     <string-array name="job_types">
         <item>Select job type.</item>
@@ -38,7 +36,6 @@
         <item>Repair</item>
         <item>Installation</item>
         <item>Painting</item>
-
     </string-array>
     <string name="job_order">JOB ORDER.</string>
     <string name="register">Register</string>

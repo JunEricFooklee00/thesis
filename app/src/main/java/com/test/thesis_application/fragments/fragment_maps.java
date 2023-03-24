@@ -14,13 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,11 +32,25 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.test.thesis_application.R;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
+import org.bson.Document;
+
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
 
 public class fragment_maps extends Fragment {
     FusedLocationProviderClient client;
     SupportMapFragment mapFragment;
+
+    String Appid = "employeems-mcwma";
+    private App app;
+    User user;
+    MongoDatabase mongoDatabase;
+    MongoClient mongoClient;
+    MongoCollection<Document> mongoCollection;
 
     @Nullable
     @Override
@@ -48,6 +61,12 @@ public class fragment_maps extends Fragment {
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         client = LocationServices.getFusedLocationProviderClient(getActivity());
 
+        //mongodb
+        app = new App(new AppConfiguration.Builder(Appid).build());
+        user = app.currentUser();
+        assert user != null;
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("CourseData");
 
         Dexter.withContext(getContext())
                 .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)

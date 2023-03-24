@@ -24,7 +24,7 @@
         tools:targetApi="31">
         <activity
             android:name=".splashScreen"
-            android:exported="true"></activity>
+            android:exported="true" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -57,7 +57,7 @@
             android:name=".Register_Form"
             android:exported="false"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.Thesis_Application.NoActionBar"></activity>
+            android:theme="@style/Theme.Thesis_Application.NoActionBar" />
         <activity
             android:name=".client_home"
             android:exported="false"
