@@ -132,7 +132,7 @@ public class fragment_maps extends Fragment {
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("You are here...!!");
+                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
 
                         googleMap.addMarker(markerOptions);
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));

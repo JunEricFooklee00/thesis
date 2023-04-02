@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,14 +32,7 @@ public class fragment_profile extends Fragment {
     private Button button;
     private ImageView profile_pic;
     private TextView tv_profilename, tv_profileEmail, tv_username, tv_birthday, tv_contactNumber, tv_address, tv_zipcode;
-    //        data.putString("username",navUsername.getText().toString());
-//        data.putString("name",navName.getText().toString());
-//        data.putString("resume",imagepath);
-//        data.putString("email",str_email);
-//        data.putString("birthday",str_birthday);
-//        data.putString("contactNumber",str_contact);
-//        data.putString("zipcode",str_zipcode);
-//        data.putString("address",str_address);
+
 
     String Appid = "employeems-mcwma";
     private App app;
@@ -49,16 +41,16 @@ public class fragment_profile extends Fragment {
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
 
-
-    public static fragment_profile newInstance(String name, String email) {
-
-        fragment_profile fragProf = new fragment_profile();
-        Bundle args = new Bundle();
-        args.putString(arg_name, name);
-        args.putString(arg_Username, email);
-        fragProf.setArguments(args);
-        return fragProf;
-    }
+//
+//    public static fragment_profile newInstance(String name, String email) {
+//
+//        fragment_profile fragProf = new fragment_profile();
+//        Bundle args = new Bundle();
+//        args.putString(arg_name, name);
+//        args.putString(arg_Username, email);
+//        fragProf.setArguments(args);
+//        return fragProf;
+//    }
 
     @Nullable
     @Override
@@ -71,7 +63,7 @@ public class fragment_profile extends Fragment {
         tv_contactNumber = view.findViewById(R.id.db_contact);
         tv_address = view.findViewById(R.id.db_address);
         tv_zipcode = view.findViewById(R.id.db_zipcode);
-        button = view.findViewById(R.id.fragment_profile_button);
+//        button = view.findViewById(R.id.fragment_profile_button);
         profile_pic = view.findViewById(R.id.profile_picture);
 
 //        assert user != null;
@@ -79,12 +71,12 @@ public class fragment_profile extends Fragment {
 //        mongoDatabase = mongoClient.getDatabase("CourseData");
 //        mongoCollection = mongoDatabase.getCollection("clients");
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "working", Toast.LENGTH_LONG).show();
-            }
-        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getContext(), "working", Toast.LENGTH_LONG).show();
+//            }
+//        });
         Bundle data = getArguments();
         if (data != null) {
             name = data.getString("name");
@@ -96,7 +88,7 @@ public class fragment_profile extends Fragment {
             address = data.getString("address");
             zipcode = data.getString("zipcode");
         }
-        tv_contactNumber.setText(contactNumber);
+        tv_contactNumber.setText("+63" +contactNumber);
         tv_address.setText(address);
         tv_zipcode.setText(zipcode);
         tv_username.setText(username);

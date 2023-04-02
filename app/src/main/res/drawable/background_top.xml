@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 <item>
     <shape android:shape="rectangle">
-        <corners android:bottomLeftRadius="20dp" android:bottomRightRadius="40dp"/>
+        <corners android:bottomLeftRadius="10dp" android:bottomRightRadius="10dp"/>
         <gradient android:startColor="#007ADB" android:endColor="#162676" android:angle="270"/>
     </shape>
 </item>

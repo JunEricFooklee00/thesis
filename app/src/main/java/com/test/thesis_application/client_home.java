@@ -1,11 +1,13 @@
 package com.test.thesis_application;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,15 +23,31 @@ import com.test.thesis_application.fragments.fragment_Dashboard;
 import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
+import com.test.thesis_application.fragments.fragment_settings;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class client_home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-    private NavigationView navigationView;
-    TextView navName,navUsername;
-    private String imagepath,str_email,str_contact,str_birthday,str_address,str_zipcode;
+    TextView navName, navUsername;
+    private String imagepath,str_email,str_contact,str_birthday, str_address,str_zipcode;
+
     ImageView nav_avatar;
+
+    String Appid = "employeems-mcwma";
+    User user;
+    MongoDatabase mongoDatabase;
+    MongoClient mongoClient;
+    MongoCollection<Document> mongoCollection;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +57,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.menu_Open,R.string.menu_Close);
         drawer.addDrawerListener(toggle);
@@ -56,30 +74,46 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
             navigationView.setCheckedItem(R.id.nav_dashboard);
         }
 
-        Intent username = getIntent(), name = getIntent(),user_type = getIntent(), user_avatar = getIntent(), email=getIntent(),contact = getIntent(),birthday = getIntent()
-                ,address = getIntent(),zipcode = getIntent(), userid = getIntent();
-//        home_screen.putExtra("email", resultData.getString("email"));
-//        home_screen.putExtra("contactNumber", resultData.getString("contactNumber"));
-//        home_screen.putExtra("age", resultData.getString("age"));
-//        home_screen.putExtra("address", resultData.getString("address"));
-//        home_screen.putExtra("zipcode", resultData.getString("zipcode"));
+        Intent account = getIntent();
+        String str_UID = account.getStringExtra("user_ID");
 
+        // all required for mongodb
+        App app = new App(new AppConfiguration.Builder(Appid).build());
+        user = app.currentUser();
+        assert user != null;
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("CourseData");
+        mongoCollection = mongoDatabase.getCollection("clients");
+        ObjectId objectId = new ObjectId(str_UID);
+        Document filter = new Document("_id", objectId);
+        mongoCollection.findOne(filter).getAsync(result -> {
+            if (result.isSuccess()){
+                Document resultdata = result.get();
+                str_email = resultdata.getString("email");
+                str_birthday = resultdata.getString("age");
+                str_contact = resultdata.getString("contactNumber");
+                str_zipcode = resultdata.getString("zipcode");
+                str_address = resultdata.getString("address");
+                navUsername.setText(resultdata.getString("username"));
+                navName.setText(resultdata.getString("name"));
+                imagepath = resultdata.getString("resume");
 
-        str_email = email.getStringExtra("email");
-        str_birthday = birthday.getStringExtra("age");
-        str_contact = contact.getStringExtra("contactNumber");
-        str_zipcode = zipcode.getStringExtra("zipcode");
-        str_address = address.getStringExtra("address");
-//        String usertype = user_type.getStringExtra("user_Type");
-//        navUsername.setText(username.getStringExtra("username"));
-        navUsername.setText(userid.getStringExtra("user_ID"));
-        navName.setText(name.getStringExtra("name"));
-        imagepath = user_avatar.getStringExtra("resume");
-        Picasso.get().load(imagepath).resize(200,200).transform(new CropCircleTransformation()).into(nav_avatar);
+                Picasso.get()
+                        .load(imagepath).transform(new CropCircleTransformation())
+                        .fit()
+                        .centerCrop()
+                        .into(nav_avatar);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Sorry Something is wrong with the application.",Toast.LENGTH_LONG).show();
+            }
+
+        });
 
 
     }// end of onCreate
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -95,14 +129,19 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         new fragment_maps()).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
-//                Intent GoogleMaps = new Intent(client_home.this,MapsActivity.class);
-//                startActivity(GoogleMaps);
 
                 break;
             case R.id.nav_myproject:
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new fragment_project())
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.nav_setting:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new fragment_settings())
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();

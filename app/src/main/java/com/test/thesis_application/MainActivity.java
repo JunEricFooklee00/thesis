@@ -131,14 +131,13 @@ public class MainActivity extends AppCompatActivity {
                                 Intent home_screen = new Intent(MainActivity.this, client_home.class);
                                 home_screen.putExtra("username", resultData.getString("username"))
                                         .putExtra("name", resultData.getString("name"))
+                                        .putExtra("user_ID",resultData.getObjectId("_id").toString())
                                         .putExtra("email", resultData.getString("email"))
                                         .putExtra("contactNumber", resultData.getString("contactNumber"))
                                         .putExtra("age", resultData.getString("age"))
                                         .putExtra("address", resultData.getString("address"))
                                         .putExtra("zipcode", resultData.getString("zipcode"))
                                         .putExtra("resume", resultData.getString("resume"));
-
-
                                 startActivity(home_screen);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();

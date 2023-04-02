@@ -30,6 +30,71 @@
         <item>Clients</item>
         <item>Employees</item>
     </string-array>
+    <string name="Scope_of_work">Scope of work.</string>
+    <string-array name="scopeofwork">
+        <item>Site Preparation</item>
+        <item>Carpentry Works</item>
+        <item>Mechanical/Metal Works</item>
+        <item>Electrical Works</item>
+        <item>Painting Works</item>
+        <item>Thermal and Moisture Protection Works</item>
+    </string-array>
+    <string name="type_of_work">Type of work.</string>
+    <string-array name="SitePreparation">
+        <item>Filling and backfilling works</item>
+        <item>Excavation of soil and/or Footing Excavation</item>
+        <item>Gravel bedding</item>
+        <item>Chipping of slab</item>
+        <item>Chipping of existing tiles</item>
+        <item>Chipping of existing slab for ducting</item>
+        <item>Demolish existing ceiling and wood truss</item>
+        <item>Demolish existing accordion door</item>
+        <item>Demolish front wall </item>
+        <item>Demolish existing staircase/stairway</item>
+        <item>Demolish existing grills</item>
+        <item>Demolish dilapidated roofing</item>
+        <item>Site Clearing/Hauling and Disposal works</item>
+    </string-array>
+
+    <string-array name="CarpentryWorks">
+        <item>Carpentry works for Main Counter (repair only) </item>
+        <item>Carpentry works for Ceiling, Parapet, and Canopy.</item>
+        <item>Construction of Dry Wall (Interior Wall and Partition).</item>
+        <item>Construction of Exterior Wall using Rib type GI Sheet.</item>
+        <item>Wall Cabinet and Shelves at Sink Area Installation.</item>
+    </string-array>
+
+    <string-array name="MechanicalMetalWorks">
+        <item>Stainless works for Main Counter (Repair only)</item>
+        <item>Welding works for Steel frame of Main Counter</item>
+        <item>Fabrication of Steel Gate</item>
+        <item>Fabrication of Steel columns and members</item>
+        <item>40cmx30cm steel louvers installation</item>
+        <item>Installation of exhaust fans</item>
+        <item>Fabrication and Installation of metal roll up door</item>
+        <item>Menu Board Hooking and Installation</item>
+        <item>Steel ramp fabrication</item>
+        <item>LPG Cage Fabrication</item>
+    </string-array>
+
+    <string-array name="ElectricalWorks">
+        <item>Main Line and Wiring Distribution System</item>
+        <item>Interior and Exterior Lightings</item>
+    </string-array>
+
+    <string-array name="PaintingWorks">
+        <item>Plain Concrete Surfaces (Surface Prep - Primer - Finish Coat)</item>
+        <item>Wooden / Metal Surfaces (Surface Prep - Primer - Finish Coat)</item>
+        <item>Plain Concrete and Wooden / Metal Surfaces (Surface Prep - Primer - Finish Coat)</item>
+    </string-array>
+
+    <string-array name="ThermalandMoistureProtectionWorks">
+        <item>Roofing Works and Framing Installation</item>
+        <item>Installation of Gutter, Flushing and Ridge Roll</item>
+        <item>Counter Acrylic Shield Cover</item>
+    </string-array>
+
+
     <string-array name="job_types">
         <item>Select job type.</item>
         <item>Renovation</item>
@@ -61,4 +126,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="update_general_information_about_you">Update general information about you.</string>
+    <string name="personal_information">Personal information</string>
+    <string name="manage_information_about_you_and_your_account_in_general">Manage information about you and your account in general</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="security">Security</string>
+    <string name="change_password_and_more">Change password and more.</string>
+    <string name="security_and_login">Security and login</string>
+    <string name="change_password_and_other_actions_to_add_more_security_to_your_account">Change password and other actions to add more security to your account.</string>
+    <string name="area">Area</string>
+    <string name="location">Location</string>
+    <string name="employee">Employee</string>
+    <string name="your_email_here">Your email here</string>
+    <string name="your_name_here">Your Name here</string>
 </resources>

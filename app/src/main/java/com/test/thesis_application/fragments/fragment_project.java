@@ -1,6 +1,5 @@
 package com.test.thesis_application.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.test.thesis_application.Insert_Job;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.test.thesis_application.R;
 
 public class fragment_project extends Fragment  {
@@ -20,32 +21,26 @@ public class fragment_project extends Fragment  {
 
     ImageView datePickerbtn;
     TextView dateview;
-
+    FloatingActionButton insert;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
-        datePickerbtn = view.findViewById(R.id.imageView2);
-        datePickerbtn.setOnClickListener(new View.OnClickListener() {
+
+        insert = view.findViewById(R.id.insert_job);
+        insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent insert_job = new Intent(getActivity().getApplication(), Insert_Job.class);
-                startActivity(insert_job);
+
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new insertjob());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
-//        datePickerbtn = view.findViewById(R.id.get_startDate);
-//        datePickerbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                DialogFragment datepicker =  new DatePickerFragment();
-////                FragmentTransaction fm = getActivity().getSupportFragmentManager().beginTransaction();
-//
-//                datepicker.show(getActivity().getSupportFragmentManager(), "Date Picker ");
-//            }
-//        });
         return view;
     }
-
 
 
 }

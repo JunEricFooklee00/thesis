@@ -1,5 +1,6 @@
 package com.test.thesis_application.employee;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import com.test.thesis_application.fragments.fragment_Dashboard;
 import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
+import com.test.thesis_application.fragments.fragment_settings;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -38,15 +40,12 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class employee_home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-    private NavigationView navigationView;
     TextView navName, navUsername;
-    private String imagepath;
-    private String str_email, str_contact, str_birthday, str_address, str_zipcode , str_UID;
+    private String imagepath, str_email ,str_contact, str_birthday, str_address, str_zipcode;
 
     ImageView nav_avatar;
 
     String Appid = "employeems-mcwma";
-    private App app;
     User user;
     MongoDatabase mongoDatabase;
     MongoClient mongoClient;
@@ -61,7 +60,7 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.menu_Open, R.string.menu_Close);
         drawer.addDrawerListener(toggle);
@@ -80,10 +79,10 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
         }
 
         Intent account = getIntent();
-        str_UID = account.getStringExtra("user_ID");
+        String str_UID = account.getStringExtra("user_ID");
 
         // all required for mongodb
-        app = new App(new AppConfiguration.Builder(Appid).build());
+        App app = new App(new AppConfiguration.Builder(Appid).build());
         user = app.currentUser();
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
@@ -114,6 +113,7 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
 
     }//end of oncreate
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -132,6 +132,13 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
 //                Intent GoogleMaps = new Intent(client_home.this,MapsActivity.class);
 //                startActivity(GoogleMaps);
 
+                break;
+            case R.id.nav_setting:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new fragment_settings())
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
                 break;
             case R.id.nav_myproject:
 

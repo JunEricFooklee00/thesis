@@ -80,9 +80,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-    <activity android:name=".employee.employee_home">
+        <activity android:name=".employee.employee_home">
 
-    </activity>
+        </activity>
+
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://643975753735143:8lmznwULEA4x8DwBk5LHU-Hg0xw@dsuuylodx" />
