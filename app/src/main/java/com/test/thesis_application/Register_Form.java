@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.util.Log;
 import android.util.Patterns;
@@ -155,6 +156,13 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         });
 
         register.setOnClickListener(v -> {
+            register.setEnabled(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    register.setEnabled(true);
+                }
+            }, 5000); // Delay in milliseconds, adjust as needed
             if (!validateemail() | !validatePassword() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
                     !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage()) {
                 return;
@@ -518,7 +526,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                 .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
                 .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
                 .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
-                .append("contactNumber", Objects.requireNonNull(contactnumber.getEditText()).getText().toString().trim())
+                .append("contactNumber", Objects.requireNonNull(contactnumber.getEditText().getText()).toString().trim())
                 .append("password", Objects.requireNonNull(password.getEditText()).getText().toString().trim())
                 .append("age", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
                 .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
@@ -532,7 +540,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                 Intent intent = new Intent(Register_Form.this, splashScreen.class);
                 startActivity(intent);
             } else {
-                Log.v("Data", "Error:" + result.getError().toString());
+                Log.v("Mongodb", "Error:" + result.getError().toString());
             }
         });
     }

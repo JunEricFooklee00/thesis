@@ -45,15 +45,6 @@
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".Insert_Job"
-            android:exported="false"
-            android:parentActivityName=".client_home"
-            android:theme="@style/Theme.Thesis_Application.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".Register_Form"
             android:exported="false"
             android:parentActivityName=".MainActivity"

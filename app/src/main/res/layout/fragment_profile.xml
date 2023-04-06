@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C5D9AB"
+    android:background="@color/grey"
     android:elevation="30dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +19,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -40,7 +41,7 @@
                         android:layout_marginTop="45dp"
                         android:text="Charles Kendrick S. Magalued"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         app:layout_constraintStart_toEndOf="@+id/profile_picture"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -64,8 +65,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="UID: 64043e713bd4b74548a34427"
-                        android:textColor="@color/white"
-                        android:textSize="8dp"
+                        android:textColor="@color/black"
+                        android:textSize="10dp"
                         app:layout_constraintEnd_toEndOf="@+id/profile_name"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/profile_name"
@@ -78,7 +79,7 @@
                         android:layout_height="96dp"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="25dp"
-                        android:src="@drawable/profile"
+                        android:src="@drawable/wew"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -101,21 +102,20 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardUseCompatPadding="true" >
+                            app:cardUseCompatPadding="true">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:cardElevation="3dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                app:cardElevation="3dp">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/light_blue"
                                     android:orientation="horizontal"
-                                    android:padding="3dp"
-                                   >
+                                    android:padding="3dp">
 
 
                                     <LinearLayout
@@ -127,7 +127,6 @@
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center"
                                             android:layout_marginStart="10dp"
-                                            android:drawableStart="@drawable/ic_baseline_person_24"
                                             android:drawableTint="@color/white"
                                             android:gravity="fill"
                                             android:text="Username"
@@ -192,7 +191,6 @@
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center"
                                             android:layout_marginStart="10dp"
-                                            android:drawableStart="@drawable/ic_baseline_email_24"
                                             android:drawableTint="@color/white"
                                             android:gravity="fill"
                                             android:text="Email"
@@ -254,7 +252,6 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_marginStart="10dp"
-                                        android:drawableLeft="@drawable/ic_baseline_local_phone_24"
                                         android:drawableTint="@color/white"
                                         android:text="Mobile"
                                         android:textColor="@color/white"
@@ -313,7 +310,6 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_marginStart="10dp"
-                                        android:drawableLeft="@drawable/ic_baseline_edit_location_24"
                                         android:drawableTint="@color/white"
                                         android:text="Address"
                                         android:textColor="@color/white"
@@ -354,14 +350,6 @@
                                     android:orientation="horizontal"
                                     android:padding="3dp">
 
-                                    <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:layout_marginStart="5dp"
-                                        android:padding="2dp"
-
-                                        android:src="@drawable/ic_outline_signpost_24"
-                                        app:tint="@color/white" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -402,13 +390,10 @@
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
-
-
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

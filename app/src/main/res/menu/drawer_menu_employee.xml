@@ -15,8 +15,6 @@
         <item
             android:id="@+id/nav_myproject"
             android:icon="@drawable/ic_baseline_home_work_24"
-            android:iconTint="@color/white"
-            android:iconTintMode="src_in"
             android:title="My Projects" />
     </group>
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,24 +23,46 @@ public class fragment_project extends Fragment  {
     ImageView datePickerbtn;
     TextView dateview;
     FloatingActionButton insert;
+    private String userid;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
 
+
         insert = view.findViewById(R.id.insert_job);
+
+        Bundle projectuserid = getArguments();
+        if (projectuserid != null) {
+            userid = projectuserid.getString("user_ID");
+        }
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                FragmentManager fragmentManager = getParentFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new insertjob());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                insertjobtransaction();
             }
         });
         return view;
+    }
+
+    private void insertjobtransaction() {
+
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        insertjob fragment = new insertjob();
+
+        // Create a Bundle to pass your data
+        Bundle bundle = new Bundle();
+        bundle.putString("uid", userid); // Example of adding a String to the Bundle
+
+        // Set the Bundle as an argument for your fragment
+        fragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.fragment_container,fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        Toast.makeText(requireContext(),userid,Toast.LENGTH_LONG).show();
     }
 
 

@@ -99,7 +99,11 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/TextinputET_email"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -118,7 +122,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/username" />
+                        android:ellipsize="end"
+                        android:hint="@string/username"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -137,7 +144,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Fname" />
+                        android:ellipsize="end"
+                        android:hint="@string/Fname"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -206,7 +216,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/get_Address" />
+                        android:ellipsize="end"
+                        android:hint="@string/get_Address"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -225,7 +238,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/house_number" />
+                        android:ellipsize="end"
+                        android:hint="@string/house_number"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -244,7 +260,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/barangay" />
+                        android:ellipsize="end"
+                        android:hint="@string/barangay"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -282,7 +301,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/province" />
+                        android:ellipsize="end"
+                        android:hint="@string/province"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -326,8 +348,11 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:hint="@string/password"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -348,8 +373,11 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:hint="@string/check_password"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -371,8 +399,11 @@
                         android:id="@+id/TIET_Picture"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:focusable="false"
-                        android:hint="upload Resume" />
+                        android:hint="upload Resume"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button

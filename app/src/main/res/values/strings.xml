@@ -25,6 +25,11 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string-array name="unit">
+        <item>Cubic meter</item>
+        <item>Square meter</item>
+        <item>Meter</item>
+    </string-array>
     <string-array name="userTypes">
         <item>Choose type of user.</item>
         <item>Clients</item>
@@ -123,8 +128,6 @@
     <string name="err_filepath">No file uploaded.</string>
     <string name="avatar">Add profile picture:</string>
     <string name="tv_jobtype">Select Job Type.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="update_general_information_about_you">Update general information about you.</string>
     <string name="personal_information">Personal information</string>
@@ -139,4 +142,10 @@
     <string name="employee">Employee</string>
     <string name="your_email_here">Your email here</string>
     <string name="your_name_here">Your Name here</string>
+    <string name="title_of_project">Title of Project</string>
+    <string name="submit">Submit</string>
+    <string name="sub_division">Sub-division.</string>
+    <string name="start_date">Start Date</string>
+    <string name="Expectedfinishdate">Expected finish date</string>
+    <string name="unit">Unit</string>
 </resources>

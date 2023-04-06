@@ -39,7 +39,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class client_home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     TextView navName, navUsername;
-    private String imagepath,str_email,str_contact,str_birthday, str_address,str_zipcode;
+    private String imagepath,str_email,str_contact,str_birthday, str_address,str_zipcode,str_UID,newstr_UID;
 
     ImageView nav_avatar;
 
@@ -75,7 +75,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         }
 
         Intent account = getIntent();
-        String str_UID = account.getStringExtra("user_ID");
+        str_UID = account.getStringExtra("user_ID");
 
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
@@ -84,14 +84,17 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("CourseData");
         mongoCollection = mongoDatabase.getCollection("clients");
+
         ObjectId objectId = new ObjectId(str_UID);
         Document filter = new Document("_id", objectId);
+
         mongoCollection.findOne(filter).getAsync(result -> {
             if (result.isSuccess()){
                 Document resultdata = result.get();
+                newstr_UID = resultdata.getObjectId("_id").toString();
                 str_email = resultdata.getString("email");
                 str_birthday = resultdata.getString("age");
-                str_contact = resultdata.getString("contactNumber");
+                str_contact = resultdata.getString("contactNumber").toString();
                 str_zipcode = resultdata.getString("zipcode");
                 str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
@@ -125,17 +128,26 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .commit();
                 break;
             case R.id.nav_map:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new fragment_maps()).setReorderingAllowed(true)
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        new fragment_maps()).setReorderingAllowed(true)
+//                        .addToBackStack(null)
+//                        .commit();
+                fragment_maps fragmentMaps = new fragment_maps();
+                FragmentTransaction mapsTransaction = getSupportFragmentManager().beginTransaction();
+                Bundle mapsuid = new Bundle();
+                mapsuid.putString("user_ID",str_UID); // to fragment_maps()
+                fragmentMaps.setArguments(mapsuid);
+                mapsTransaction.replace(R.id.fragment_container,fragmentMaps).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
-
                 break;
             case R.id.nav_myproject:
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new fragment_project())
-                        .setReorderingAllowed(true)
+                fragment_project project_fragment =  new fragment_project();
+                FragmentTransaction projectTransaction = getSupportFragmentManager().beginTransaction();
+                Bundle projectuserid = new Bundle();
+                projectuserid.putString("user_ID",str_UID);
+                project_fragment.setArguments(projectuserid);
+                projectTransaction.replace(R.id.fragment_container,project_fragment).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;
@@ -153,6 +165,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 fragment_profile profile_fragment =  new fragment_profile();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 Bundle data = new Bundle();
+                data.putString("uid",newstr_UID);
                 data.putString("username",navUsername.getText().toString());
                 data.putString("name",navName.getText().toString());
                 data.putString("resume",imagepath);

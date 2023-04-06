@@ -28,10 +28,10 @@ public class fragment_profile extends Fragment {
     private static final String arg_name = "argName";
     private static final String arg_Username = "argUserName";
 
-    private String name, email, resume, username, birthday, contactNumber, address, zipcode;
+    private String name, email, resume, username, birthday, contactNumber, address, zipcode,uid;
     private Button button;
     private ImageView profile_pic;
-    private TextView tv_profilename, tv_profileEmail, tv_username, tv_birthday, tv_contactNumber, tv_address, tv_zipcode;
+    private TextView tv_profilename, tv_profileEmail, tv_username, tv_birthday, tv_contactNumber, tv_address, tv_zipcode,tv_uid;
 
 
     String Appid = "employeems-mcwma";
@@ -65,7 +65,7 @@ public class fragment_profile extends Fragment {
         tv_zipcode = view.findViewById(R.id.db_zipcode);
 //        button = view.findViewById(R.id.fragment_profile_button);
         profile_pic = view.findViewById(R.id.profile_picture);
-
+        tv_uid = view.findViewById(R.id.profile_ud);
 //        assert user != null;
 //        mongoClient = user.getMongoClient("mongodb-atlas");
 //        mongoDatabase = mongoClient.getDatabase("CourseData");
@@ -79,6 +79,7 @@ public class fragment_profile extends Fragment {
 //        });
         Bundle data = getArguments();
         if (data != null) {
+            uid = data.getString("uid");
             name = data.getString("name");
             email = data.getString("email");
             resume = data.getString("resume");
@@ -88,6 +89,7 @@ public class fragment_profile extends Fragment {
             address = data.getString("address");
             zipcode = data.getString("zipcode");
         }
+        tv_uid.setText("UID: " + uid);
         tv_contactNumber.setText("+63" +contactNumber);
         tv_address.setText(address);
         tv_zipcode.setText(zipcode);

@@ -1,9 +1,11 @@
 package com.test.thesis_application.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.karumi.dexter.Dexter;
@@ -33,6 +34,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.test.thesis_application.R;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -45,6 +47,7 @@ public class fragment_maps extends Fragment {
     FusedLocationProviderClient client;
     SupportMapFragment mapFragment;
 
+    //mongodb
     String Appid = "employeems-mcwma";
     private App app;
     User user;
@@ -52,21 +55,30 @@ public class fragment_maps extends Fragment {
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
 
+    private String userid;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        Bundle projectuserid = getArguments();
+        if (projectuserid != null) {
+            userid = projectuserid.getString("user_ID"); //coming from client home
+        }
+
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.google_map);
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        client = LocationServices.getFusedLocationProviderClient(getActivity());
+        client = LocationServices.getFusedLocationProviderClient(requireActivity());
 
-        //mongodb
-        app = new App(new AppConfiguration.Builder(Appid).build());
+        // all required for mongodb
+        App app = new App(new AppConfiguration.Builder(Appid).build());
         user = app.currentUser();
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("CourseData");
+        mongoCollection = mongoDatabase.getCollection("clients");
 
         Dexter.withContext(getContext())
                 .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -87,34 +99,14 @@ public class fragment_maps extends Fragment {
                     }
                 }).check();
 
-//        mapFragment.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull GoogleMap googleMap) {
-//                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//                    @Override
-//                    public void onMapClick(@NonNull LatLng latLng) {
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        markerOptions.position(latLng);
-//
-//                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-//                        googleMap.clear();
-//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-//                                latLng, 10
-//                        ));
-//                        googleMap.addMarker(markerOptions);
-//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-//
-//
-//                    }
-//                });
-//            }
-//        });
+
         return view;
     }
 
     public void getmylocation() {
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -128,14 +120,38 @@ public class fragment_maps extends Fragment {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
+
+                ObjectId objectId = new ObjectId(userid);
+
+                // Create a filter using the objectId
+                Document filter = new Document("_id", objectId);
+                // Create a document with the location data
+                Document update = new Document("$set",
+                        new Document("latitude", location.getLatitude())
+                                .append("longitude", location.getLongitude()));
+
+
+
+                // Insert the document into the collection
+//                mongoCollection = mongoDatabase.getCollection("LocationData");
+                mongoCollection.updateOne(filter,update).getAsync(result -> {
+                    if (result.isSuccess()) {
+                        Log.v("MongoDB", "Document inserted successfully!");
+                    } else {
+                        Log.e("MongoDB", "Failed to insert document: " + result.getError().getErrorMessage());
+                    }
+                });
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
-
-                        googleMap.addMarker(markerOptions);
+//                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
+//
+//                        googleMap.addMarker(markerOptions);
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+
+                        googleMap.setMyLocationEnabled(true);
                     }
                 });
             }

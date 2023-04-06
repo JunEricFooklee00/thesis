@@ -6,141 +6,220 @@
     android:layout_height="match_parent"
     tools:context=".fragments.insertjob">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TIL_SPINNER"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:hint="@string/Scope_of_work"
-        app:errorEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/ic_baseline_person_24">
+        android:layout_height="match_parent">
 
-        <AutoCompleteTextView
-            android:id="@+id/filled_exposed"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:layout_height="match_parent">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TIL_sub_scope"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/type_of_work"
-        app:errorEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TIL_SPINNER"
-        app:startIconDrawable="@drawable/ic_baseline_person_24">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_title"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="@string/title_of_project"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:startIconDrawable="@drawable/ic_baseline_event_note_24">
 
-        <AutoCompleteTextView
-            android:id="@+id/sub_scope_of_work"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TieT_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_SPINNER"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="@string/Scope_of_work"
+                    android:textColorHint="@color/black"
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TIL_Area"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="10dp"
-        android:hint="@string/area"
-        android:textColorHint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TIL_sub_scope"
-        app:startIconDrawable="@drawable/ic_baseline_email_24">
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_title">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/TextinputET_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/filled_exposed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TIL_location"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="10dp"
-        android:hint="@string/location"
-        android:textColorHint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TIL_Area"
-        app:startIconDrawable="@drawable/ic_baseline_email_24">
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/TextinputET_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_sub_scope"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="@string/sub_division"
+                    android:textColorHint="@color/black"
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_SPINNER">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TIL_Age"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:clickable="true"
-        android:textColorHint="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/TIL_location"
-        app:startIconDrawable="@drawable/ic_baseline_calendar_month_24">
+                    <AutoCompleteTextView
+                        android:id="@+id/sub_scope_of_work"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/TIET_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:hint="@string/age" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_Area"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TIL_expected"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="10dp"
-        android:hint="@string/location"
-        android:textColorHint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TIL_Age"
-        app:startIconDrawable="@drawable/ic_baseline_email_24">
+                    android:hint="@string/area"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_sub_scope">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/TextinputET_expected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TextinputET_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789"
+                        android:ellipsize="end"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_unit"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:hint="@string/unit"
+                    android:paddingLeft="10dp"
+                    android:textColorHint="@color/black"
+                    app:errorEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/TIL_Area"
+                    app:layout_constraintTop_toTopOf="@+id/TIL_Area">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/actv_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_location"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="@string/location"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_Area"
+                    app:startIconDrawable="@drawable/ic_baseline_place_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TextinputET_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:inputType="number"
+                        android:maxLines="1"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_Age"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_location"
+                    app:startIconDrawable="@drawable/ic_baseline_calendar_month_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TIET_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/start_date" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_expected"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="@string/Expectedfinishdate"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_Age"
+                    app:startIconDrawable="@drawable/ic_baseline_email_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TextinputET_expected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_add_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/submit"
+                    app:layout_constraintEnd_toEndOf="@+id/TIL_expected"
+                    app:layout_constraintStart_toStartOf="@+id/TIL_expected"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_expected" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

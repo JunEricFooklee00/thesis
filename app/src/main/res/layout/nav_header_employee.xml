@@ -19,10 +19,13 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="96dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
             android:text="@string/your_name_here"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="@+id/user_profilePic"
-            app:layout_constraintTop_toBottomOf="@+id/user_profilePic" />
+            app:layout_constraintTop_toTopOf="@+id/user_profilePic" />
 
         <ImageView
             android:id="@+id/user_profilePic"
@@ -38,6 +41,7 @@
             android:id="@+id/user_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="@string/your_email_here"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="@+id/user_name"
@@ -49,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/black"
             android:text="@string/employee"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
