@@ -36,6 +36,6 @@
         android:layout_gravity="start"
         android:background="@drawable/background_menu"
         app:headerLayout="@layout/nav_header_employee"
-        app:menu="@menu/drawer_menu"
+        app:menu="@menu/drawer_menu_employee"
         />
 </androidx.drawerlayout.widget.DrawerLayout>

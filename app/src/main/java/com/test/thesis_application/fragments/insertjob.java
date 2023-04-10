@@ -26,7 +26,9 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
@@ -52,8 +54,7 @@ public class insertjob extends Fragment {
     private int mMonth;
     private int mDayOfMonth;
     private TextInputEditText TietAge;
-    private Button submit;
-//    private TextInputLayout  ;
+    //    private TextInputLayout  ;
     private String userid;
 
     @Nullable
@@ -139,7 +140,7 @@ public class insertjob extends Fragment {
             }
         });
 
-        submit = view.findViewById(R.id.btn_add_job);
+        Button submit = view.findViewById(R.id.btn_add_job);
 
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
@@ -150,16 +151,13 @@ public class insertjob extends Fragment {
         mongoCollection = mongoDatabase.getCollection("joborders");
 
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!validateScopeofWork() | !validatetitle() |!validateexpectedfinishdate() | !validateArea() |!validatesubdiv() |!validateunit() |!validatelocation()
-                |! validatestartingdate() |!validateexpectedfinishdate()) {
-                    return;
-                }
-                // TODO: add code po here idol
-                registerAccount();
+        submit.setOnClickListener(v -> {
+            if (!validateScopeofWork() | !validatetitle() |!validateexpectedfinishdate() | !validateArea() |!validatesubdiv() |!validateunit() |!validatelocation()
+            |! validatestartingdate() |!validateexpectedfinishdate()) {
+                return;
             }
+            // TODO: add code po here idol
+            registerAccount();
         });
 
         return view;
@@ -278,21 +276,34 @@ public class insertjob extends Fragment {
 
 
     private void registerAccount() {
-//        mongoCollection = mongoDatabase.getCollection("joborders");
         ObjectId objectId = new ObjectId(userid);
-        Document registerAccount = new Document().append("_id",objectId).append("scopeofwork", ScopeOfWork.getText().toString());
 
-        mongoCollection.insertOne(registerAccount).getAsync(result -> {
+        // Create a new order document
+        Document orderDocument = new Document().append("scopeofwork", ScopeOfWork.getText().toString()).append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
+                .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim() + Objects.requireNonNull(unit.getEditText()).getText().toString().trim()).append("Location", Objects.requireNonNull(location.getEditText()).getText().toString().trim())
+                .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim()).append("ExpectedFinishDate", Objects.requireNonNull(expected.getEditText()).getText().toString().trim());
+        // Create an array of product documents for the order
+//        List<Document> jobs = new ArrayList<Document>();
+
+        orderDocument.put("userId", objectId);
+        mongoCollection.insertOne(orderDocument).getAsync(result -> {
 
             if (result.isSuccess()) {
                 Toast.makeText(requireContext(), result.get().toString(), Toast.LENGTH_LONG).show();
                 Log.v("Data", "Data successfully addedd");
+                getActivity().onBackPressed();
+//                FragmentManager fragmentManager = getParentFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                // Create a Bundle to pass your data
+//                Bundle bundle = new Bundle();
+//                bundle.putString("uid", userid); // Example of adding a String to the Bundle
+//
+//                // Set the Bundle as an argument for your fragment
+//                fragment.setArguments(bundle);
+//                fragmentTransaction.replace(R.id.fragment_container, new fragment_project());
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.commit();
 
-                FragmentManager fragmentManager = getParentFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new fragment_project());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             } else {
                 Toast.makeText(requireContext(),"di ko alam",Toast.LENGTH_LONG).show();
                 Log.v("Data", "Error:" + result.getError().toString());

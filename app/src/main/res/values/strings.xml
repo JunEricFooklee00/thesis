@@ -148,4 +148,10 @@
     <string name="start_date">Start Date</string>
     <string name="Expectedfinishdate">Expected finish date</string>
     <string name="unit">Unit</string>
+    <string name="db">DashBoard</string>
+    <string name="dashboard_drawer">DashBoard</string>
+    <string name="Maps_drawer">Maps</string>
+    <string name="myTasks_drawer">My Tasks</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

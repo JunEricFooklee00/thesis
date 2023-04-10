@@ -45,6 +45,7 @@ import org.bson.Document;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -518,7 +519,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
     }
 
-//
 
     private void registerAccount() {
         mongoCollection = mongoDatabase.getCollection(autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT));
@@ -531,7 +531,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                 .append("age", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
                 .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
                         Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
-                .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("resume", TietPicture.getText().toString());
+                .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("resume", TietPicture.getText().toString()).append("created", new Date());;
         mongoCollection.insertOne(registerAccount).getAsync(result -> {
 
             if (result.isSuccess()) {

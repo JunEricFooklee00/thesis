@@ -1,20 +1,19 @@
-package com.test.thesis_application.fragments;
+package com.test.thesis_application.employee;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -44,8 +43,9 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.options.UpdateOptions;
 
-public class fragment_maps extends Fragment {
-    FusedLocationProviderClient client;
+public class fragment_maps_employee extends Fragment {
+
+    FusedLocationProviderClient employee;
     SupportMapFragment mapFragment;
 
     //mongodb
@@ -58,21 +58,22 @@ public class fragment_maps extends Fragment {
 
     private String userid;
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_maps_employee, container, false);
 
         Bundle projectuserid = getArguments();
         if (projectuserid != null) {
-            userid = projectuserid.getString("user_ID"); //coming from client home
+            userid = projectuserid.getString("user_ID"); //coming from employee home
         }
 
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.google_map);
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        client = LocationServices.getFusedLocationProviderClient(requireActivity());
+        employee = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
@@ -80,7 +81,7 @@ public class fragment_maps extends Fragment {
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("CourseData");
-        mongoCollection = mongoDatabase.getCollection("clientslocation");
+        mongoCollection = mongoDatabase.getCollection("employeeslocation");
 
         Dexter.withContext(getContext())
                 .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -100,8 +101,6 @@ public class fragment_maps extends Fragment {
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
-
-
         return view;
     }
 
@@ -118,11 +117,11 @@ public class fragment_maps extends Fragment {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-
-        Task<Location> task = client.getLastLocation();
+        Task<Location> task = employee.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
+
                 ObjectId objectId = new ObjectId(userid);
 
                 // Create a filter using the objectId
@@ -144,7 +143,6 @@ public class fragment_maps extends Fragment {
                         Log.e("MongoDB", "Failed to update document: " + result.getError().getErrorMessage());
                     }
                 });
-
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @SuppressLint("MissingPermission")
                     @Override

@@ -124,9 +124,10 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Testing Clients", Toast.LENGTH_LONG).show();
 
                             Document resultData = result.get();
+
                             Log.v("Account", resultData.getString("user"));
                             if (resultData.getString("user").equals("Clients")) {
-                                Toast.makeText(getApplicationContext(), "Client Logged in", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(), "Client Logged in", Toast.LENGTH_LONG).show();
                                 Log.v("resultAccount", "Found in Client");
                                 Intent home_screen = new Intent(MainActivity.this, client_home.class);
                                 home_screen.putExtra("user_ID",resultData.getObjectId("_id").toString());
