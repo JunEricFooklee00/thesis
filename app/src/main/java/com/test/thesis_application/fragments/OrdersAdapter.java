@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
-    List<JobsOrderClass> orders = new ArrayList<JobsOrderClass>();
+    List<JobsOrderClass> orders ;
 //     List<JobsOrderClass> orders;
 //     Context context;
 

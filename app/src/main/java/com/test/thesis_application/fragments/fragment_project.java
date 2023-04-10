@@ -41,7 +41,6 @@ public class fragment_project extends Fragment  {
     private RecyclerView recyclerView;
     private OrdersAdapter adapter;
      List<JobsOrderClass> orders = new ArrayList<JobsOrderClass>();
-    JobsOrderClass jobOrder = new JobsOrderClass();
 
     String Appid = "employeems-mcwma";
     private App app;
@@ -75,16 +74,16 @@ public class fragment_project extends Fragment  {
         mongoDatabase = mongoClient.getDatabase("JobOrder");
         mongoCollection = mongoDatabase.getCollection("joborders");
 
+
         loadJobsOrders(); // Call the loadJobsOrders() method passing the Realm instance
 
         // Set up RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView_orders);
         recyclerView.setHasFixedSize(true);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        // Set up adapter
-        adapter = new OrdersAdapter (orders);
-        recyclerView.setAdapter(adapter);
+
 
         insert.setOnClickListener(v -> insertjobtransaction());
 
@@ -93,17 +92,19 @@ public class fragment_project extends Fragment  {
     }
 
     private void loadJobsOrders() {
-        List<JobsOrderClass> orders = new ArrayList<>();
+//        List<JobsOrderClass> orders = new ArrayList<>();
         ObjectId objectId = new ObjectId(userid);
         // Create a filter using the objectId
         Document filter = new Document("userId", objectId);
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(filter).iterator();
-        mongoCollection.find(filter).iterator();
         findTask.getAsync(task -> {
                if (task.isSuccess()) {
                    MongoCursor<Document> results = task.get();
-                   Log.v("EXAMPLE", "success");
+                   Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+                   Log.v("EXAMPLE", results.toString());
                    while (results.hasNext()) {
+                       JobsOrderClass jobOrder = new JobsOrderClass();
+
                        Document document = results.next();
                        jobOrder.set_id(document.getObjectId("_id"));
                        jobOrder.setUserId(document.getObjectId("userId"));
@@ -115,9 +116,11 @@ public class fragment_project extends Fragment  {
                        jobOrder.setExpectedFinishDate(document.getString("ExpectedFinishDate"));
 
                        orders.add(jobOrder);
-                       Log.v("EXAMPLE", results.next().toString());
+//                       Log.v("EXAMPLE", results.next().toString()); eto ung nagpapahirap ng buhay ko
 
-
+                       // Set up adapter
+                       adapter = new OrdersAdapter (orders);
+                       recyclerView.setAdapter(adapter);
                    }
                } else {
                    Log.e("EXAMPLE", "failed to find documents with: ", task.getError());
