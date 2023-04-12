@@ -45,6 +45,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'androidx.work:work-runtime-ktx:2.7.1' // fix flag Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.
+
+
     //image requirements
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.cloudinary:cloudinary-android:2.2.0'

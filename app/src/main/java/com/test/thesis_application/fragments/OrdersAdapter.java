@@ -1,6 +1,5 @@
 package com.test.thesis_application.fragments;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,31 +8,31 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.test.thesis_application.Jobinterface;
 import com.test.thesis_application.JobsOrderClass;
 import com.test.thesis_application.R;
 
-import org.w3c.dom.Document;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
+    private final Jobinterface jobinterface;
     List<JobsOrderClass> orders ;
 //     List<JobsOrderClass> orders;
 //     Context context;
 
 
-    public OrdersAdapter(List<JobsOrderClass> orders) {
+    public OrdersAdapter(List<JobsOrderClass> orders, Jobinterface jobinterface ) {
         this.orders = orders;
+        this.jobinterface = jobinterface;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_row, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view, jobinterface);
 
-        return viewHolder;
+        return  viewHolder;
     }
 
 
@@ -63,7 +62,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         public TextView textView_startingDate;
         public TextView textView_expectedFinishDate;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, Jobinterface jobinterface) {
             super(itemView);
 //
             textView_id = itemView.findViewById(R.id.textview_id);
@@ -73,6 +72,18 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             textView_location = itemView.findViewById(R.id.textView_location);
             textView_startingDate = itemView.findViewById(R.id.textView_startingDate);
             textView_expectedFinishDate = itemView.findViewById(R.id.textView_expectedFinishDate);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (jobinterface != null){
+                        int pos = getAdapterPosition();
+                        if (pos != RecyclerView.NO_POSITION){
+                             jobinterface.onItemclick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }

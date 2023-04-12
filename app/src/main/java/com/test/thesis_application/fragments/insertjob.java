@@ -15,8 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -26,9 +24,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
@@ -292,18 +288,6 @@ public class insertjob extends Fragment {
                 Toast.makeText(requireContext(), result.get().toString(), Toast.LENGTH_LONG).show();
                 Log.v("Data", "Data successfully addedd");
                 getActivity().onBackPressed();
-//                FragmentManager fragmentManager = getParentFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                // Create a Bundle to pass your data
-//                Bundle bundle = new Bundle();
-//                bundle.putString("uid", userid); // Example of adding a String to the Bundle
-//
-//                // Set the Bundle as an argument for your fragment
-//                fragment.setArguments(bundle);
-//                fragmentTransaction.replace(R.id.fragment_container, new fragment_project());
-//                fragmentTransaction.addToBackStack(null);
-//                fragmentTransaction.commit();
-
             } else {
                 Toast.makeText(requireContext(),"di ko alam",Toast.LENGTH_LONG).show();
                 Log.v("Data", "Error:" + result.getError().toString());

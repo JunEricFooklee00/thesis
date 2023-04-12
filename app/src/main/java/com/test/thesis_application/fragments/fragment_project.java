@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.test.thesis_application.Jobinterface;
 import com.test.thesis_application.JobsOrderClass;
 import com.test.thesis_application.R;
 
@@ -36,11 +35,11 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
-public class fragment_project extends Fragment  {
+public class fragment_project extends Fragment implements Jobinterface {
     //declare variables
     private RecyclerView recyclerView;
     private OrdersAdapter adapter;
-     List<JobsOrderClass> orders = new ArrayList<JobsOrderClass>();
+     List<JobsOrderClass> orders = new ArrayList<>();
 
     String Appid = "employeems-mcwma";
     private App app;
@@ -116,10 +115,9 @@ public class fragment_project extends Fragment  {
                        jobOrder.setExpectedFinishDate(document.getString("ExpectedFinishDate"));
 
                        orders.add(jobOrder);
-//                       Log.v("EXAMPLE", results.next().toString()); eto ung nagpapahirap ng buhay ko
 
                        // Set up adapter
-                       adapter = new OrdersAdapter (orders);
+                       adapter = new OrdersAdapter (orders,this);
                        recyclerView.setAdapter(adapter);
                    }
                } else {
@@ -143,6 +141,28 @@ public class fragment_project extends Fragment  {
         fragment.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.fragment_container,fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        Toast.makeText(requireContext(),userid,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onItemclick(int position) {
+
+
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        jobsinfo fragmentjob = new jobsinfo();
+
+        // Create a Bundle to pass your data
+        Bundle bundle = new Bundle();
+        bundle.putString("jobtitle", orders.get(position).getJobTitle()); // Example of adding a String to the Bundle
+        Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();
+        // Set the Bundle as an argument for your fragment
+        fragmentjob.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.fragment_container,fragmentjob);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         Toast.makeText(requireContext(),userid,Toast.LENGTH_LONG).show();
