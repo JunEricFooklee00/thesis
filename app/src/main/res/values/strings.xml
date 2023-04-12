@@ -41,10 +41,9 @@
         <item>Mechanical/Metal Works</item>
         <item>Plumbing Works</item>
         <item>Painting Works</item>
-
     </string-array>
-    <string name="type_of_work">Type of work.</string>
 
+    <string name="type_of_work">Type of work.</string>
 
     <string-array name="CarpentryWorks">
         <item>Main Counter Carpentry Works</item>
