@@ -16,6 +16,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import androidx.fragment.app.Fragment;
 
 import com.test.thesis_application.R;
+import com.test.thesis_application.ml.B1Works;
 import com.test.thesis_application.ml.Model;
 
 import java.io.IOException;
@@ -67,8 +68,8 @@ public class jobsinfo extends Fragment {
 
         //start of tenserflowlite
         try {
-            float[] inputValues = new float[]{45.6f,16f, 1.2528f};
-            Model model = Model.newInstance(requireContext());
+            float[] inputValues = new float[]{1.125014063f,6.75f,16f };
+            B1Works model = B1Works.newInstance(requireContext());
 
             // Creates inputs for reference.
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
@@ -77,7 +78,7 @@ public class jobsinfo extends Fragment {
 //            inputFeature0.loadBuffer(byteBuffer);
 
             // Runs model inference and gets result.
-            Model.Outputs outputs = model.process(inputFeature0);
+            B1Works.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] outputValues = outputFeature0.getFloatArray();
@@ -91,6 +92,30 @@ public class jobsinfo extends Fragment {
         } catch (IOException e) {
             // TODO Handle the exception
         }
+
+//        try {
+//            float[] inputValues = new float[]{6.75f,16f, 1.125014063f};
+//            B1Works ibangmodel = B1Works.newInstance(requireContext());
+//
+//            // Creates inputs for reference.
+//            TensorBuffer inputFeature1 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
+//            inputFeature1.loadArray(inputValues);
+//            // Runs model inference and gets result.
+//            B1Works.Outputs outputs = ibangmodel.process(inputFeature1);
+//            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+//
+//            float[] outputValues = outputFeature0.getFloatArray();
+//            String outputString = "Output values: ";
+//            for (float value : outputValues) {
+//                outputString += value + ", ";
+//            }
+//            Log.v("Model Output", outputString);
+//            // Releases model resources if no longer used.
+//            ibangmodel.close();
+//        } catch (IOException e) {
+//            // TODO Handle the exception
+//        }
+
 //end of tenserflowlite
         return view;
     }
