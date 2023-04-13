@@ -13,8 +13,8 @@ import com.test.thesis_application.R;
 
 public class jobsinfo extends Fragment {
 
-   TextView TV_jobTitle;
-   String jobtitle;
+   TextView TV_jobTitle,TV_jobid,TV_scope;
+   String jobtitle,userId,id,ScopeofWork,area,Location,ExpectedFinishDate,Startingdate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -23,19 +23,23 @@ public class jobsinfo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_jobsinfo, container, false);
 
         TV_jobTitle = view.findViewById(R.id.textView_jobTitle);
+        TV_jobid = view.findViewById(R.id.tv_jobID);
+        TV_scope = view.findViewById(R.id.tv_scope);
         Bundle data = getArguments();
+
         if (data != null) {
-//            uid = data.getString("uid");
-//            name = data.getString("name");
-//            email = data.getString("email");
-//            resume = data.getString("resume");
-//            username = data.getString("username");
-//            birthday = data.getString("birthday");
+            userId = data.getString("userId");
+            id = data.getString("_id");
+            ScopeofWork = data.getString("scopeofwork");
+            area = data.getString("area");
+            Location = data.getString("location");
+            ExpectedFinishDate = data.getString("expectedfinishdate");
             jobtitle = data.getString("jobtitle");
-//            address = data.getString("address");
-//            zipcode = data.getString("zipcode");
+            Startingdate = data.getString("startingdate");
         }
         TV_jobTitle.setText(jobtitle);
+        TV_jobid.setText(id);
+        TV_scope.setText(ScopeofWork);
         return view;
     }
 }

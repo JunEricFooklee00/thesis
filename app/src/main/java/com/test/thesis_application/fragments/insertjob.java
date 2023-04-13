@@ -90,8 +90,6 @@ public class insertjob extends Fragment {
         ArrayAdapter<String> Unit = new ArrayAdapter<>(requireContext(), R.layout.dropdown_unit, unit);
         actv_unit = view.findViewById(R.id.actv_unit);
         actv_unit.setAdapter(Unit);
-        String[] Siteprep = getResources().getStringArray(R.array.SitePreparation);
-        ArrayAdapter<String> siteprep = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, Siteprep);
 
         String[] CarpWork = getResources().getStringArray(R.array.CarpentryWorks);
         ArrayAdapter<String> carpentry = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, CarpWork);
@@ -99,14 +97,11 @@ public class insertjob extends Fragment {
         String[] MechMetalWork = getResources().getStringArray(R.array.MechanicalMetalWorks);
         ArrayAdapter<String> mechanical = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, MechMetalWork);
 
-        String[] ElecWork = getResources().getStringArray(R.array.ElectricalWorks);
-        ArrayAdapter<String> electrical = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, ElecWork);
+        String[] Plumbing = getResources().getStringArray(R.array.PlumbingWorks);
+        ArrayAdapter<String> plumbing = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, Plumbing);
 
-        String[] TherMoistProtection = getResources().getStringArray(R.array.ThermalandMoistureProtectionWorks);
-        ArrayAdapter<String> protection = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, TherMoistProtection);
-
-        String[] PaintWork = getResources().getStringArray(R.array.PaintingWorks);
-        ArrayAdapter<String> painting = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, PaintWork);
+        String[] Painting = getResources().getStringArray(R.array.PaintingWorks);
+        ArrayAdapter<String> painting = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, Painting);
         TypeOfWork = view.findViewById(R.id.sub_scope_of_work);
 
         String[] ScopeOfJob = getResources().getStringArray(R.array.scopeofwork);
@@ -114,24 +109,17 @@ public class insertjob extends Fragment {
         ScopeOfWork = view.findViewById(R.id.filled_exposed);
         ScopeOfWork.setAdapter(jobadapter);
         ScopeOfWork.setOnItemClickListener((parent, view1, position, id) -> {
-            if(ScopeOfWork.getText().toString().equals("Site Preparation")){
-                TypeOfWork.setAdapter(siteprep);
-                Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
-            }else if (ScopeOfWork.getText().toString().equals("Carpentry Works")){
+            if(ScopeOfWork.getText().toString().equals("Carpentry Works")){
                 TypeOfWork.setAdapter(carpentry);
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }else if (ScopeOfWork.getText().toString().equals("Mechanical/Metal Works")){
                 TypeOfWork.setAdapter(mechanical);
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
-            }else if (ScopeOfWork.getText().toString().equals("Electrical Works")){
-                TypeOfWork.setAdapter(electrical);
+            }else if (ScopeOfWork.getText().toString().equals("Plumbing Works")){
+                TypeOfWork.setAdapter(plumbing);
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }else if (ScopeOfWork.getText().toString().equals("Painting Works")){
                 TypeOfWork.setAdapter(painting);
-                Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
-            }else if (ScopeOfWork.getText().toString().equals("Thermal and Moisture Protection Works")){
-
-                TypeOfWork.setAdapter(protection);
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
@@ -275,8 +263,8 @@ public class insertjob extends Fragment {
         ObjectId objectId = new ObjectId(userid);
 
         // Create a new order document
-        Document orderDocument = new Document().append("scopeofwork", ScopeOfWork.getText().toString()).append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
-                .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim() + Objects.requireNonNull(unit.getEditText()).getText().toString().trim()).append("Location", Objects.requireNonNull(location.getEditText()).getText().toString().trim())
+        Document orderDocument = new Document().append("TypeOfWork", ScopeOfWork.getText().toString() +" — "+ TypeOfWork.getText().toString()).append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
+                .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim() +" " + Objects.requireNonNull(unit.getEditText()).getText().toString().trim()).append("Location", Objects.requireNonNull(location.getEditText()).getText().toString().trim())
                 .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim()).append("ExpectedFinishDate", Objects.requireNonNull(expected.getEditText()).getText().toString().trim());
         // Create an array of product documents for the order
 //        List<Document> jobs = new ArrayList<Document>();
