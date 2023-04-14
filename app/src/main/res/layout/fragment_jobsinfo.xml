@@ -1,39 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:background="@color/light_blue"
     tools:context=".fragments.jobsinfo">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView_jobTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:text="@string/hello_blank_fragment"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView_jobTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="@string/jobtitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_jobID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="JobID"
-        app:layout_constraintEnd_toEndOf="@+id/textView_jobTitle"
-        app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
-        app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle" />
+        <TextView
+            android:id="@+id/tv_jobID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JobID"
+            app:layout_constraintEnd_toEndOf="@+id/textView_jobTitle"
+            app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle" />
 
-    <TextView
-        android:id="@+id/tv_scope"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tae"
-        app:layout_constraintEnd_toEndOf="@+id/tv_jobID"
-        app:layout_constraintStart_toStartOf="@+id/tv_jobID"
-        app:layout_constraintTop_toBottomOf="@+id/tv_jobID" />
+        <TextView
+            android:id="@+id/tv_scope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Scope_of_work"
+            app:layout_constraintEnd_toEndOf="@+id/tv_jobID"
+            app:layout_constraintStart_toStartOf="@+id/tv_jobID"
+            app:layout_constraintTop_toBottomOf="@+id/tv_jobID" />
+        <TextView
+            android:id="@+id/tv_Area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/area"
+            app:layout_constraintEnd_toEndOf="@+id/tv_scope"
+            app:layout_constraintStart_toStartOf="@+id/tv_scope"
+            app:layout_constraintTop_toBottomOf="@+id/tv_scope" />
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            app:layout_constraintEnd_toEndOf="@+id/tv_Area"
+            app:layout_constraintStart_toStartOf="@+id/tv_Area"
+            app:layout_constraintTop_toBottomOf="@+id/tv_Area" />
+        <TextView
+            android:id="@+id/tv_startingdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_date"
+            app:layout_constraintEnd_toEndOf="@+id/tv_location"
+            app:layout_constraintStart_toStartOf="@+id/tv_location"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+        <TextView
+            android:id="@+id/tv_expecteddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Expectedfinishdate"
+            app:layout_constraintEnd_toEndOf="@+id/tv_startingdate"
+            app:layout_constraintStart_toStartOf="@+id/tv_startingdate"
+            app:layout_constraintTop_toBottomOf="@+id/tv_startingdate" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

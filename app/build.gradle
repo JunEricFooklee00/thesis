@@ -43,15 +43,19 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
-    implementation 'androidx.work:work-runtime-ktx:2.7.1' // fix flag Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
+    implementation 'androidx.work:work-runtime-ktx:2.8.1' // fix flag Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.
 
 
     //image requirements
-    implementation 'com.squareup.picasso:picasso:2.8'
-    implementation 'com.cloudinary:cloudinary-android:2.2.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.cloudinary:cloudinary-android:2.3.1'
     implementation'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.karumi:dexter:6.2.3'
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
+
+    //password hash
+    implementation 'org.mindrot:jbcrypt:0.4'
+
 
 }

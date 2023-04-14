@@ -41,6 +41,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.test.thesis_application.fragments.DatePickerFragment;
 
 import org.bson.Document;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
     private RadioButton rbgender;
     private Button register;
     private AutoCompleteTextView autoCompleteTextView, autoCompleteTextViewgender;
-
+    String hashedPassword;
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +156,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             DialogFragment dp = new DatePickerFragment();
             dp.show(getSupportFragmentManager(), "Date Picker");
         });
+        String plainPassword = password.getEditText().getText().toString().trim();
+        hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
 
         register.setOnClickListener(v -> {
             register.setEnabled(false);
@@ -527,7 +530,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                 .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
                 .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
                 .append("contactNumber", Objects.requireNonNull(contactnumber.getEditText().getText()).toString().trim())
-                .append("password", Objects.requireNonNull(password.getEditText()).getText().toString().trim())
+                .append("password", Objects.requireNonNull(hashedPassword))
                 .append("age", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
                 .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
                         Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
