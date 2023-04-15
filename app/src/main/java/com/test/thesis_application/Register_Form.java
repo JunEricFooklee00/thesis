@@ -41,8 +41,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.test.thesis_application.fragments.DatePickerFragment;
 
 import org.bson.Document;
-import org.mindrot.jbcrypt.BCrypt;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -156,8 +158,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             DialogFragment dp = new DatePickerFragment();
             dp.show(getSupportFragmentManager(), "Date Picker");
         });
-        String plainPassword = password.getEditText().getText().toString().trim();
-        hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
 
         register.setOnClickListener(v -> {
             register.setEnabled(false);
@@ -203,6 +203,17 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
         });
     }// end of onCreate
+    private String generateSHA256(String input) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 
     private boolean validateusertype() {
         if (autoCompleteTextView.getText().toString().equals("Clients")) {
@@ -524,28 +535,38 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
 
     private void registerAccount() {
-        mongoCollection = mongoDatabase.getCollection(autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT));
-        Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
-                .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
-                .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
-                .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
-                .append("contactNumber", Objects.requireNonNull(contactnumber.getEditText().getText()).toString().trim())
-                .append("password", Objects.requireNonNull(hashedPassword))
-                .append("age", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
-                .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
-                        Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
-                .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("resume", TietPicture.getText().toString()).append("created", new Date());;
-        mongoCollection.insertOne(registerAccount).getAsync(result -> {
 
-            if (result.isSuccess()) {
-                Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
-                Log.v("Data", "Data successfully addedd");
-                Intent intent = new Intent(Register_Form.this, splashScreen.class);
-                startActivity(intent);
-            } else {
-                Log.v("Mongodb", "Error:" + result.getError().toString());
-            }
-        });
+        String input =  password.getEditText().getText().toString().trim();
+        try {
+            String hash = generateSHA256(input);
+            // do something with the hash
+            mongoCollection = mongoDatabase.getCollection(autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT));
+            Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
+                    .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
+                    .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
+                    .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
+                    .append("contactNumber", Objects.requireNonNull(contactnumber.getEditText().getText()).toString().trim())
+                    .append("password", Objects.requireNonNull(hash))
+                    .append("age", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
+                    .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
+                            Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
+                    .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("resume", TietPicture.getText().toString()).append("created", new Date());;
+            mongoCollection.insertOne(registerAccount).getAsync(result -> {
+
+                if (result.isSuccess()) {
+                    Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
+                    Log.v("Data", "Data successfully addedd");
+                    Intent intent = new Intent(Register_Form.this, splashScreen.class);
+                    startActivity(intent);
+                } else {
+                    Log.v("Mongodb", "Error:" + result.getError().toString());
+                }
+            });
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override

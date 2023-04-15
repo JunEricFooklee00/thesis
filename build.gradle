@@ -2,13 +2,16 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url "https://chaquo.com/maven" }
     }
     dependencies {
         classpath "io.realm:realm-gradle-plugin:10.11.1"
+        classpath "com.chaquo.python:gradle:14.0.2"
     }
 }
 plugins {
     id 'com.android.application' version '7.4.2' apply false
     id 'com.android.library' version '7.4.2' apply false
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
+    id 'com.chaquo.python' version '14.0.2' apply false
 }

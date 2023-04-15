@@ -23,6 +23,9 @@ import com.test.thesis_application.employee.employee_home;
 
 import org.bson.Document;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -115,15 +118,20 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     mongoCollection = mongoDatabase.getCollection("clients");
-                    Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password", get_password.getEditText().getText().toString());
+                    //hash the password
+                    String input = get_password.getEditText().getText().toString();
+                    try {
+                        String hash = generateSHA256(input);
+                        // do something with the hash
+                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",hash);
 //                    Document email = new Document().append("email", get_email.getEditText().getText().toString());
-                    mongoCollection.findOne(email).getAsync(result -> {
-                        try {
-                            //Testing Client accounts
-                            Document resultData = result.get();
+                        mongoCollection.findOne(email).getAsync(result -> {
+                            try {
+                                //Testing Client accounts
+                                Document resultData = result.get();
 
-                            Log.v("Account", resultData.getString("user"));
-                            if (resultData.getString("user").equals("Clients")) {// to change Users - clients
+                                Log.v("Account", resultData.getString("user"));
+                                if (resultData.getString("user").equals("Clients")) {// to change Users - clients
 //                                String plain = get_password.getEditText().getText().toString();
 //                                String hashed = resultData.getString("password");
 ////                                boolean passwordMatches = BCrypt.checkpw(plain, hashed);
@@ -137,42 +145,46 @@ public class MainActivity extends AppCompatActivity {
 ////                                    get_email.setError("Wrong Email or Password.");
 ////                                    get_password.setError("Wrong Email or Password.");
 ////                                }
-                                Log.v("resultAccount", "Found in Client");
+                                    Log.v("resultAccount", "Found in Client");
                                     Intent home_screen = new Intent(MainActivity.this, client_home.class);
                                     home_screen.putExtra("user_ID",resultData.getObjectId("_id").toString());
                                     startActivity(home_screen);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                Log.v("resultAccount", "Client not found in Database");
-                            }
-
-                        } catch (Exception client) {
-                            //Testing Employee Accounts
-                            mongoCollection = mongoDatabase.getCollection("employees");
-                            mongoCollection.findOne(email).getAsync(result1 -> {
-                                try {
-                                    Document resultData1 = result1.get();
-                                    Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
-
-                                    if (resultData1.getString("user").equals("Employees")) {
-                                        Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
-                                        Log.v("resultAccount", "Found in Employee");
-                                        Intent home_screen = new Intent(MainActivity.this, employee_home.class);
-                                        home_screen .putExtra("user_ID",resultData1.getObjectId("_id").toString());
-                                        startActivity(home_screen);
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                        Log.v("resultAccount", "Wala sa Employee");
-
-                                    }
-                                } catch (Exception employee) {
-                                    employee.printStackTrace();
-                                    Toast.makeText(getApplicationContext(), "No user existing.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                    Log.v("resultAccount", "Client not found in Database");
                                 }
-                            });
-                        }
-                    });
 
+                            } catch (Exception client) {
+                                //Testing Employee Accounts
+                                mongoCollection = mongoDatabase.getCollection("employees");
+
+
+                                mongoCollection.findOne(email).getAsync(result1 -> {
+                                    try {
+                                        Document resultData1 = result1.get();
+                                        Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
+
+                                        if (resultData1.getString("user").equals("Employees")) {
+                                            Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
+                                            Log.v("resultAccount", "Found in Employee");
+                                            Intent home_screen = new Intent(MainActivity.this, employee_home.class);
+                                            home_screen .putExtra("user_ID",resultData1.getObjectId("_id").toString());
+                                            startActivity(home_screen);
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                            Log.v("resultAccount", "Wala sa Employee");
+
+                                        }
+                                    } catch (Exception employee) {
+                                        employee.printStackTrace();
+                                        Toast.makeText(getApplicationContext(), "No user existing.", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        });
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -181,6 +193,18 @@ public class MainActivity extends AppCompatActivity {
 
         requestPermission();
     }// end of onCreate
+
+    private String generateSHA256(String input) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 
     private boolean validateemail() {
         String emailinput = get_email.getEditText().getText().toString().trim();
