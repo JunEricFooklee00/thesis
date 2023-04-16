@@ -56,6 +56,7 @@ public class fragment_project extends Fragment implements Jobinterface {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
+
         insert = view.findViewById(R.id.insert_job);
 
         Bundle projectuserid = getArguments();
@@ -161,7 +162,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         // Create a Bundle to pass your data
         Bundle bundle = new Bundle();
         bundle.putString("scopeofwork", orders.get(position).getScopeofwork()); // Example of adding a String to the Bundle
-        bundle.putString("area", orders.get(position).getArea()); // Example of adding a String to the Bundle
+        bundle.putString("area", orders.get(position).getArea());
         bundle.putString("location", orders.get(position).getLocation()); // Example of adding a String to the Bundle
         bundle.putString("startingdate", orders.get(position).getStartingDate()); // Example of adding a String to the Bundle
         bundle.putString("_id", orders.get(position).get_id().toString()); // Example of adding a String to the Bundle

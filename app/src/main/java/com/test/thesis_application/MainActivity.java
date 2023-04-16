@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                         String hash = generateSHA256(input);
                         // do something with the hash
                         Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",hash);
-//                    Document email = new Document().append("email", get_email.getEditText().getText().toString());
                         mongoCollection.findOne(email).getAsync(result -> {
                             try {
                                 //Testing Client accounts
@@ -132,19 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 Log.v("Account", resultData.getString("user"));
                                 if (resultData.getString("user").equals("Clients")) {// to change Users - clients
-//                                String plain = get_password.getEditText().getText().toString();
-//                                String hashed = resultData.getString("password");
-////                                boolean passwordMatches = BCrypt.checkpw(plain, hashed);
-////                                if (passwordMatches) {
-////                                    Log.v("resultAccount", "Found in Client");
-////                                    Intent home_screen = new Intent(MainActivity.this, client_home.class);
-////                                    home_screen.putExtra("user_ID",resultData.getObjectId("_id").toString());
-////                                    startActivity(home_screen);
-////                                } else {
-////                                    Toast.makeText(getApplicationContext(),hashed,Toast.LENGTH_LONG).show();
-////                                    get_email.setError("Wrong Email or Password.");
-////                                    get_password.setError("Wrong Email or Password.");
-////                                }
                                     Log.v("resultAccount", "Found in Client");
                                     Intent home_screen = new Intent(MainActivity.this, client_home.class);
                                     home_screen.putExtra("user_ID",resultData.getObjectId("_id").toString());

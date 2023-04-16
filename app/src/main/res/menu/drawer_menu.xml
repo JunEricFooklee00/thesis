@@ -12,12 +12,19 @@
 
             android:icon="@drawable/ic_baseline_map_24"
             android:title="Maps" />
+        <item android:id="@+id/Mycalendar"
+            android:icon="@drawable/ic_baseline_calendar_month_24"
+            android:title="My Calendar"
+            />
         <item
             android:id="@+id/nav_myproject"
-            android:icon="@drawable/ic_baseline_home_work_24"
-            android:iconTint="@color/white"
-            android:iconTintMode="src_in"
+            android:icon="@drawable/baseline_add_home_work_24"
+
             android:title="My Projects" />
+        <item
+            android:id="@+id/Joblist"
+            android:title="Job lists" android:icon="@drawable/ic_baseline_home_work_24"
+            />
     </group>
 
     <group android:checkableBehavior="single">

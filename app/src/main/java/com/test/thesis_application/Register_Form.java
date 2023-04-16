@@ -547,7 +547,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
                     .append("contactNumber", Objects.requireNonNull(contactnumber.getEditText().getText()).toString().trim())
                     .append("password", Objects.requireNonNull(hash))
-                    .append("age", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
+                    .append("birthday", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
                     .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
                             Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
                     .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("resume", TietPicture.getText().toString()).append("created", new Date());;

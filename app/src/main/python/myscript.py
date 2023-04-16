@@ -1,4 +1,4 @@
-def find_closest_employee():
+def find_closest_employee(employeejob,UserLocation):
 
     #import libraries
     import pymongo #database
@@ -13,20 +13,16 @@ def find_closest_employee():
     dns.resolver.default_resolver=dns.resolver.Resolver(configure=False)
     dns.resolver.default_resolver.nameservers=['8.8.8.8']
 
-
-
-
     #database connection
     client = pymongo.MongoClient("mongodb+srv://charlesadmin:admin123@employeemanagementsyste.yckarjq.mongodb.net/?retryWrites=true&w=majority")
     db = client['test']
     collection = db['Employee_Data']
 
-
     #supposing this is the string that will find
-
-    Find_Worker = "Plumber"
-    Project_Location = 'Gen. T. De Leon, Valenzuela City, Metro Manila, Philippines' #need to be sys.argv[3]
-    profile = 'Profile'
+    #eto un inputs diba kim ?
+    Find_Worker =  String(employeejob) #'Plumber'
+    Project_Location = String(UserLocation) #need to be sys.argv[3] 'Gen. T. De Leon, Valenzuela City, Metro Manila, Philippines'
+    profile = 'Profile' #ano to ?
     employee_profiles = collection.find({}, {profile: 1})
 
     job_profile_list = [r[profile] for r in employee_profiles]
@@ -49,7 +45,7 @@ def find_closest_employee():
     gmaps = googlemaps.Client(key='AIzaSyCfwQxvXZrIM1V3LEREkp7po-yLCTRSMHc')
 
     # Set the number of top matches to return
-    num_matches = int(2)
+    num_matches = int(2h)
 
     # Retrieve the corresponding documents from the collection based on their index
     for i in np.argsort(cosine_similarities)[::-1][:num_matches]:

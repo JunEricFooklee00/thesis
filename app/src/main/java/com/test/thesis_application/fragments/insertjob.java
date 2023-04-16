@@ -111,15 +111,21 @@ public class insertjob extends Fragment {
         ScopeOfWork.setOnItemClickListener((parent, view1, position, id) -> {
             if(ScopeOfWork.getText().toString().equals("Carpentry Works")){
                 TypeOfWork.setAdapter(carpentry);
+                TypeOfWork.setText("");
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }else if (ScopeOfWork.getText().toString().equals("Mechanical/Metal Works")){
                 TypeOfWork.setAdapter(mechanical);
+                TypeOfWork.setText("");
+
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }else if (ScopeOfWork.getText().toString().equals("Plumbing Works")){
                 TypeOfWork.setAdapter(plumbing);
+                TypeOfWork.setText("");
+
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }else if (ScopeOfWork.getText().toString().equals("Painting Works")){
                 TypeOfWork.setAdapter(painting);
+                TypeOfWork.setText("");
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
