@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("user", "database now accessible");
                     User user = app.currentUser();
                     mongoClient = user.getMongoClient("mongodb-atlas");
+                    // todo: change the fucking CourseData next time into Users clients and the Users employees too.
+
                     mongoDatabase = mongoClient.getDatabase("CourseData");
                 } else {
                     Log.v("user", "Cannot Access Database");

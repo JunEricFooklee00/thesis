@@ -401,20 +401,44 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:focusable="false"
+                        android:hint="upload Profile Picture"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_resume"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:clickable="true"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_picture"
+
+                    app:startIconDrawable="@drawable/ic_baseline_add_photo_alternate_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TIET_resume"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:focusable="false"
                         android:hint="upload Resume"
                         android:maxLines="1"
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
-
                 <Button
                     android:id="@+id/btn_register"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="Register"
-                    app:layout_constraintEnd_toEndOf="@+id/TIL_picture"
-                    app:layout_constraintStart_toStartOf="@+id/TIL_picture"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_picture" />
+                    app:layout_constraintEnd_toEndOf="@+id/TIL_resume"
+                    app:layout_constraintStart_toStartOf="@+id/TIL_resume"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_resume" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

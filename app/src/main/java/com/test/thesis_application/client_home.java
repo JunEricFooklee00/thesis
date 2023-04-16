@@ -42,7 +42,6 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
     private String imagepath,str_email,str_contact,str_birthday, str_address,str_zipcode,str_UID,newstr_UID;
 
     ImageView nav_avatar;
-
     String Appid = "employeems-mcwma";
     User user;
     MongoDatabase mongoDatabase;
