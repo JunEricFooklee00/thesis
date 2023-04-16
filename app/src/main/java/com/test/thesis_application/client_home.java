@@ -24,6 +24,7 @@ import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
 import com.test.thesis_application.fragments.fragment_settings;
+import com.test.thesis_application.fragments.weekView;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -138,6 +139,12 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 mapsuid.putString("user_ID",str_UID); // to fragment_maps()
                 fragmentMaps.setArguments(mapsuid);
                 mapsTransaction.replace(R.id.fragment_container,fragmentMaps).setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.Mycalendar:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new weekView()).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;
