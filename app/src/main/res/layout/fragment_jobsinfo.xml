@@ -46,7 +46,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="JobID"
-                        app:layout_constraintEnd_toEndOf="@+id/textView_jobTitle"
                         app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
                         app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle" />
 
@@ -56,7 +55,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:text="@string/Scope_of_work"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_jobID"
                         app:layout_constraintStart_toStartOf="@+id/tv_jobID"
                         app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle" />
 
@@ -65,7 +63,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/area"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_scope"
                         app:layout_constraintStart_toStartOf="@+id/tv_scope"
                         app:layout_constraintTop_toBottomOf="@+id/tv_scope" />
 
@@ -74,7 +71,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/location"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_Area"
                         app:layout_constraintStart_toStartOf="@+id/tv_Area"
                         app:layout_constraintTop_toBottomOf="@+id/tv_Area" />
 
@@ -83,7 +79,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/start_date"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_location"
                         app:layout_constraintStart_toStartOf="@+id/tv_location"
                         app:layout_constraintTop_toBottomOf="@+id/tv_location" />
 
@@ -92,7 +87,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Expectedfinishdate"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_startingdate"
                         app:layout_constraintStart_toStartOf="@+id/tv_startingdate"
                         app:layout_constraintTop_toBottomOf="@+id/tv_startingdate" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,14 +115,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TIL_forcasted"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:hint="@string/NumberOfWorkers"
+        android:textColorHint="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/TextinputET_forcasted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/eric"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="awe"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of workers : "
+        app:layout_constraintBottom_toBottomOf="@+id/TIL_location"
+        app:layout_constraintStart_toStartOf="@+id/eric"
+        app:layout_constraintTop_toTopOf="@+id/TIL_location" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TIL_location"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/location"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TIL_forcasted">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/TextinputET_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

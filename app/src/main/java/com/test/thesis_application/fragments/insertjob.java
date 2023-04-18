@@ -21,10 +21,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.test.thesis_application.R;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
@@ -45,7 +45,7 @@ public class insertjob extends Fragment {
 
     //declare variables
     private AutoCompleteTextView ScopeOfWork, TypeOfWork,actv_unit;
-    private TextInputLayout title, area, unit, location, Sdate, expected;
+    private TextInputLayout title, area, unit, location, Sdate, expected,name;
     private int mYear;
     private int mMonth;
     private int mDayOfMonth;
@@ -65,7 +65,7 @@ public class insertjob extends Fragment {
         location = view.findViewById(R.id.TIL_location);
         Sdate = view.findViewById(R.id.TIL_Age);
         expected = view.findViewById(R.id.TIL_expected);
-
+        name = view.findViewById(R.id.TIL_name);
         Bundle projectuserid = getArguments();
         if (projectuserid != null) {
             userid = projectuserid.getString("uid");
@@ -140,16 +140,14 @@ public class insertjob extends Fragment {
         mongoDatabase = mongoClient.getDatabase("JobOrder");
         mongoCollection = mongoDatabase.getCollection("joborders");
 
-
         submit.setOnClickListener(v -> {
             if (!validateScopeofWork() | !validatetitle() |!validateexpectedfinishdate() | !validateArea() |!validatesubdiv() |!validateunit() |!validatelocation()
-            |! validatestartingdate() |!validateexpectedfinishdate()) {
+            |! validatestartingdate() |!validateexpectedfinishdate()|!validatename())  {
                 return;
             }
             // TODO: add code po here idol
             registerAccount();
         });
-
         return view;
     }
 
@@ -165,7 +163,18 @@ public class insertjob extends Fragment {
             return true;
         }
     }
+    private boolean validatename(){
+        String strname = Objects.requireNonNull(name.getEditText()).getText().toString().trim();
+        if (strname.isEmpty()) {
+            name.setError("Username cannot be empty.");
+            return false;
 
+        } else {
+            name.setError(null);
+            name.setErrorEnabled(false);
+            return true;
+        }
+    }
     private boolean validateScopeofWork() {
         String sow = Objects.requireNonNull(ScopeOfWork.getText()).toString().trim();
 
@@ -181,7 +190,6 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-
     private boolean validatesubdiv() {
         String subdivi = Objects.requireNonNull(TypeOfWork.getText()).toString().trim();
 
@@ -197,7 +205,6 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-
     private boolean validateunit() {
         String strunit = Objects.requireNonNull(actv_unit.getText()).toString().trim();
 
@@ -238,7 +245,6 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-
     private boolean validatestartingdate(){
         String strSdate = Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim();
         if (strSdate.isEmpty()) {
@@ -263,19 +269,25 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-
-
     private void registerAccount() {
-        ObjectId objectId = new ObjectId(userid);
+//        ObjectId objectId = new ObjectId(userid);
 
         // Create a new order document
-        Document orderDocument = new Document().append("TypeOfWork", ScopeOfWork.getText().toString() +" — "+ TypeOfWork.getText().toString()).append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
-                .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim() +" " + Objects.requireNonNull(unit.getEditText()).getText().toString().trim()).append("Location", Objects.requireNonNull(location.getEditText()).getText().toString().trim())
-                .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim()).append("ExpectedFinishDate", Objects.requireNonNull(expected.getEditText()).getText().toString().trim());
+        Document orderDocument = new Document()
+                .append("idUser",userid)
+                .append("name",name.getEditText().getText().toString().trim())
+                .append("TypeOfWork", ScopeOfWork.getText().toString() +" — "+ TypeOfWork.getText().toString())
+                .append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
+                .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())
+                .append("Unit",Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
+                .append("Location", Objects.requireNonNull(location.getEditText()).getText().toString().trim())
+                .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim())
+                .append("ExpectedFinishDate", Objects.requireNonNull(expected.getEditText()).getText().toString().trim())
+                .append("created", new Date());
         // Create an array of product documents for the order
 //        List<Document> jobs = new ArrayList<Document>();
 
-        orderDocument.put("userId", objectId);
+//        orderDocument.put("idUser", objectId);
         mongoCollection.insertOne(orderDocument).getAsync(result -> {
 
             if (result.isSuccess()) {

@@ -64,7 +64,7 @@ public class fragment_project extends Fragment implements Jobinterface {
             userid = projectuserid.getString("user_ID");
         }
 
-        objectId = new ObjectId(userid);
+//        objectId = new ObjectId(userid);
 
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
@@ -95,9 +95,9 @@ public class fragment_project extends Fragment implements Jobinterface {
 
     private void loadJobsOrders() {
 //        List<JobsOrderClass> orders = new ArrayList<>();
-        ObjectId objectId = new ObjectId(userid);
+//        String userid =userid;
         // Create a filter using the objectId
-        Document filter = new Document("userId", objectId);
+        Document filter = new Document("idUser", userid);
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(filter).iterator();
         findTask.getAsync(task -> {
                if (task.isSuccess()) {
@@ -109,10 +109,11 @@ public class fragment_project extends Fragment implements Jobinterface {
 
                        Document document = results.next();
                        jobOrder.set_id(document.getObjectId("_id"));
-                       jobOrder.setUserId(document.getObjectId("userId"));
+                       jobOrder.setUserId(document.getString("idUser"));
                        jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                        jobOrder.setJobTitle(document.getString("jobTitle"));
                        jobOrder.setArea(document.getString("Area"));
+//                       jobOrder.setUnit(document.getString("Unit"));
                        jobOrder.setLocation(document.getString("Location"));
                        jobOrder.setStartingDate(document.getString("StartingDate"));
                        jobOrder.setExpectedFinishDate(document.getString("ExpectedFinishDate"));
@@ -168,7 +169,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         bundle.putString("_id", orders.get(position).get_id().toString()); // Example of adding a String to the Bundle
         bundle.putString("jobtitle", orders.get(position).getJobTitle()); // Example of adding a String to the Bundle
         bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate()); // Example of adding a String to the Bundle
-        bundle.putString("userId", orders.get(position).getUserId().toString()); // Example of adding a String to the Bundle
+        bundle.putString("idUser", orders.get(position).getUserId().toString()); // Example of adding a String to the Bundle
 
 
         Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();

@@ -9,12 +9,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.test.thesis_application.R;
-import com.test.thesis_application.ml.B1Works;
-
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
-
-import java.io.IOException;
 
 
 public class jobsinfo extends Fragment {
@@ -35,10 +29,8 @@ public class jobsinfo extends Fragment {
         TV_location = view.findViewById(R.id.tv_location);
         TV_startdate= view.findViewById(R.id.tv_startingdate);
         TV_expecteddate = view.findViewById(R.id.tv_expecteddate);
-        output = view.findViewById(R.id.eric);
+        output = view.findViewById(R.id.TIL_forcasted);
         Bundle data = getArguments();
-
-
         if (data != null) {
             userId = data.getString("userId");
             id = data.getString("_id");
@@ -49,6 +41,7 @@ public class jobsinfo extends Fragment {
             jobtitle = data.getString("jobtitle");
             Startingdate = data.getString("startingdate");
         }
+
         TV_jobTitle.setText(jobtitle);
         TV_jobid.setText(id);
         TV_scope.setText(ScopeofWork);
@@ -58,37 +51,41 @@ public class jobsinfo extends Fragment {
         TV_expecteddate.setText(ExpectedFinishDate);
 
 
+
         //start of tenserflowlite forecasting.
-        try {
-            float input1 = 6.75f, input2 = 16f;
-
-            float[] inputValues = new float[]{1.125014063f,input1,input2 };
-            B1Works model = B1Works.newInstance(requireContext());
-
-            // Creates inputs for reference.
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
-
-            inputFeature0.loadArray(inputValues);
-
-            // Runs model inference and gets result.
-            B1Works.Outputs outputs = model.process(inputFeature0);
-            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-            float[] outputValues = outputFeature0.getFloatArray();
-
-            float outputString = 0;
-
-            for (float value : outputValues) {
-                outputString = Math.round(value);
-            }
-            output.setText("The recommended amount of workers for this project is :"+ outputString);
-
-//            Log.v("Model Output", outputString);
-            // Releases model resources if no longer used.
-            model.close();
-        } catch (IOException e) {
-            // TODO Handle the exception
-        }
+//        if (TV_scope.equals("")){
+//
+//        }
+//        try {
+//            float input1 = 6.75f, input2 = 16f, productivityratio = 6f; // input1 is , input 2 is
+//
+//            float[] inputValues = new float[]{productivityratio,input1,input2 };
+//            B1Works model = B1Works.newInstance(requireContext());
+//
+//            // Creates inputs for reference.
+//            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
+//
+//            inputFeature0.loadArray(inputValues);
+//
+//            // Runs model inference and gets result.
+//            B1Works.Outputs outputs = model.process(inputFeature0);
+//            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+//
+//            float[] outputValues = outputFeature0.getFloatArray();
+//
+//            float outputString = 0;
+//
+//            for (float value : outputValues) {
+//                outputString = Math.round(value);
+//            }
+//            output.setText("The recommended amount of workers for this project is :"+ outputString);
+//
+////            Log.v("Model Output", outputString);
+//            // Releases model resources if no longer used.
+//            model.close();
+//        } catch (IOException e) {
+//            // TODO Handle the exception
+//        }
 
 //        try {
 //            float[] inputValues = new float[]{6.75f,16f, 1.125014063f};

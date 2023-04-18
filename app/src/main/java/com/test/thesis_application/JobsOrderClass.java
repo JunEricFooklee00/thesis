@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 
 public class JobsOrderClass {
     private ObjectId _id;
-    private ObjectId userId;
+    private String userId;
     private String scopeofwork;
     private String jobTitle;
     private String Area;
@@ -12,11 +12,15 @@ public class JobsOrderClass {
     private String StartingDate;
     private String ExpectedFinishDate;
 
+
+
+    private String Unit;
+
     // empty constructor required for MongoDB Data Access POJO codec compatibility
     public JobsOrderClass() {
     }
     // constructor
-    public JobsOrderClass(ObjectId _id,ObjectId userId ,String scopeofwork, String jobTitle, String area, String location, String startingDate, String expectedFinishDate) {
+    public JobsOrderClass(ObjectId _id, String userId , String scopeofwork, String jobTitle, String area, String location, String startingDate, String expectedFinishDate, String unit) {
         this._id = _id;
         this.userId = userId;
         this.scopeofwork = scopeofwork;
@@ -25,6 +29,7 @@ public class JobsOrderClass {
         this.Location = location;
         this.StartingDate = startingDate;
         this.ExpectedFinishDate = expectedFinishDate;
+        this.Unit = unit;
     }
 
 
@@ -36,11 +41,18 @@ public class JobsOrderClass {
         this._id = _id;
     }
 
-    public ObjectId getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(ObjectId userId) {
+    public String getUnit() {
+        return Unit;
+    }
+
+    public void setUnit(String unit) {
+        Unit = unit;
+    }
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

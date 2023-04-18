@@ -24,8 +24,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
+
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
+
                     android:hint="@string/title_of_project"
                     android:textColorHint="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -37,9 +39,33 @@
                         android:id="@+id/TieT_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:ellipsize="end"/>
+                        android:scrollHorizontally="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="32dp"
+                    android:hint="Full Name"
+                    android:textColorHint="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_title"
+                    app:startIconDrawable="@drawable/ic_baseline_person_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TieT_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -56,7 +82,7 @@
                     app:errorEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_title">
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_name">
 
                     <AutoCompleteTextView
                         android:id="@+id/filled_exposed"
@@ -110,7 +136,8 @@
                         android:ellipsize="end"
                         android:inputType="number"
                         android:maxLines="1"
-                        android:scrollHorizontally="true" />
+                        android:scrollHorizontally="true"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -155,8 +182,7 @@
                         android:id="@+id/TextinputET_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        />
+                        android:ellipsize="end" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -202,10 +228,10 @@
                         android:id="@+id/TextinputET_expected"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:inputType="number"
                         android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:ellipsize="end"/>
+                        android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
