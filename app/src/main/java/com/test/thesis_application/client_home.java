@@ -82,7 +82,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         user = app.currentUser();
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("CourseData");
+        mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("clients");
 
         ObjectId objectId = new ObjectId(str_UID);
@@ -94,7 +94,8 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 newstr_UID = resultdata.getObjectId("_id").toString();
                 str_email = resultdata.getString("email");
                 str_birthday = resultdata.getString("birthday");
-                str_contact = resultdata.getString("contactNumber").toString();
+                str_contact = resultdata.get("contactNumber").toString();
+//                str_contact = resultdata.getString("contactNumber").toString();
                 str_zipcode = resultdata.getString("zipcode");
                 str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
@@ -155,6 +156,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 
                 Bundle projectuserid = new Bundle();
                 projectuserid.putString("user_ID",str_UID);
+                projectuserid.putString("name",navName.getText().toString());
                 project_fragment.setArguments(projectuserid);// to pass data
 
                 projectTransaction.replace(R.id.fragment_container,project_fragment).setReorderingAllowed(true)

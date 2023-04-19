@@ -13,14 +13,14 @@ public class JobsOrderClass {
     private String ExpectedFinishDate;
 
 
-
     private String Unit;
 
     // empty constructor required for MongoDB Data Access POJO codec compatibility
     public JobsOrderClass() {
     }
+
     // constructor
-    public JobsOrderClass(ObjectId _id, String userId , String scopeofwork, String jobTitle, String area, String location, String startingDate, String expectedFinishDate, String unit) {
+    public JobsOrderClass(ObjectId _id, String userId, String scopeofwork, String jobTitle, String area, String location, String startingDate, String expectedFinishDate, String unit) {
         this._id = _id;
         this.userId = userId;
         this.scopeofwork = scopeofwork;
@@ -52,6 +52,7 @@ public class JobsOrderClass {
     public void setUnit(String unit) {
         Unit = unit;
     }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }

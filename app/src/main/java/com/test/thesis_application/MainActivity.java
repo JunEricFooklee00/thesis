@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                     mongoClient = user.getMongoClient("mongodb-atlas");
                     // todo: change the fucking CourseData next time into Users clients and the Users employees too.
 
-                    mongoDatabase = mongoClient.getDatabase("CourseData");
                 } else {
                     Log.v("user", "Cannot Access Database");
                 }
@@ -119,60 +118,57 @@ public class MainActivity extends AppCompatActivity {
                     if (!validateemail() | !validatePassword()) {
                         return;
                     }
+                    mongoDatabase = mongoClient.getDatabase("Users");
                     mongoCollection = mongoDatabase.getCollection("clients");
                     //hash the password
-                    String input = get_password.getEditText().getText().toString();
-                    try {
-                        String hash = generateSHA256(input);
-                        // do something with the hash
-                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",hash);
-                        mongoCollection.findOne(email).getAsync(result -> {
-                            try {
-                                //Testing Client accounts
-                                Document resultData = result.get();
-
-                                Log.v("Account", resultData.getString("user"));
-                                if (resultData.getString("user").equals("Clients")) {// to change Users - clients
-                                    Log.v("resultAccount", "Found in Client");
-                                    Intent home_screen = new Intent(MainActivity.this, client_home.class);
-                                    home_screen.putExtra("user_ID",resultData.getObjectId("_id").toString());
-                                    startActivity(home_screen);
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                    Log.v("resultAccount", "Client not found in Database");
-                                }
-
-                            } catch (Exception client) {
-                                //Testing Employee Accounts
-                                mongoCollection = mongoDatabase.getCollection("employees");
-
-
-                                mongoCollection.findOne(email).getAsync(result1 -> {
-                                    try {
-                                        Document resultData1 = result1.get();
-                                        Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
-
-                                        if (resultData1.getString("user").equals("Employees")) {
-                                            Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
-                                            Log.v("resultAccount", "Found in Employee");
-                                            Intent home_screen = new Intent(MainActivity.this, employee_home.class);
-                                            home_screen .putExtra("user_ID",resultData1.getObjectId("_id").toString());
-                                            startActivity(home_screen);
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                            Log.v("resultAccount", "Wala sa Employee");
-
-                                        }
-                                    } catch (Exception employee) {
-                                        employee.printStackTrace();
-                                        Toast.makeText(getApplicationContext(), "No user existing.", Toast.LENGTH_LONG).show();
-                                    }
-                                });
+//                    String input = get_password.getEditText().getText().toString();
+                    //                        String hash = generateSHA256(input);
+                    // do something with the hash
+//                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",hash); //
+                    Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",get_password.getEditText().getText().toString()); //
+                    mongoCollection.findOne(email).getAsync(result -> {
+                        try {
+                            //Testing Client accounts
+                            Document resultData = result.get();
+//                                Log.v("GENESISBOGUK", resultData.getString("password"));
+                            if (resultData.getString("user").equals("Client")) {// to change Users - clients
+                                Log.v("resultAccount", "Found in Client");
+                                Intent home_screen = new Intent(MainActivity.this, client_home.class);
+                                home_screen.putExtra("user_ID",resultData.getObjectId("_id").toString());
+                                startActivity(home_screen);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                Log.v("resultAccount", "Client not found in Database");
                             }
-                        });
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
+
+                        } catch (Exception client) {
+                            //Testing Employee Accounts
+                            mongoCollection = mongoDatabase.getCollection("employees");
+
+
+                            mongoCollection.findOne(email).getAsync(result1 -> {
+                                try {
+                                    Document resultData1 = result1.get();
+                                    Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
+
+                                    if (resultData1.getString("user").equals("Employees")) {
+                                        Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
+                                        Log.v("resultAccount", "Found in Employee");
+                                        Intent home_screen = new Intent(MainActivity.this, employee_home.class);
+                                        home_screen .putExtra("user_ID",resultData1.getObjectId("_id").toString());
+                                        startActivity(home_screen);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                        Log.v("resultAccount", "Wala sa Employee");
+
+                                    }
+                                } catch (Exception employee) {
+                                    employee.printStackTrace();
+                                    Toast.makeText(getApplicationContext(), "No user existing.", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

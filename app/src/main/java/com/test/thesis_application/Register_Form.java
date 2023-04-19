@@ -71,17 +71,18 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
     //    Map config = new HashMap();
     private static final int IMAGE_REQ = 1;
     private static final String TAG = "Upload ###";
-    private Uri imagePath,imagePath2;
+    private Uri imagePath, imagePath2;
 
     private boolean isReadPermissionGranted = false;
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
 
-    private TextInputEditText TietAge, TietPicture,Tietresume, TIETContactNum, TIETzipcode;
-    private TextInputLayout email, username, password, name, confirmpassword, address,contactnumber, housenumber, barangay, city, zipcode, province, tilAge, picture,resume;
+    private TextInputEditText TietAge, TietPicture, Tietresume, TIETContactNum, TIETzipcode;
+    private TextInputLayout email, username, password, name, confirmpassword, address, contactnumber, housenumber, barangay, city, zipcode, province, tilAge, picture, resume;
 
     private Button register;
     private AutoCompleteTextView autoCompleteTextView, autoCompleteTextViewgender;
     String hashedPassword;
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,8 +167,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                 public void run() {
                     register.setEnabled(true);
                 }
-            }, 5000); // Delay in milliseconds, adjust as needed
-            if (!validateemail() | !validatePassword() |!validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
+            }, 10000); // Delay in milliseconds, adjust as needed
+            if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
                     !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage()) {
                 return;
             }
@@ -232,9 +233,10 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         });
     }// end of onCreate
 
-    private void upload(){
+    private void upload() {
 
     }
+
     private String generateSHA256(String input) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
@@ -491,6 +493,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             requestPermission();
         }
     }
+
     private void getresume() {
         if (isReadPermissionGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
@@ -513,6 +516,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validateAvatar() {
         String strResume = Objects.requireNonNull(picture.getEditText()).getText().toString().trim();
         if (strResume.isEmpty()) {
@@ -533,6 +537,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         someActivityResultLauncher.launch(intent);
 
     }
+
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -571,6 +576,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     }
                 }
             });
+
     private void requestPermission() {
 
         Log.v("Result", "Requesting Permission");
@@ -611,8 +617,11 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
     private void registerAccount() {
 
-        String input =  password.getEditText().getText().toString().trim();
+        String input = password.getEditText().getText().toString().trim();
         try {
+//
+//            String CN = contactnumber.getEditText().getText().toString();
+//            int contactnum = Integer.parseInt(CN);
             String hash = generateSHA256(input);
             // do something with the hash
             mongoCollection = mongoDatabase.getCollection(autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT));
@@ -620,13 +629,13 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
                     .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
                     .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
-                    .append("contactNumber", Objects.requireNonNull(contactnumber.getEditText().getText()).toString().trim())
+                    .append("contactNumber", contactnumber.getEditText().getText())
                     .append("password", Objects.requireNonNull(hash))
                     .append("gender", autoCompleteTextViewgender.getText().toString())
                     .append("birthday", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
                     .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
                             Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
-                    .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("avatar", TietPicture.getText().toString()).append("resume", Tietresume.getText().toString()).append("created", new Date());;
+                    .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("avatar", TietPicture.getText().toString()).append("resume", Tietresume.getText().toString()).append("created", new Date());
             mongoCollection.insertOne(registerAccount).getAsync(result -> {
 
                 if (result.isSuccess()) {

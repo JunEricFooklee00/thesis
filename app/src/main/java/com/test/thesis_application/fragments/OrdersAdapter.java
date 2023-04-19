@@ -17,9 +17,6 @@ import java.util.List;
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
     private final Jobinterface jobinterface;
     List<JobsOrderClass> orders ;
-//     List<JobsOrderClass> orders;
-//     Context context;
-
 
     public OrdersAdapter(List<JobsOrderClass> orders, Jobinterface jobinterface ) {
         this.orders = orders;
@@ -41,10 +38,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         holder.textView_id.setText(orders.get(position).get_id().toString());
         holder.textView_scopeofwork.setText(orders.get(position).getScopeofwork());
         holder.textView_jobTitle.setText(orders.get(position).getJobTitle());
-//        holder.textView_area.setText(orders.get(position).getArea());
-//        holder.textView_location.setText(orders.get(position).getLocation());
-//        holder.textView_startingDate.setText(orders.get(position).getStartingDate());
-//        holder.textView_expectedFinishDate.setText(orders.get(position).getExpectedFinishDate());
     }
 
     @Override
@@ -57,21 +50,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         public TextView textView_scopeofwork;
         public TextView textView_jobTitle;
 
-        public TextView textView_area;
-        public TextView textView_location;
-        public TextView textView_startingDate;
-        public TextView textView_expectedFinishDate;
 
         public ViewHolder(View itemView, Jobinterface jobinterface) {
             super(itemView);
 //
+            textView_jobTitle = itemView.findViewById(R.id.textView_jobTitle); // can be found in jobs orderclass.java
             textView_id = itemView.findViewById(R.id.textview_id);
             textView_scopeofwork = itemView.findViewById(R.id.textView_scopeofwork);
-//            textView_area =itemView.findViewById(R.id.textview_area);
-            textView_jobTitle = itemView.findViewById(R.id.textView_jobTitle);
-//            textView_location = itemView.findViewById(R.id.textView_location);
-//            textView_startingDate = itemView.findViewById(R.id.textView_startingDate);
-//            textView_expectedFinishDate = itemView.findViewById(R.id.textView_expectedFinishDate);
+//
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

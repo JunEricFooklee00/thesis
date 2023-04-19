@@ -49,7 +49,7 @@ public class fragment_project extends Fragment implements Jobinterface {
     MongoCollection<Document> mongoCollection;
 
     FloatingActionButton insert;
-    private String userid;
+    private String userid,name;
     private ObjectId objectId;
 
     @Nullable
@@ -62,6 +62,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         Bundle projectuserid = getArguments();
         if (projectuserid != null) {
             userid = projectuserid.getString("user_ID");
+            name = projectuserid.getString("name");
         }
 
 //        objectId = new ObjectId(userid);
@@ -113,7 +114,7 @@ public class fragment_project extends Fragment implements Jobinterface {
                        jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                        jobOrder.setJobTitle(document.getString("jobTitle"));
                        jobOrder.setArea(document.getString("Area"));
-//                       jobOrder.setUnit(document.getString("Unit"));
+                       jobOrder.setUnit(document.getString("Unit"));
                        jobOrder.setLocation(document.getString("Location"));
                        jobOrder.setStartingDate(document.getString("StartingDate"));
                        jobOrder.setExpectedFinishDate(document.getString("ExpectedFinishDate"));
@@ -141,7 +142,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         // Create a Bundle to pass your data
         Bundle bundle = new Bundle();
         bundle.putString("uid", userid); // Example of adding a String to the Bundle
-
+        bundle.putString("name",name);
         // Set the Bundle as an argument for your fragment
         fragment.setArguments(bundle);
 
@@ -154,7 +155,6 @@ public class fragment_project extends Fragment implements Jobinterface {
     @Override
     public void onItemclick(int position) {
 
-
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -162,24 +162,24 @@ public class fragment_project extends Fragment implements Jobinterface {
 
         // Create a Bundle to pass your data
         Bundle bundle = new Bundle();
-        bundle.putString("scopeofwork", orders.get(position).getScopeofwork()); // Example of adding a String to the Bundle
-        bundle.putString("area", orders.get(position).getArea());
-        bundle.putString("location", orders.get(position).getLocation()); // Example of adding a String to the Bundle
-        bundle.putString("startingdate", orders.get(position).getStartingDate()); // Example of adding a String to the Bundle
+//        bundle.putString("scopeofwork", orders.get(position).getScopeofwork()); // Example of adding a String to the Bundle
+//        bundle.putString("area", orders.get(position).getArea());
+//        bundle.putString("location", orders.get(position).getLocation()); // Example of adding a String to the Bundle
+//        bundle.putString("startingdate", orders.get(position).getStartingDate()); // Example of adding a String to the Bundle
         bundle.putString("_id", orders.get(position).get_id().toString()); // Example of adding a String to the Bundle
         bundle.putString("jobtitle", orders.get(position).getJobTitle()); // Example of adding a String to the Bundle
-        bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate()); // Example of adding a String to the Bundle
-        bundle.putString("idUser", orders.get(position).getUserId().toString()); // Example of adding a String to the Bundle
-
-
-        Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();
-        // Set the Bundle as an argument for your fragment
+//        bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate()); // Example of adding a String to the Bundle
+        bundle.putString("idUser", orders.get(position).getUserId()); // Example of adding a String to the Bundle
+//
+//
+//        Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();
+//        // Set the Bundle as an argument for your fragment
         fragmentjob.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.fragment_container,fragmentjob);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        Toast.makeText(requireContext(),userid,Toast.LENGTH_LONG).show();
+        Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();
     }
 }
 

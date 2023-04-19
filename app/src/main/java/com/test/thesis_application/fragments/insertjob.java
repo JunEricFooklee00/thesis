@@ -1,6 +1,11 @@
 package com.test.thesis_application.fragments;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,17 +19,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.test.thesis_application.R;
 
 import org.bson.Document;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import io.realm.mongodb.App;
@@ -35,6 +47,8 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 
 public class insertjob extends Fragment {
+    private FusedLocationProviderClient fusedLocationClient;
+
     //mongodb
     String Appid = "employeems-mcwma";
     private App app;
@@ -45,13 +59,13 @@ public class insertjob extends Fragment {
 
     //declare variables
     private AutoCompleteTextView ScopeOfWork, TypeOfWork,actv_unit;
-    private TextInputLayout title, area, unit, location, Sdate, expected,name;
+    private TextInputLayout title, area, unit, TILlocation, Sdate, expected,name;
     private int mYear;
     private int mMonth;
     private int mDayOfMonth;
     private TextInputEditText TietAge;
     //    private TextInputLayout  ;
-    private String userid;
+    private String userid,nameuser,geocode;
 
     @Nullable
     @Override
@@ -62,15 +76,17 @@ public class insertjob extends Fragment {
         title = view.findViewById(R.id.TIL_title);
         area = view.findViewById(R.id.TIL_Area);
         unit = view.findViewById(R.id.TIL_unit);
-        location = view.findViewById(R.id.TIL_location);
+        TILlocation = view.findViewById(R.id.TIL_location);
+
         Sdate = view.findViewById(R.id.TIL_Age);
         expected = view.findViewById(R.id.TIL_expected);
         name = view.findViewById(R.id.TIL_name);
         Bundle projectuserid = getArguments();
         if (projectuserid != null) {
             userid = projectuserid.getString("uid");
+            nameuser = projectuserid.getString("name");
         }
-
+        name.getEditText().setText(nameuser);
         TietAge.setOnClickListener(v -> {
             // Get the current date
             Calendar calendar = Calendar.getInstance();
@@ -130,6 +146,16 @@ public class insertjob extends Fragment {
             }
         });
 
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        TILlocation.setStartIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getlocation();
+                TILlocation.getEditText().setText(geocode);
+            }
+        });
+
         Button submit = view.findViewById(R.id.btn_add_job);
 
         // all required for mongodb
@@ -149,6 +175,40 @@ public class insertjob extends Fragment {
             registerAccount();
         });
         return view;
+    }
+
+    private void getlocation() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+        } else {
+            fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                if (location != null) {
+                    getAddress(location);
+                }
+            });
+        }
+    }
+
+    private void getAddress(@NonNull Location location) {
+        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+//                StringBuilder sb = new StringBuilder();
+//                for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+//                    sb.append(address.getAddressLine(i)).append("\n");
+//                }
+//                tvAddress.setText(sb.toString());
+//                 geocode = sb.toString();
+                    geocode = address.getAddressLine(0);
+            } else {
+                 geocode = "Cannot get location";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean validatetitle(){
@@ -234,14 +294,14 @@ public class insertjob extends Fragment {
         }
     }
     public boolean validatelocation(){
-        String strlocation = Objects.requireNonNull(location.getEditText()).getText().toString().trim();
+        String strlocation = Objects.requireNonNull(TILlocation.getEditText()).getText().toString().trim();
         if (strlocation.isEmpty()) {
-            location.setError("Name cannot be empty.");
+            TILlocation.setError("Name cannot be empty.");
             return false;
 
         } else {
-            location.setError(null);
-            location.setErrorEnabled(false);
+            TILlocation.setError(null);
+            TILlocation.setErrorEnabled(false);
             return true;
         }
     }
@@ -280,7 +340,7 @@ public class insertjob extends Fragment {
                 .append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
                 .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())
                 .append("Unit",Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
-                .append("Location", Objects.requireNonNull(location.getEditText()).getText().toString().trim())
+                .append("Location", Objects.requireNonNull(TILlocation.getEditText()).getText().toString().trim())
                 .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim())
                 .append("ExpectedFinishDate", Objects.requireNonNull(expected.getEditText()).getText().toString().trim())
                 .append("created", new Date());
@@ -300,8 +360,6 @@ public class insertjob extends Fragment {
             }
         });
     }
-
-
     private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

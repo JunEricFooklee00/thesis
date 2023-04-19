@@ -29,10 +29,11 @@ public class jobsinfo extends Fragment {
         TV_location = view.findViewById(R.id.tv_location);
         TV_startdate= view.findViewById(R.id.tv_startingdate);
         TV_expecteddate = view.findViewById(R.id.tv_expecteddate);
-        output = view.findViewById(R.id.TIL_forcasted);
+//        output = view.findViewById(R.id.TIL_forcasted);
+
         Bundle data = getArguments();
         if (data != null) {
-            userId = data.getString("userId");
+            userId = data.getString("idUser");
             id = data.getString("_id");
             ScopeofWork = data.getString("scopeofwork");
             area = data.getString("area");
