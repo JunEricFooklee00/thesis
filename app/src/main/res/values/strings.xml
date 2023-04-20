@@ -46,7 +46,7 @@
     <string name="type_of_work">Type of work.</string>
 
     <string-array name="CarpentryWorks">
-        <item>B2 - Carpentry Works for Main Counter</item>
+        <item >B2 - Carpentry Works for Main Counter</item>
     </string-array>
 
     <string-array name="MechanicalMetalWorks">
@@ -54,12 +54,12 @@
     </string-array>
 
     <string-array name="PlumbingWorks">
-        <item>Water System</item>
-        <item>Drainage System</item>
+        <item>D2 - Pipeline and Fixture Installation</item>
+        <item>D3 - Drainage Pipeline Installation</item>
     </string-array>
 
     <string-array name="PaintingWorks">
-        <item>Plain Concrete Surfaces</item>
+        <item>G1 - Plain Concrete Surfaces (Surface Prep - Primer - Finish Coat)</item>
         <item>Wooden_Metal Surfaces</item>
     </string-array>
 

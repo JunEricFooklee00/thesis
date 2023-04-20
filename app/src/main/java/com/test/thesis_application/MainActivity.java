@@ -22,10 +22,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.test.thesis_application.employee.employee_home;
 
 import org.bson.Document;
+import org.mindrot.jbcrypt.BCrypt;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isLocationPermissionGranted = false;
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
 
+    String hashedPassword;
     //mongodb
     String Appid = "employeems-mcwma";
     MongoDatabase mongoDatabase;
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loginClientAccount;
     private TextInputLayout get_email, get_password;
     private TextView registerButton;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,81 +114,126 @@ public class MainActivity extends AppCompatActivity {
         loginClientAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if (!validateemail() | !validatePassword()) {
-                        return;
-                    }
-                    mongoDatabase = mongoClient.getDatabase("Users");
-                    mongoCollection = mongoDatabase.getCollection("clients");
-                    //hash the password
-//                    String input = get_password.getEditText().getText().toString();
-                    //                        String hash = generateSHA256(input);
-                    // do something with the hash
-//                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",hash); //
-                    Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",get_password.getEditText().getText().toString()); //
-                    mongoCollection.findOne(email).getAsync(result -> {
-                        try {
-                            //Testing Client accounts
-                            Document resultData = result.get();
-//                                Log.v("GENESISBOGUK", resultData.getString("password"));
-                            if (resultData.getString("user").equals("Client")) {// to change Users - clients
-                                Log.v("resultAccount", "Found in Client");
-                                Intent home_screen = new Intent(MainActivity.this, client_home.class);
-                                home_screen.putExtra("user_ID",resultData.getObjectId("_id").toString());
-                                startActivity(home_screen);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                Log.v("resultAccount", "Client not found in Database");
-                            }
-
-                        } catch (Exception client) {
-                            //Testing Employee Accounts
-                            mongoCollection = mongoDatabase.getCollection("employees");
-
-
-                            mongoCollection.findOne(email).getAsync(result1 -> {
-                                try {
-                                    Document resultData1 = result1.get();
-                                    Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
-
-                                    if (resultData1.getString("user").equals("Employees")) {
-                                        Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
-                                        Log.v("resultAccount", "Found in Employee");
-                                        Intent home_screen = new Intent(MainActivity.this, employee_home.class);
-                                        home_screen .putExtra("user_ID",resultData1.getObjectId("_id").toString());
-                                        startActivity(home_screen);
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                        Log.v("resultAccount", "Wala sa Employee");
-
-                                    }
-                                } catch (Exception employee) {
-                                    employee.printStackTrace();
-                                    Toast.makeText(getApplicationContext(), "No user existing.", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                login();
             }
         });
 
         requestPermission();
     }// end of onCreate
 
-    private String generateSHA256(String input) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
+    private String hashPassword(String input) {
+//         Define the strength of the hashing algorithm
+        int strength = 10;
+
+//         Generate a salt value
+        String salt = BCrypt.gensalt(strength);
+
+
+//         Hash the password using the generated salt
+        String hashedPassword = BCrypt.hashpw(input, salt);
+
+        return hashedPassword;
     }
+
+    private void login() {
+        try {
+            if (!validateemail() | !validatePassword()) {
+                return;
+            }
+            mongoDatabase = mongoClient.getDatabase("Users");
+            mongoCollection = mongoDatabase.getCollection("clients");
+
+            int strength = 10;
+
+//         Generate a salt value
+            String salt1 = BCrypt.gensalt(strength);
+
+            //hash the password`
+            String input = get_password.getEditText().getText().toString();
+            String hashashin = hashPassword(input);
+
+            //                        String hash = generateSHA256(input);
+            // do something with the hash
+//                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",input); //
+            Document email = new Document("email", get_email.getEditText().getText().toString()); //
+            mongoCollection.findOne(email).getAsync(result -> {
+                try {
+                    //Testing Client accounts
+                    Document resultData = result.get();
+                    id = resultData.getObjectId("_id").toString();
+
+                    // hash method
+                    Boolean passwordMatch = BCrypt.checkpw(input, resultData.getString("password"));
+                    if (passwordMatch) {
+                        Intent home_screen = new Intent(MainActivity.this, client_home.class);
+                        home_screen.putExtra("user_ID", id);
+                        startActivity(home_screen);
+                        Log.v("resultData", "oy gago bro tama pareho");
+                    } else {
+                        Log.v("resultData", hashedPassword.toString());
+//                        get_email.setError("Mali");
+//                        get_password.setError("Mali");
+                    }
+//                    Intent home_screen = new Intent(MainActivity.this, client_home.class);
+//                    home_screen.putExtra("user_ID", id);
+//                    startActivity(home_screen);
+
+//                                Log.v("GENESISBOGUK", resultData.getString("password"));
+//                    if (resultData.getString("user").equals("Client")) {// to change Users - clients
+//                        Log.v("resultAccount", "Found in Client");
+//                        Intent home_screen = new Intent(MainActivity.this, client_home.class);
+//                        home_screen.putExtra("user_ID", resultData.getObjectId("_id").toString());
+//                        startActivity(home_screen);
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
+//                        Log.v("resultAccount", "Client not found in Database");
+//                    }
+
+                } catch (Exception client) {
+                    //Testing Employee Accounts
+                    mongoCollection = mongoDatabase.getCollection("employees");
+
+
+                    mongoCollection.findOne(email).getAsync(result1 -> {
+                        try {
+                            Document resultData1 = result1.get();
+                            Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
+
+                            if (resultData1.getString("user").equals("Employees")) {
+                                Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
+                                Log.v("resultAccount", "Found in Employee");
+                                Intent home_screen = new Intent(MainActivity.this, employee_home.class);
+                                home_screen.putExtra("user_ID", resultData1.getObjectId("_id").toString());
+                                startActivity(home_screen);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                Log.v("resultAccount", "Wala sa Employee");
+
+                            }
+                        } catch (Exception employee) {
+                            employee.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "wala pre di ko kita", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+//    private String generateSHA256(String input) throws NoSuchAlgorithmException {
+//        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//        byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+//        StringBuilder hexString = new StringBuilder();
+//        for (byte b : hash) {
+//            String hex = Integer.toHexString(0xff & b);
+//            if (hex.length() == 1) hexString.append('0');
+//            hexString.append(hex);
+//        }
+//        return hexString.toString();
+//    }
 
     private boolean validateemail() {
         String emailinput = get_email.getEditText().getText().toString().trim();

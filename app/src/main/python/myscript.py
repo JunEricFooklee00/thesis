@@ -1,4 +1,4 @@
-def find_closest_employee(employeejob,UserLocation):
+def find_closest_employee(employeejob,UserLocation,forcasted):
 
     #import libraries
     import pymongo #database
@@ -23,6 +23,7 @@ def find_closest_employee(employeejob,UserLocation):
     Find_Worker =  String(employeejob) #'Plumber'
     Project_Location = String(UserLocation) #need to be sys.argv[3] 'Gen. T. De Leon, Valenzuela City, Metro Manila, Philippines'
     profile = 'Profile' #ano to ?
+
     employee_profiles = collection.find({}, {profile: 1})
 
     job_profile_list = [r[profile] for r in employee_profiles]
@@ -45,7 +46,7 @@ def find_closest_employee(employeejob,UserLocation):
     gmaps = googlemaps.Client(key='AIzaSyCfwQxvXZrIM1V3LEREkp7po-yLCTRSMHc')
 
     # Set the number of top matches to return
-    num_matches = int(2h)
+    num_matches = int(forcasted)#forcasted value
 
     # Retrieve the corresponding documents from the collection based on their index
     for i in np.argsort(cosine_similarities)[::-1][:num_matches]:

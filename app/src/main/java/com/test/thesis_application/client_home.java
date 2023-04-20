@@ -91,17 +91,20 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         mongoCollection.findOne(filter).getAsync(result -> {
             if (result.isSuccess()){
                 Document resultdata = result.get();
+
+
                 newstr_UID = resultdata.getObjectId("_id").toString();
                 str_email = resultdata.getString("email");
                 str_birthday = resultdata.getString("birthday");
-                str_contact = resultdata.get("contactNumber").toString();
-//                str_contact = resultdata.getString("contactNumber").toString();
+//                str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
+//                contact = resultdata.getString("contactNumber").toString();
+                str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
                 str_zipcode = resultdata.getString("zipcode");
                 str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
                 navName.setText(resultdata.getString("name"));
                 imagepath = resultdata.getString("resume");
-
+//                str_contact = contact.toString();
                 Picasso.get()
                         .load(imagepath).transform(new CropCircleTransformation())
                         .fit()

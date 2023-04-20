@@ -128,6 +128,8 @@ public class insertjob extends Fragment {
             if(ScopeOfWork.getText().toString().equals("Carpentry Works")){
                 TypeOfWork.setAdapter(carpentry);
                 TypeOfWork.setText("");
+//                if(TypeOfWork.getText().equals("Carpentry Works for Main Counter")){
+//                }
                 Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
             }else if (ScopeOfWork.getText().toString().equals("Mechanical/Metal Works")){
                 TypeOfWork.setAdapter(mechanical);
@@ -330,13 +332,11 @@ public class insertjob extends Fragment {
         }
     }
     private void registerAccount() {
-//        ObjectId objectId = new ObjectId(userid);
-
-        // Create a new order document
+        //Create a new order document
         Document orderDocument = new Document()
                 .append("idUser",userid)
                 .append("name",name.getEditText().getText().toString().trim())
-                .append("TypeOfWork", ScopeOfWork.getText().toString() +" — "+ TypeOfWork.getText().toString())
+                .append("TypeOfWork", TypeOfWork.getText().toString())
                 .append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
                 .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())
                 .append("Unit",Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
@@ -344,10 +344,10 @@ public class insertjob extends Fragment {
                 .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim())
                 .append("ExpectedFinishDate", Objects.requireNonNull(expected.getEditText()).getText().toString().trim())
                 .append("created", new Date());
-        // Create an array of product documents for the order
-//        List<Document> jobs = new ArrayList<Document>();
+        //Create an array of product documents for the order
+        //List<Document> jobs = new ArrayList<Document>();
 
-//        orderDocument.put("idUser", objectId);
+        //orderDocument.put("idUser", objectId);
         mongoCollection.insertOne(orderDocument).getAsync(result -> {
 
             if (result.isSuccess()) {
@@ -359,6 +359,8 @@ public class insertjob extends Fragment {
                 Log.v("Data", "Error:" + result.getError().toString());
             }
         });
+
+
     }
     private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override

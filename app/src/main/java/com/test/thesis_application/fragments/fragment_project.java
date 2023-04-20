@@ -162,13 +162,13 @@ public class fragment_project extends Fragment implements Jobinterface {
 
         // Create a Bundle to pass your data
         Bundle bundle = new Bundle();
-//        bundle.putString("scopeofwork", orders.get(position).getScopeofwork()); // Example of adding a String to the Bundle
-//        bundle.putString("area", orders.get(position).getArea());
-//        bundle.putString("location", orders.get(position).getLocation()); // Example of adding a String to the Bundle
-//        bundle.putString("startingdate", orders.get(position).getStartingDate()); // Example of adding a String to the Bundle
+        bundle.putString("scopeofwork", orders.get(position).getScopeofwork()); // Example of adding a String to the Bundle
+        bundle.putString("area", orders.get(position).getArea());
+        bundle.putString("location", orders.get(position).getLocation()); // Example of adding a String to the Bundle
+        bundle.putString("startingdate", orders.get(position).getStartingDate()); // Example of adding a String to the Bundle
         bundle.putString("_id", orders.get(position).get_id().toString()); // Example of adding a String to the Bundle
         bundle.putString("jobtitle", orders.get(position).getJobTitle()); // Example of adding a String to the Bundle
-//        bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate()); // Example of adding a String to the Bundle
+        bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate()); // Example of adding a String to the Bundle
         bundle.putString("idUser", orders.get(position).getUserId()); // Example of adding a String to the Bundle
 //
 //
