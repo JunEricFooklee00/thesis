@@ -131,6 +131,12 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .addToBackStack(null)
                         .commit();
                 break;
+            case R.id.Mycalendar:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new fragment_Dashboard()).setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+                break;
             case R.id.nav_map:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 //                        new fragment_maps()).setReorderingAllowed(true)
@@ -146,12 +152,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .addToBackStack(null)
                         .commit();
                 break;
-            case R.id.Mycalendar:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new weekView()).setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-                break;
+
             case R.id.nav_myproject:
                 fragment_project project_fragment =  new fragment_project();
                 FragmentTransaction projectTransaction = getSupportFragmentManager().beginTransaction();
