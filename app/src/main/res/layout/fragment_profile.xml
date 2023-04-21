@@ -48,16 +48,17 @@
                 android:id="@+id/profile_ud"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="Object ID: 27349273049240923"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:textSize="15dp"/>
+                android:textSize="20dp"/>
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
 
             android:layout_width="120dp"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -83,7 +84,7 @@
                         android:gravity="center"
                         android:text="Position"
                         android:textColor="#000"
-                        android:textSize="10dp" />
+                        android:textSize="20dp" />
 
                     <TextView
                         android:id="@+id/user_position"
@@ -119,7 +120,7 @@
         <ImageView
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/baseline_person_3_24"/>
+            android:src="@drawable/ic_baseline_person_24"/>
         <TextView
             android:id="@+id/profile_username"
             android:layout_width="wrap_content"
@@ -164,7 +165,7 @@
         <ImageView
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/baseline_numbers_24" />
+            android:src="@drawable/ic_baseline_local_phone_24" />
 
         <TextView
             android:id="@+id/db_contact"
@@ -188,7 +189,7 @@
         <ImageView
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/baseline_home_24" />
+            android:src="@drawable/ic_baseline_place_24" />
 
         <TextView
             android:id="@+id/db_address"

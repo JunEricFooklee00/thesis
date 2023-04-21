@@ -228,10 +228,35 @@ public class jobsinfo extends Fragment {
 
             if (TV_scope.getText().toString().equals("")) ;
             PyObject obj = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
-            Log.d("MYAPP", "Returned object: " + obj.toString());
-//            Log.d("MYAPP", "Value of _id: " + obj.get(["Object ID"]));
-            ml.setText(obj.toString());
-            //            Log.v("resultData", obj.get("first_name").toString());
+
+            String jsonResult = obj.toString();
+//            JSONArray jsonArray = new JSONArray(jsonResult);
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                // Retrieve the desired values from the jsonObject
+//            }
+//            JSONArray jsonArray = new JSONArray(jsonResult);
+//            List<Jobsinfoclass> employees = new ArrayList<>();
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                String objectId = jsonObject.getString("Object ID");
+//                String firstName = jsonObject.getString("first_name");
+//                String lastName = jsonObject.getString("last_name");
+//                String address = jsonObject.getString("address");
+//                String profile = jsonObject.getString("Profile");
+//                String rating = jsonObject.getString("Rating");
+//                String distance = jsonObject.getString("distance");
+//                Jobsinfoclass employee = new Jobsinfoclass(objectId, firstName, lastName, address, profile, rating, distance);
+//                employees.add(employee);
+//            }
+
+
+
+//
+//            Log.d("MYAPP", "Returned object: " + obj.toString());
+////            Log.d("MYAPP", "Value of _id: " + obj.get(["Object ID"]));
+//            ml.setText(obj.toString());
+//            //            Log.v("resultData", obj.get("first_name").toString());
         });
 
 

@@ -61,7 +61,6 @@ public class fragment_profile extends Fragment {
         tv_username = view.findViewById(R.id.profile_username);
         tv_contactNumber = view.findViewById(R.id.db_contact);
         tv_address = view.findViewById(R.id.db_address);
-        tv_zipcode = view.findViewById(R.id.db_zipcode);
 //        button = view.findViewById(R.id.fragment_profile_button);
         profile_pic = view.findViewById(R.id.profile_picture);
         tv_uid = view.findViewById(R.id.profile_ud);
@@ -90,8 +89,8 @@ public class fragment_profile extends Fragment {
         }
         tv_uid.setText("UID: " + uid);
         tv_contactNumber.setText("+63" +contactNumber);
-        tv_address.setText(address);
-        tv_zipcode.setText(zipcode);
+        tv_address.setText(address +zipcode);
+//        tv_zipcode.setText();
         tv_username.setText(username);
         tv_profilename.setText(name);
         tv_profileEmail.setText(email);
