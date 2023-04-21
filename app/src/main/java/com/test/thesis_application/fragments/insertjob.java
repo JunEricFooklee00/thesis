@@ -174,7 +174,7 @@ public class insertjob extends Fragment {
                 return;
             }
             // TODO: add code po here idol
-            registerAccount();
+            insertjob();
         });
         return view;
     }
@@ -331,7 +331,7 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-    private void registerAccount() {
+    private void insertjob() {
         //Create a new order document
         Document orderDocument = new Document()
                 .append("idUser",userid)

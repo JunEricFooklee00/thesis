@@ -124,11 +124,8 @@ public class MainActivity extends AppCompatActivity {
     private String hashPassword(String input) {
 //         Define the strength of the hashing algorithm
         int strength = 10;
-
 //         Generate a salt value
         String salt = BCrypt.gensalt(strength);
-
-
 //         Hash the password using the generated salt
         String hashedPassword = BCrypt.hashpw(input, salt);
 
@@ -144,56 +141,44 @@ public class MainActivity extends AppCompatActivity {
             mongoCollection = mongoDatabase.getCollection("clients");
 
             int strength = 10;
-
 //         Generate a salt value
             String salt1 = BCrypt.gensalt(strength);
-
             //hash the password`
             String input = get_password.getEditText().getText().toString();
-            String hashashin = hashPassword(input);
+//            String hashashin = hashPassword(input);
 
-            //                        String hash = generateSHA256(input);
-            // do something with the hash
-//                        Document email = new Document().append("email", get_email.getEditText().getText().toString()).append("password",input); //
             Document email = new Document("email", get_email.getEditText().getText().toString()); //
             mongoCollection.findOne(email).getAsync(result -> {
+                Document resultData = result.get();
+                id = resultData.getObjectId("_id").toString();
                 try {
-                    //Testing Client accounts
-                    Document resultData = result.get();
-                    id = resultData.getObjectId("_id").toString();
 
-                    // hash method
-                    Boolean passwordMatch = BCrypt.checkpw(input, resultData.getString("password"));
-                    if (passwordMatch) {
-                        Intent home_screen = new Intent(MainActivity.this, client_home.class);
-                        home_screen.putExtra("user_ID", id);
-                        startActivity(home_screen);
-                        Log.v("resultData", "oy gago bro tama pareho");
-                    } else {
-                        Log.v("resultData", hashedPassword.toString());
+                    if (resultData.getString("user").equals("Client")) {
+                        Log.v("resultData",resultData.getString("email"));
+                        Log.v("resultData",resultData.getString("password"));
+
+                            String input1 = get_password.getEditText().getText().toString();
+                            String hash = resultData.getString("password");
+                            Log.v("resultData",salt1);
+
+//                            Boolean passwordMatch =
+                            if(BCrypt.checkpw(input1, hash)) {
+                                Intent home_screen = new Intent(MainActivity.this, client_home.class);
+                                home_screen.putExtra("user_ID", id);
+                                startActivity(home_screen);
+                                Log.v("resultData", "oy gago bro tama pareho");
+                            } else {
+                                Log.v("resultData", "beh bat ganon");
 //                        get_email.setError("Mali");
 //                        get_password.setError("Mali");
+                            }
+
+                    }else {
+                        Log.v("resultData","ayaw beh di ko alam bakit");
                     }
-//                    Intent home_screen = new Intent(MainActivity.this, client_home.class);
-//                    home_screen.putExtra("user_ID", id);
-//                    startActivity(home_screen);
-
-//                                Log.v("GENESISBOGUK", resultData.getString("password"));
-//                    if (resultData.getString("user").equals("Client")) {// to change Users - clients
-//                        Log.v("resultAccount", "Found in Client");
-//                        Intent home_screen = new Intent(MainActivity.this, client_home.class);
-//                        home_screen.putExtra("user_ID", resultData.getObjectId("_id").toString());
-//                        startActivity(home_screen);
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "Client Wrong Password or Username", Toast.LENGTH_LONG).show();
-//                        Log.v("resultAccount", "Client not found in Database");
-//                    }
-
                 } catch (Exception client) {
                     //Testing Employee Accounts
                     mongoCollection = mongoDatabase.getCollection("employees");
-
-
                     mongoCollection.findOne(email).getAsync(result1 -> {
                         try {
                             Document resultData1 = result1.get();
@@ -212,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         } catch (Exception employee) {
                             employee.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "wala pre di ko kita", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "wala pre di ko kita kahit sa employees", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -221,19 +206,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
-//    private String generateSHA256(String input) throws NoSuchAlgorithmException {
-//        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-//        byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-//        StringBuilder hexString = new StringBuilder();
-//        for (byte b : hash) {
-//            String hex = Integer.toHexString(0xff & b);
-//            if (hex.length() == 1) hexString.append('0');
-//            hexString.append(hex);
-//        }
-//        return hexString.toString();
-//    }
 
     private boolean validateemail() {
         String emailinput = get_email.getEditText().getText().toString().trim();

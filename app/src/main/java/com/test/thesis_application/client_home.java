@@ -19,12 +19,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
+import com.test.thesis_application.fragments.calendarview;
 import com.test.thesis_application.fragments.fragment_Dashboard;
 import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
 import com.test.thesis_application.fragments.fragment_settings;
-import com.test.thesis_application.fragments.weekView;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -55,6 +55,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 
         Toolbar toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -99,7 +100,8 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 //                str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
 //                contact = resultdata.getString("contactNumber").toString();
                 str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
-                str_zipcode = resultdata.getString("zipcode");
+//                str_contact = resultdata.get
+                str_zipcode = String.valueOf(resultdata.getInteger("zipcode"));
                 str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
                 navName.setText(resultdata.getString("name"));
@@ -136,6 +138,8 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 //                        new fragment_maps()).setReorderingAllowed(true)
 //                        .addToBackStack(null)
 //                        .commit();
+
+
                 fragment_maps fragmentMaps = new fragment_maps();
                 FragmentTransaction mapsTransaction = getSupportFragmentManager().beginTransaction();
                 //bundle is to pass data
@@ -147,12 +151,18 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .commit();
                 break;
             case R.id.Mycalendar:
+
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                                new weekView()).setReorderingAllowed(true)
+//                        .addToBackStack(null)
+//                        .commit();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new weekView()).setReorderingAllowed(true)
+                                new calendarview()).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;
             case R.id.nav_myproject:
+
                 fragment_project project_fragment =  new fragment_project();
                 FragmentTransaction projectTransaction = getSupportFragmentManager().beginTransaction();
                 //bundle is to pass data
@@ -167,6 +177,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .commit();
                 break;
             case R.id.nav_setting:
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                                 new fragment_settings())
                         .setReorderingAllowed(true)

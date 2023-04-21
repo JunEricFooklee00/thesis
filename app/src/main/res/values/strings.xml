@@ -46,7 +46,7 @@
     <string name="type_of_work">Type of work.</string>
 
     <string-array name="CarpentryWorks">
-        <item >B2 - Carpentry Works for Main Counter</item>
+        <item>B2 - Carpentry Works for Main Counter</item>
     </string-array>
 
     <string-array name="MechanicalMetalWorks">

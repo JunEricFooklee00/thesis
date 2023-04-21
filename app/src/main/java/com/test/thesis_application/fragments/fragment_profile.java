@@ -56,7 +56,6 @@ public class fragment_profile extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
         tv_profilename = view.findViewById(R.id.profile_name);
         tv_profileEmail = view.findViewById(R.id.db_email);
         tv_username = view.findViewById(R.id.profile_username);
@@ -115,4 +114,10 @@ public class fragment_profile extends Fragment {
 //        });
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
 }
