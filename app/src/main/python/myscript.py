@@ -1,4 +1,4 @@
-def find_closest_employee(employeejob,UserLocation,forcasted):
+def find_closest_employee(employeejob,UserLocation,forcasted): #
 
     #import libraries
     import pymongo #database
@@ -20,8 +20,8 @@ def find_closest_employee(employeejob,UserLocation,forcasted):
 
     #supposing this is the string that will find
     #eto un inputs diba kim ?
-    Find_Worker =  String(employeejob) #'Plumber'
-    Project_Location = String(UserLocation) #need to be sys.argv[3] 'Gen. T. De Leon, Valenzuela City, Metro Manila, Philippines'
+    Find_Worker =  str(employeejob)#'Plumber' #'' 'labor helper' employeejob
+    Project_Location = str(UserLocation)#'Gen. T. De Leon, Valenzuela City, Metro Manila, Philippines' #String(UserLocation) #need to be sys.argv[3]
     profile = 'Profile' #ano to ?
 
     employee_profiles = collection.find({}, {profile: 1})
@@ -39,14 +39,14 @@ def find_closest_employee(employeejob,UserLocation,forcasted):
     query_vector = tfidf_matrix[0]
 
     # Compute the cosine similarity
-    cosine_similarities = cosine_similarity(query_vector, tfidf_matrix[1:])[0]
+    cosine_similarities = cosine_similarity(query_vector, tfidf_matrix[0:])[0]
 
     # Create a list to store the top matches
     top_matches = []
     gmaps = googlemaps.Client(key='AIzaSyCfwQxvXZrIM1V3LEREkp7po-yLCTRSMHc')
 
     # Set the number of top matches to return
-    num_matches = int(forcasted)#forcasted value
+    num_matches = int(forcasted)  #int(forcasted) #forcasted value
 
     # Retrieve the corresponding documents from the collection based on their index
     for i in np.argsort(cosine_similarities)[::-1][:num_matches]:

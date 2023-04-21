@@ -5,11 +5,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.textfield.TextInputLayout;
 import com.test.thesis_application.R;
 import com.test.thesis_application.ml.B2CarpentryWorks;
@@ -26,9 +30,10 @@ import java.io.IOException;
 public class jobsinfo extends Fragment {
 
     TextInputLayout output;
-    TextView TV_jobTitle, TV_jobid, TV_scope, TV_area, TV_location, TV_startdate, TV_expecteddate, TV_userid;
+    TextView TV_jobTitle, TV_jobid, TV_scope, TV_area, TV_location, TV_startdate, TV_expecteddate, TV_userid, ml;
     String jobtitle, userId, id, ScopeofWork, area, Location, ExpectedFinishDate, Startingdate;
-    float outputString;
+    Button accept;
+    int outputString;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +41,7 @@ public class jobsinfo extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_jobsinfo, container, false);
 
+        accept = view.findViewById(R.id.Accept);
         TV_jobTitle = view.findViewById(R.id.textView_jobTitle);
         TV_jobid = view.findViewById(R.id.tv_jobID);
         TV_scope = view.findViewById(R.id.tv_scope);
@@ -44,7 +50,7 @@ public class jobsinfo extends Fragment {
         TV_startdate = view.findViewById(R.id.tv_startingdate);
         TV_expecteddate = view.findViewById(R.id.tv_expecteddate);
         output = view.findViewById(R.id.TIL_forcasted);
-
+        ml = view.findViewById(R.id.outputssz);
         Bundle data = getArguments();
         if (data != null) {
             userId = data.getString("idUser");
@@ -70,9 +76,9 @@ public class jobsinfo extends Fragment {
 
 //        Toast.makeText(requireContext(),hours.getClass().getSimpleName(),Toast.LENGTH_LONG).show();
 
-        Log.v("Datatypenicharles",area.getClass().getSimpleName() + area);
+        Log.v("Datatypenicharles", area.getClass().getSimpleName() + area);
         if (TV_scope.getText().equals("B2 - Carpentry Works for Main Counter")) {
-            Toast.makeText(requireContext(),"B2",Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "B2", Toast.LENGTH_LONG).show();
             try {
                 hours = hours * 8;
                 float input1 = area, input2 = hours, productivityratio = 6f; // input1 is area, input 2 is hours , input 3?
@@ -97,8 +103,8 @@ public class jobsinfo extends Fragment {
                     outputString = Math.round(value);
                 }
 
-                output.getEditText().setText(String.valueOf(outputString) );
-
+                output.getEditText().setText(String.valueOf(outputString));
+                output.setEnabled(false);
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
                 model.close();
@@ -106,7 +112,7 @@ public class jobsinfo extends Fragment {
                 // TODO Handle the exception
             }
         } else if (TV_scope.getText().equals("D2 - Pipeline and Fixture Installation")) {
-            Toast.makeText(requireContext(),"Pipeline and Fixture Installation",Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "Pipeline and Fixture Installation", Toast.LENGTH_LONG).show();
 
             try {
                 hours = hours * 8;
@@ -131,7 +137,7 @@ public class jobsinfo extends Fragment {
                 for (float value : outputValues) {
                     outputString = Math.round(value);
                 }
-                output.getEditText().setText(String.valueOf(outputString) );
+                output.getEditText().setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
@@ -140,7 +146,7 @@ public class jobsinfo extends Fragment {
                 // TODO Handle the exception
             }
         } else if (TV_scope.getText().equals("D3 - Drainage Pipeline Installation")) {
-            Toast.makeText(requireContext(),"D3",Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "D3", Toast.LENGTH_LONG).show();
 
             try {
                 hours = hours * 8;
@@ -165,7 +171,7 @@ public class jobsinfo extends Fragment {
                 for (float value : outputValues) {
                     outputString = Math.round(value);
                 }
-                output.getEditText().setText(String.valueOf(outputString) );
+                output.getEditText().setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
@@ -174,7 +180,7 @@ public class jobsinfo extends Fragment {
                 // TODO Handle the exception
             }
         } else if (TV_scope.getText().equals("G1 - Plain Concrete Surfaces (Surface Prep - Primer - Finish Coat)")) {
-            Toast.makeText(requireContext(),"G1",Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "G1", Toast.LENGTH_LONG).show();
 
             try {
                 hours = hours * 8;
@@ -199,7 +205,7 @@ public class jobsinfo extends Fragment {
                 for (float value : outputValues) {
                     outputString = Math.round(value);
                 }
-                output.getEditText().setText(String.valueOf(outputString) );
+                output.getEditText().setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
@@ -208,72 +214,28 @@ public class jobsinfo extends Fragment {
                 // TODO Handle the exception
             }
         } else {
-            Toast.makeText(requireContext(),"tangina ayaw beh",Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "No need i forcast po", Toast.LENGTH_LONG).show();
         }
 
-//        }else {
-//
-//        }
-        //start of tenserflowlite forecasting.
-//        if (TV_scope.equals("")){
-//
-//        }
-//        try {
-//            float input1 = 6.75f, input2 = 16f, productivityratio = 6f; // input1 is , input 2 is
-//
-//            float[] inputValues = new float[]{productivityratio,input1,input2 };
-//            B1Works model = B1Works.newInstance(requireContext());
-//
-//            // Creates inputs for reference.
-//            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
-//
-//            inputFeature0.loadArray(inputValues);
-//
-//            // Runs model inference and gets result.
-//            B1Works.Outputs outputs = model.process(inputFeature0);
-//            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-//
-//            float[] outputValues = outputFeature0.getFloatArray();
-//
-//            float outputString = 0;
-//
-//            for (float value : outputValues) {
-//                outputString = Math.round(value);
-//            }
-//            output.setText("The recommended amount of workers for this project is :"+ outputString);
-//
-////            Log.v("Model Output", outputString);
-//            // Releases model resources if no longer used.
-//            model.close();
-//        } catch (IOException e) {
-//            // TODO Handle the exception
-//        }
+        if (!Python.isStarted())
+            Python.start(new AndroidPlatform(requireContext()));
 
-//        try {
-//            float[] inputValues = new float[]{6.75f,16f, 1.125014063f};
-//            B1Works ibangmodel = B1Works.newInstance(requireContext());
-//
-//            // Creates inputs for reference.
-//            TensorBuffer inputFeature1 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
-//            inputFeature1.loadArray(inputValues);
-//            // Runs model inference and gets result.
-//            B1Works.Outputs outputs = ibangmodel.process(inputFeature1);
-//            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-//
-//            float[] outputValues = outputFeature0.getFloatArray();
-//            String outputString = "Output values: ";
-//            for (float value : outputValues) {
-//                outputString += value + ", ";
-//            }
-//            Log.v("Model Output", outputString);
-//            // Releases model resources if no longer used.
-//            ibangmodel.close();
-//        } catch (IOException e) {
-//            // TODO Handle the exception
-//        }
 
-//end of tenserflowlite
+        Python py = Python.getInstance();
+        final PyObject pyobj = py.getModule("myscript");
+
+        accept.setOnClickListener((view1) -> {
+
+            if (TV_scope.getText().toString().equals("")) ;
+            PyObject obj = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
+            Log.d("MYAPP", "Returned object: " + obj.toString());
+//            Log.d("MYAPP", "Value of _id: " + obj.get(["Object ID"]));
+            ml.setText(obj.toString());
+            //            Log.v("resultData", obj.get("first_name").toString());
+        });
+
+
         return view;
-    }
+    }//end of oncreateView
 
 }

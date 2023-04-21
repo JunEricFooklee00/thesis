@@ -58,21 +58,21 @@ public class insertjob extends Fragment {
     MongoCollection<Document> mongoCollection;
 
     //declare variables
-    private AutoCompleteTextView ScopeOfWork, TypeOfWork,actv_unit;
-    private TextInputLayout title, area, unit, TILlocation, Sdate, expected,name;
+    private AutoCompleteTextView ScopeOfWork, TypeOfWork, actv_unit;
+    private TextInputLayout title, area, unit, TILlocation, Sdate, expected, name;
     private int mYear;
     private int mMonth;
     private int mDayOfMonth;
     private TextInputEditText TietAge;
     //    private TextInputLayout  ;
-    private String userid,nameuser,geocode;
+    private String userid, nameuser, geocode;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_insertjob, container, false);
         // TODO: to pass client id as the primary key of each job
-        TietAge= view.findViewById(R.id.TIET_age);
+        TietAge = view.findViewById(R.id.TIET_age);
         title = view.findViewById(R.id.TIL_title);
         area = view.findViewById(R.id.TIL_Area);
         unit = view.findViewById(R.id.TIL_unit);
@@ -105,6 +105,7 @@ public class insertjob extends Fragment {
         String[] unit = getResources().getStringArray(R.array.unit);
         ArrayAdapter<String> Unit = new ArrayAdapter<>(requireContext(), R.layout.dropdown_unit, unit);
         actv_unit = view.findViewById(R.id.actv_unit);
+
         actv_unit.setAdapter(Unit);
 
         String[] CarpWork = getResources().getStringArray(R.array.CarpentryWorks);
@@ -125,26 +126,33 @@ public class insertjob extends Fragment {
         ScopeOfWork = view.findViewById(R.id.filled_exposed);
         ScopeOfWork.setAdapter(jobadapter);
         ScopeOfWork.setOnItemClickListener((parent, view1, position, id) -> {
-            if(ScopeOfWork.getText().toString().equals("Carpentry Works")){
+            if (ScopeOfWork.getText().toString().equals("Carpentry Works")) {
                 TypeOfWork.setAdapter(carpentry);
+                actv_unit.setText("Square Meter");
+
                 TypeOfWork.setText("");
 //                if(TypeOfWork.getText().equals("Carpentry Works for Main Counter")){
 //                }
-                Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
-            }else if (ScopeOfWork.getText().toString().equals("Mechanical/Metal Works")){
+                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+            } else if (ScopeOfWork.getText().toString().equals("Mechanical/Metal Works")) {
                 TypeOfWork.setAdapter(mechanical);
                 TypeOfWork.setText("");
+                actv_unit.setText("");
+                actv_unit.setAdapter(Unit);
 
-                Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
-            }else if (ScopeOfWork.getText().toString().equals("Plumbing Works")){
+                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+            } else if (ScopeOfWork.getText().toString().equals("Plumbing Works")) {
                 TypeOfWork.setAdapter(plumbing);
                 TypeOfWork.setText("");
+                actv_unit.setText("Linear Meter");
 
-                Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
-            }else if (ScopeOfWork.getText().toString().equals("Painting Works")){
+
+                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+            } else if (ScopeOfWork.getText().toString().equals("Painting Works")) {
                 TypeOfWork.setAdapter(painting);
                 TypeOfWork.setText("");
-                Toast.makeText(requireContext(),ScopeOfWork.getText().toString(),Toast.LENGTH_LONG).show();
+                actv_unit.setText("Square Meter");
+                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -169,8 +177,8 @@ public class insertjob extends Fragment {
         mongoCollection = mongoDatabase.getCollection("joborders");
 
         submit.setOnClickListener(v -> {
-            if (!validateScopeofWork() | !validatetitle() |!validateexpectedfinishdate() | !validateArea() |!validatesubdiv() |!validateunit() |!validatelocation()
-            |! validatestartingdate() |!validateexpectedfinishdate()|!validatename())  {
+            if (!validateScopeofWork() | !validatetitle() | !validateexpectedfinishdate() | !validateArea() | !validatesubdiv() | !validateunit() | !validatelocation()
+                    | !validatestartingdate() | !validateexpectedfinishdate() | !validatename() | !validateInputArea() |!validateinputDate()) {
                 return;
             }
             // TODO: add code po here idol
@@ -204,16 +212,16 @@ public class insertjob extends Fragment {
 //                }
 //                tvAddress.setText(sb.toString());
 //                 geocode = sb.toString();
-                    geocode = address.getAddressLine(0);
+                geocode = address.getAddressLine(0);
             } else {
-                 geocode = "Cannot get location";
+                geocode = "Cannot get location";
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private boolean validatetitle(){
+    private boolean validatetitle() {
         String strtitle = Objects.requireNonNull(title.getEditText()).getText().toString().trim();
         if (strtitle.isEmpty()) {
             title.setError("Username cannot be empty.");
@@ -225,7 +233,8 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-    private boolean validatename(){
+
+    private boolean validatename() {
         String strname = Objects.requireNonNull(name.getEditText()).getText().toString().trim();
         if (strname.isEmpty()) {
             name.setError("Username cannot be empty.");
@@ -237,65 +246,205 @@ public class insertjob extends Fragment {
             return true;
         }
     }
+
     private boolean validateScopeofWork() {
         String sow = Objects.requireNonNull(ScopeOfWork.getText()).toString().trim();
 
-        if (sow.isEmpty() ){
+        if (sow.isEmpty()) {
             ScopeOfWork.setError("this field cannot be empty.");
 
             return false;
-        } else if( sow.equals("Unit")){
+        } else if (sow.equals("Unit")) {
             ScopeOfWork.setError("Please Choose a user type.");
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
+
     private boolean validatesubdiv() {
         String subdivi = Objects.requireNonNull(TypeOfWork.getText()).toString().trim();
 
-        if (subdivi.isEmpty() ){
+        if (subdivi.isEmpty()) {
             TypeOfWork.setError("Please Choose a Sub-division.");
 
             return false;
-        } else if( subdivi.equals("Sub-division.")){
+        } else if (subdivi.equals("Sub-division.")) {
             TypeOfWork.setError("Please Choose a Sub-division.");
             return false;
-        }
-        else{
+        } else {
+            TypeOfWork.setError(null);
+
             return true;
         }
     }
+
     private boolean validateunit() {
         String strunit = Objects.requireNonNull(actv_unit.getText()).toString().trim();
 
-        if (strunit.isEmpty() ){
+        if (strunit.isEmpty()) {
             actv_unit.setError("Field cannot be empty.");
 
             return false;
-        } else if( strunit.equals("Unit")){
+        } else if (strunit.equals("Unit")) {
             actv_unit.setError("Please Choose Unit");
             return false;
-        }
-        else{
+        } else {
             actv_unit.setError(null);
             return true;
         }
     }
-    private boolean validateArea(){
+
+    private boolean validateArea() {
         String strarea = Objects.requireNonNull(area.getEditText()).getText().toString().trim();
+        String strunit = Objects.requireNonNull(actv_unit.getText()).toString();
+
         if (strarea.isEmpty()) {
             area.setError("Name cannot be empty.");
             return false;
-
         } else {
             area.setError(null);
             area.setErrorEnabled(false);
             return true;
         }
+
     }
-    public boolean validatelocation(){
+
+    private boolean validateInputArea() {
+        String strArea = Objects.requireNonNull(area.getEditText()).getText().toString().trim();
+//        String strUnit = Objects.requireNonNull(actv_unit.getText()).toString().trim();
+
+        if (TypeOfWork.getText().toString().equals("B2 - Carpentry Works for Main Counter")) {
+            try {
+                double value = Double.parseDouble(strArea);
+                if (value >= 4.84 && value <= 9.61) {
+                    area.setError(null);
+                    return true;
+                } else {
+                    area.setError("Value must be between 4.84 and 9.61");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                area.setError("Invalid value");
+                return false;
+            }
+        } else if (TypeOfWork.getText().toString().equals("D2 - Pipeline and Fixture Installation")) {
+            try {
+                double value = Double.parseDouble(strArea);
+                if (value >= 1 && value <= 12) {
+                    area.setError(null);
+                    return true;
+                } else {
+                    area.setError("Value must be between 1 and 12");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                area.setError("Invalid value");
+                return true;
+            }
+        } else if (TypeOfWork.getText().toString().equals("D3 - Drainage Pipeline Installation")) {
+            try {
+                double value = Double.parseDouble(strArea);
+                if (value >= 4 && value <= 12.2) {
+                    area.setError(null);
+                    return true;
+                } else {
+                    area.setError("Value must be between 4 and 12.2");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                area.setError("Invalid value");
+                return true;
+            }
+        } else if (TypeOfWork.getText().toString().equals("G1 - Plain Concrete Surfaces (Surface Prep - Primer - Finish Coat)")) {
+            try {
+                double value = Double.parseDouble(strArea);
+                if (value >= 9.95 && value <= 152.06) {
+                    area.setError(null);
+                    return true;
+
+                } else {
+                    area.setError("Value must be between 9.95 and 152.06");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                area.setError("Invalid value");
+                return false;
+            }
+        } else {
+            // handle case where unit is not recognized
+            return true;
+        }
+    }
+
+    private boolean validateinputDate() {
+        String strfinishdate = Objects.requireNonNull(expected.getEditText()).getText().toString().trim();
+//        String strUnit = Objects.requireNonNull(actv_unit.getText()).toString().trim();
+
+        if (TypeOfWork.getText().toString().equals("B2 - Carpentry Works for Main Counter")) {
+            try {
+                double value = Double.parseDouble(strfinishdate);
+                if (value >= 1 && value <= 3) {
+                    expected.setError(null);
+                    return true;
+                } else {
+                    expected.setError("Value must be between 1 and 3");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                expected.setError("Invalid value");
+                return false;
+            }
+        } else if (TypeOfWork.getText().toString().equals("D2 - Pipeline and Fixture Installation")) {
+            try {
+                double value = Double.parseDouble(strfinishdate);
+                if (value >= 1 && value <= 2) {
+                    expected.setError(null);
+                    return true;
+                } else {
+                    expected.setError("Value must be between 1 and 2");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                area.setError("Invalid value");
+                return true;
+            }
+        } else if (TypeOfWork.getText().toString().equals("D3 - Drainage Pipeline Installation")) {
+            try {
+                double value = Double.parseDouble(strfinishdate);
+                if (value >= 4 && value <= 12.2) {
+                    expected.setError(null);
+                    return true;
+                } else {
+                    expected.setError("Value must be between 1 and 2");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                expected.setError("Invalid value");
+                return true;
+            }
+        } else if (TypeOfWork.getText().toString().equals("G1 - Plain Concrete Surfaces (Surface Prep - Primer - Finish Coat)")) {
+            try {
+                double value = Double.parseDouble(strfinishdate);
+                if (value >=1  && value <= 4) {
+                    expected.setError(null);
+                    return true;
+
+                } else {
+                    expected.setError("Value must be between 9.95 and 152.06");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                expected.setError("Invalid value");
+                return false;
+            }
+        } else {
+            // handle case where unit is not recognized
+            return true;
+        }
+    }
+
+    public boolean validatelocation() {
         String strlocation = Objects.requireNonNull(TILlocation.getEditText()).getText().toString().trim();
         if (strlocation.isEmpty()) {
             TILlocation.setError("Name cannot be empty.");
@@ -307,7 +456,8 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-    private boolean validatestartingdate(){
+
+    private boolean validatestartingdate() {
         String strSdate = Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim();
         if (strSdate.isEmpty()) {
             Sdate.setError("Please choose a starting date.");
@@ -319,7 +469,8 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-    private boolean validateexpectedfinishdate(){
+
+    private boolean validateexpectedfinishdate() {
         String strfinishdate = Objects.requireNonNull(expected.getEditText()).getText().toString().trim();
         if (strfinishdate.isEmpty()) {
             expected.setError("Please choose a starting date.");
@@ -331,15 +482,16 @@ public class insertjob extends Fragment {
             return true;
         }
     }
+
     private void insertjob() {
         //Create a new order document
         Document orderDocument = new Document()
-                .append("idUser",userid)
-                .append("name",name.getEditText().getText().toString().trim())
+                .append("idUser", userid)
+                .append("name", name.getEditText().getText().toString().trim())
                 .append("TypeOfWork", TypeOfWork.getText().toString())
                 .append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
                 .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())
-                .append("Unit",Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
+                .append("Unit", Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
                 .append("Location", Objects.requireNonNull(TILlocation.getEditText()).getText().toString().trim())
                 .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim())
                 .append("ExpectedFinishDate", Objects.requireNonNull(expected.getEditText()).getText().toString().trim())
@@ -355,20 +507,21 @@ public class insertjob extends Fragment {
                 Log.v("Data", "Data successfully addedd");
                 getActivity().onBackPressed();
             } else {
-                Toast.makeText(requireContext(),"di ko alam",Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), "di ko alam", Toast.LENGTH_LONG).show();
                 Log.v("Data", "Error:" + result.getError().toString());
             }
         });
 
 
     }
+
     private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR,year);
-            cal.set(Calendar.MONTH,month);
-            cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             String datepickerstring = DateFormat.getDateInstance(DateFormat.SHORT).format(cal.getTime());
             TietAge.setText(datepickerstring);
