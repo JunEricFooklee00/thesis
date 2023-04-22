@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="Object ID: 27349273049240923"
+                android:text="User ID: 2857387529853958"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:textSize="20dp"/>

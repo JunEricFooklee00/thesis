@@ -46,7 +46,7 @@
     <string name="type_of_work">Type of work.</string>
 
     <string-array name="CarpentryWorks">
-        <item >B2 - Carpentry Works for Main Counter</item>
+        <item>B2 - Carpentry Works for Main Counter</item>
     </string-array>
 
     <string-array name="MechanicalMetalWorks">
@@ -112,4 +112,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="jobtitle">JobTitle</string>
     <string name="NumberOfWorkers">Number of workers</string>
+    <string name="dashboard">DASHBOARD</string>
+    <string name="notification">Notification</string>
+    <string name="plumbing">Plumbing</string>
 </resources>

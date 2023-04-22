@@ -19,12 +19,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
+import com.test.thesis_application.fragments.calendarview;
 import com.test.thesis_application.fragments.fragment_Dashboard;
 import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
 import com.test.thesis_application.fragments.fragment_settings;
-import com.test.thesis_application.fragments.weekView;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -55,7 +55,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 
         Toolbar toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("");
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -99,7 +99,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 //                str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
 //                contact = resultdata.getString("contactNumber").toString();
                 str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
-                str_zipcode = resultdata.getString("zipcode");
+                str_zipcode = Integer.valueOf(resultdata.getInteger("zipcode")).toString();
                 str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
                 navName.setText(resultdata.getString("name"));
@@ -133,7 +133,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.Mycalendar:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new fragment_Dashboard()).setReorderingAllowed(true)
+                                new calendarview()).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;
