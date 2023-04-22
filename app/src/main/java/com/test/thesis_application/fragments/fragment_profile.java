@@ -143,7 +143,7 @@ public class fragment_profile extends Fragment {
                     updateOne();
                 } else {
                    Log.v("MongoDB","HUH");
-
+//GOLTEB SHEET
                 }
             }
         });
