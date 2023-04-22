@@ -1,11 +1,14 @@
 package com.test.thesis_application.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,16 +18,21 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.test.thesis_application.EmployeeList;
 import com.test.thesis_application.R;
 import com.test.thesis_application.ml.B2CarpentryWorks;
 import com.test.thesis_application.ml.D2Pipeline;
 import com.test.thesis_application.ml.D3DrainagePipeline;
 import com.test.thesis_application.ml.G1plainconcrete;
 
+import org.json.JSONObject;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class jobsinfo extends Fragment {
@@ -225,39 +233,52 @@ public class jobsinfo extends Fragment {
         final PyObject pyobj = py.getModule("myscript");
 
         accept.setOnClickListener((view1) -> {
+            ProgressBar progressBar = getView().findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
 
-            if (TV_scope.getText().toString().equals("")) ;
-            PyObject obj = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
+            Handler handler = new Handler(Looper.getMainLooper());
 
-            String jsonResult = obj.toString();
-//            JSONArray jsonArray = new JSONArray(jsonResult);
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                // Retrieve the desired values from the jsonObject
-//            }
-//            JSONArray jsonArray = new JSONArray(jsonResult);
-//            List<Jobsinfoclass> employees = new ArrayList<>();
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                String objectId = jsonObject.getString("Object ID");
-//                String firstName = jsonObject.getString("first_name");
-//                String lastName = jsonObject.getString("last_name");
-//                String address = jsonObject.getString("address");
-//                String profile = jsonObject.getString("Profile");
-//                String rating = jsonObject.getString("Rating");
-//                String distance = jsonObject.getString("distance");
-//                Jobsinfoclass employee = new Jobsinfoclass(objectId, firstName, lastName, address, profile, rating, distance);
-//                employees.add(employee);
-//            }
+            new Thread(() -> {
+                // execute the time-consuming function here
+//                List<JSONObject> results = find_closest_employee("Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
 
+                // create a list of Employee objects from the JSON objects
+//                List<EmployeeList> employees = new ArrayList<>();
+//                for (JSONObject result : results) {
+//                    EmployeeList employee = new EmployeeList(
+//                            result.getString("Object ID"),
+//                            result.getString("first_name"),
+//                            result.getString("last_name"),
+//                            result.getString("address"),
+//                            result.getString("Profile"),
+//                            result.getString("Rating"),
+//                            result.getString("distance")
+//                    );
+//                    employees.add(employee);
+//                }
 
+                // create an EmployeeList object from the list of employees
+//                EmployeeList employeeList = new EmployeeList(employees);
 
+                // serialize the EmployeeList object to JSON using GSON
+//                Gson gson = new Gson();
+////                String jsonResult = gson.toJson(employeeList);
 //
-//            Log.d("MYAPP", "Returned object: " + obj.toString());
-////            Log.d("MYAPP", "Value of _id: " + obj.get(["Object ID"]));
-//            ml.setText(obj.toString());
-//            //            Log.v("resultData", obj.get("first_name").toString());
+//                handler.post(() -> {
+//                    // update the UI here
+////                    ml.setText(jsonResult);
+//                    progressBar.setVisibility(View.GONE);
+                PyObject obj = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
+                String jsonResult = obj.toString();
+
+                handler.post(() -> {
+                    // update the UI here
+                    ml.setText(jsonResult);
+                    progressBar.setVisibility(View.GONE);
+                });
+            }).start();
         });
+
 
 
         return view;
