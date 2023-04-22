@@ -84,6 +84,9 @@ dependencies {
     implementation 'com.karumi:dexter:6.2.3'
     implementation 'jp.wasabeef:picasso-transformations:2.4.0'
 
+    //to convert
+    implementation 'com.google.code.gson:gson:2.8.9'
+
     //password hash
     implementation 'org.mindrot:jbcrypt:0.4'
 

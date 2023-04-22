@@ -40,7 +40,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class client_home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     TextView navName, navUsername;
-    private String imagepath,str_email,str_contact,str_birthday, str_address,str_zipcode,str_UID,newstr_UID;
+    private String imagepath,str_email,str_contact,str_birthday, str_address,str_zipcode,str_UID,newstr_UID,usertype;
 
     ImageView nav_avatar;
     String Appid = "employeems-mcwma";
@@ -92,19 +92,18 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
             if (result.isSuccess()){
                 Document resultdata = result.get();
 
-
+                usertype = resultdata.getString("user");
                 newstr_UID = resultdata.getObjectId("_id").toString();
                 str_email = resultdata.getString("email");
                 str_birthday = resultdata.getString("birthday");
-//                str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
-//                contact = resultdata.getString("contactNumber").toString();
-                str_contact = String.valueOf(resultdata.getDouble("contactNumber"));
-                str_zipcode = Integer.valueOf(resultdata.getInteger("zipcode")).toString();
+
+                str_contact = Double.valueOf(resultdata.getDouble("contactNumber")).toString();
+                str_zipcode = resultdata.getString("zipcode");
                 str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
                 navName.setText(resultdata.getString("name"));
-                imagepath = resultdata.getString("resume");
-//                str_contact = contact.toString();
+                imagepath = resultdata.getString("avatar");
+
                 Picasso.get()
                         .load(imagepath).transform(new CropCircleTransformation())
                         .fit()
@@ -184,13 +183,13 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 data.putString("uid",newstr_UID);
                 data.putString("username",navUsername.getText().toString());
                 data.putString("name",navName.getText().toString());
-                data.putString("resume",imagepath);
+                data.putString("avatar",imagepath);
                 data.putString("email",str_email);
                 data.putString("birthday",str_birthday);
                 data.putString("contactNumber",str_contact);
                 data.putString("zipcode",str_zipcode);
                 data.putString("address",str_address);
-
+                data.putString("user",usertype);
                 profile_fragment.setArguments(data);
                 fragmentTransaction.replace(R.id.fragment_container,profile_fragment).setReorderingAllowed(true)
                         .addToBackStack(null)
