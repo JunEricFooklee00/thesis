@@ -69,12 +69,12 @@ def find_closest_employee(employeejob,UserLocation,forcasted): #
     results = []
     for employee in top_matches:
         result = {
-            'Object ID' : employee['_id'],
+            'employeeId' : employee['_id'],
             'first_name': employee['first_name'],
             'last_name': employee['last_name'],
             'address': employee['address'],
             'Profile': employee['Profile'],
-            #'Availability': employee['Availability'],
+            'Availability': employee['Availability'],
             'Rating': employee['Rating'],
             'distance': employee['distance']
         }

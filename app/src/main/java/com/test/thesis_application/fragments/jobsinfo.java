@@ -12,20 +12,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.fragment.app.Fragment;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
+
 import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
-import com.test.thesis_application.EmployeeList;
 import com.test.thesis_application.R;
 import com.test.thesis_application.ml.B2CarpentryWorks;
 import com.test.thesis_application.ml.D2Pipeline;
 import com.test.thesis_application.ml.D3DrainagePipeline;
 import com.test.thesis_application.ml.G1plainconcrete;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -240,44 +241,91 @@ public class jobsinfo extends Fragment {
 
             new Thread(() -> {
                 // execute the time-consuming function here
-//                List<JSONObject> results = find_closest_employee("Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
 
-                // create a list of Employee objects from the JSON objects
-//                List<EmployeeList> employees = new ArrayList<>();
-//                for (JSONObject result : results) {
-//                    EmployeeList employee = new EmployeeList(
-//                            result.getString("Object ID"),
-//                            result.getString("first_name"),
-//                            result.getString("last_name"),
-//                            result.getString("address"),
-//                            result.getString("Profile"),
-//                            result.getString("Rating"),
-//                            result.getString("distance")
-//                    );
-//                    employees.add(employee);
-//                }
-
-                // create an EmployeeList object from the list of employees
-//                EmployeeList employeeList = new EmployeeList(employees);
-
-                // serialize the EmployeeList object to JSON using GSON
-//                Gson gson = new Gson();
-////                String jsonResult = gson.toJson(employeeList);
-//
-//                handler.post(() -> {
-//                    // update the UI here
-////                    ml.setText(jsonResult);
-//                    progressBar.setVisibility(View.GONE);
                 PyObject obj = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
+
+                List<JSONObject> results = new ArrayList<>();
+                for (PyObject element : obj.asList()) {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(element.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    results.add(jsonObject);
+                }
+//                results.get(0).toString();
+//                for (JSONObject result : results) {
+//                    System.out.println("Object ID: " + result.getString("Object ID"));
+//                    System.out.println("First Name: " + result.getString("first_name"));
+//                    System.out.println("Last Name: " + result.getString("last_name"));
+//                    System.out.println("Address: " + result.getString("address"));
+//                    System.out.println("Profile: " + result.getString("Profile"));
+//                    System.out.println("Rating: " + result.getString("Rating"));
+//                    System.out.println("Distance: " + result.getString("distance"));
+//                }
                 String jsonResult = obj.toString();
 
                 handler.post(() -> {
                     // update the UI here
-                    ml.setText(jsonResult);
+                    try {
+                        for (int i = 0; i < results.size(); i++) {
+                            JSONObject employee = results.get(i);
+                            ml.setText("id: " +employee.getString("employeeId") +"," + "First Name: " + employee.getString("first_name") + ", Last Name: " + employee.getString("last_name"));
+                            Log.d("Employee", ""+employee.getString("employeeId") +"," + "First Name: " + employee.getString("first_name") + ", Last Name: " + employee.getString("last_name"));
+                        }
+
+
+//                        ml.setText(results.get(0).getString("employeeId"));
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                     progressBar.setVisibility(View.GONE);
+
+//                    for (JSONObject employee : results) {
+//                        try {
+//                            String employeeId = employee.getString("employeeId");
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            String firstName = employee.getString("first_name");
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            String lastName = employee.getString("last_name");
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            String address = employee.getString("address");
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            String profile = employee.getString("Profile");
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            String rating = employee.getString("Rating");
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            String distance = employee.getString("distance");
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+
+                        // do something with the extracted employee details
+                        // e.g. display them in a TextView or add them to a list
+//                    }
                 });
             }).start();
-        });
+
+        });//end of onclick listener
 
 
 

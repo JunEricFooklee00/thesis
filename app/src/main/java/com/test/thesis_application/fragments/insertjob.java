@@ -412,7 +412,7 @@ public class insertjob extends Fragment {
         } else if (TypeOfWork.getText().toString().equals("D3 - Drainage Pipeline Installation")) {
             try {
                 double value = Double.parseDouble(strfinishdate);
-                if (value >= 4 && value <= 12.2) {
+                if (value >= 1 && value <= 2) {
                     expected.setError(null);
                     return true;
                 } else {
@@ -431,7 +431,7 @@ public class insertjob extends Fragment {
                     return true;
 
                 } else {
-                    expected.setError("Value must be between 9.95 and 152.06");
+                    expected.setError("Value must be between 1 and 4");
                     return false;
                 }
             } catch (NumberFormatException e) {

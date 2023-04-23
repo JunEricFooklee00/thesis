@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loginClientAccount;
     private TextInputLayout get_email, get_password;
     private TextView registerButton;
-    String id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             Document email = new Document("email", get_email.getEditText().getText().toString()); //
             mongoCollection.findOne(email).getAsync(result -> {
                 Document resultData = result.get();
-                id = resultData.getObjectId("_id").toString();
+                String id = resultData.getObjectId("_id").toString();
                 try {
 
                     if (resultData.getString("user").equals("Client")) {
