@@ -489,7 +489,7 @@ public class insertjob extends Fragment {
                 .append("idUser", userid)
                 .append("name", name.getEditText().getText().toString().trim())
                 .append("TypeOfWork", TypeOfWork.getText().toString())
-                .append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
+                .append("ProjectName", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
                 .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())
                 .append("Unit", Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
                 .append("Location", Objects.requireNonNull(TILlocation.getEditText()).getText().toString().trim())

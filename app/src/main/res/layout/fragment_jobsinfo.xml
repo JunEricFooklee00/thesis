@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_blue"
+    android:background="@drawable/jobsinputbg"
     android:orientation="vertical"
     tools:context=".fragments.jobsinfo">
 
@@ -15,14 +15,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:background="@drawable/jobsinputbg">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView2"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,59 +34,132 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/jobtitle"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:textColor="@color/light_blue"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.055"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="2dp"
+                        android:background="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_jobTitle"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:id="@+id/Job"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+
+                        android:text="Job ID: "
+                        app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/view" />
 
                     <TextView
                         android:id="@+id/tv_jobID"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="JobID"
-                        app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle" />
+                        app:layout_constraintStart_toEndOf="@+id/Job"
+                        app:layout_constraintTop_toTopOf="@+id/Job" />
+
+                    <TextView
+                        android:id="@+id/Scope"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Scope: "
+                        app:layout_constraintStart_toStartOf="@+id/Job"
+                        app:layout_constraintTop_toBottomOf="@+id/Job" />
 
                     <TextView
                         android:id="@+id/tv_scope"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:text="@string/Scope_of_work"
-                        app:layout_constraintStart_toStartOf="@+id/tv_jobID"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle" />
+                        app:layout_constraintStart_toEndOf="@+id/Scope"
+                        app:layout_constraintTop_toTopOf="@+id/Scope" />
+
+                    <TextView
+                        android:id="@+id/Areaunit"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Area: "
+                        app:layout_constraintStart_toStartOf="@+id/Scope"
+                        app:layout_constraintTop_toBottomOf="@+id/Scope" />
 
                     <TextView
                         android:id="@+id/tv_Area"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/area"
-                        app:layout_constraintStart_toStartOf="@+id/tv_scope"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_scope" />
+                        app:layout_constraintStart_toEndOf="@+id/Areaunit"
+                        app:layout_constraintTop_toTopOf="@+id/Areaunit" />
+
+
+                    <TextView
+                        android:id="@+id/Loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+
+                        android:text="Location: "
+                        app:layout_constraintStart_toStartOf="@+id/Areaunit"
+                        app:layout_constraintTop_toBottomOf="@+id/Areaunit" />
 
                     <TextView
                         android:id="@+id/tv_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/location"
-                        app:layout_constraintStart_toStartOf="@+id/tv_Area"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_Area" />
+
+                        app:layout_constraintStart_toEndOf="@+id/Loc"
+                        app:layout_constraintTop_toTopOf="@+id/Loc" />
+
+                    <TextView
+                        android:id="@+id/startD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Date: "
+
+                        app:layout_constraintStart_toStartOf="@+id/Loc"
+                        app:layout_constraintTop_toBottomOf="@+id/Loc" />
 
                     <TextView
                         android:id="@+id/tv_startingdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/start_date"
-                        app:layout_constraintStart_toStartOf="@+id/tv_location"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+                        app:layout_constraintStart_toEndOf="@+id/startD"
+                        app:layout_constraintTop_toTopOf="@+id/startD" />
+
+                    <TextView
+                        android:id="@+id/exp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:text="Expected Date of Finish: "
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/startD"
+                        app:layout_constraintTop_toBottomOf="@+id/startD" />
 
                     <TextView
                         android:id="@+id/tv_expecteddate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+
                         android:text="@string/Expectedfinishdate"
-                        app:layout_constraintStart_toStartOf="@+id/tv_startingdate"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_startingdate" />
+                        app:layout_constraintBottom_toBottomOf="@+id/exp"
+                        app:layout_constraintStart_toEndOf="@+id/exp"
+                        app:layout_constraintTop_toTopOf="@+id/exp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -112,6 +183,7 @@
                         android:layout_marginTop="16dp"
                         android:text="Job Workers"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:textColor="@color/light_blue"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.055"
                         app:layout_constraintStart_toStartOf="parent"
@@ -197,32 +269,14 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
-                        android:id="@+id/reject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="REJECT"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/Suggest" />
-
-                    <Button
-                        android:id="@+id/Suggest"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="SUGGEST"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/TIL_unskilled" />
-
-                    <Button
                         android:id="@+id/Accept"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="ACCEPT"
+                        android:text="SUGGEST"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/Suggest" />
+                        app:layout_constraintEnd_toEndOf="@+id/TIL_unskilled"
+                        app:layout_constraintStart_toEndOf="@+id/textView4"
+                        app:layout_constraintTop_toBottomOf="@+id/TIL_unskilled" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -230,21 +284,36 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview3"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/cardView3">
-                
-                <TextView
-                    android:id="@+id/outputssz"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="invisible"/>
 
+              <androidx.appcompat.widget.LinearLayoutCompat
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+                  <TextView
+                      android:id="@+id/outputssz"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content" />
+
+
+                  <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Recommended Workers"
+                      android:textColor="@color/light_blue"
+                      android:textSize="29dp"/>
+                  <ProgressBar
+                      android:id="@+id/progressBar"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:visibility="invisible" />
+                  <androidx.recyclerview.widget.RecyclerView
+                      android:id="@+id/recyclerView"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+              </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 
 import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.textfield.TextInputLayout;
+import com.test.thesis_application.EmployeeAdapter;
 import com.test.thesis_application.R;
 import com.test.thesis_application.ml.B2CarpentryWorks;
 import com.test.thesis_application.ml.D2Pipeline;
@@ -81,9 +84,7 @@ public class jobsinfo extends Fragment {
         TV_expecteddate.setText(ExpectedFinishDate);
         Float area = new Float(TV_area.getText().toString());
         Float hours = new Float(TV_expecteddate.getText().toString());
-//        Log.v("FloatValue", String.valueOf(area));
 
-//        Toast.makeText(requireContext(),hours.getClass().getSimpleName(),Toast.LENGTH_LONG).show();
 
         Log.v("Datatypenicharles", area.getClass().getSimpleName() + area);
         if (TV_scope.getText().equals("B2 - Carpentry Works for Main Counter")) {
@@ -241,9 +242,10 @@ public class jobsinfo extends Fragment {
 
             new Thread(() -> {
                 // execute the time-consuming function here
-
+                // recommend
                 PyObject obj = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
 
+                //store
                 List<JSONObject> results = new ArrayList<>();
                 for (PyObject element : obj.asList()) {
                     JSONObject jsonObject = null;
@@ -254,74 +256,34 @@ public class jobsinfo extends Fragment {
                     }
                     results.add(jsonObject);
                 }
-//                results.get(0).toString();
-//                for (JSONObject result : results) {
-//                    System.out.println("Object ID: " + result.getString("Object ID"));
-//                    System.out.println("First Name: " + result.getString("first_name"));
-//                    System.out.println("Last Name: " + result.getString("last_name"));
-//                    System.out.println("Address: " + result.getString("address"));
-//                    System.out.println("Profile: " + result.getString("Profile"));
-//                    System.out.println("Rating: " + result.getString("Rating"));
-//                    System.out.println("Distance: " + result.getString("distance"));
-//                }
+//
                 String jsonResult = obj.toString();
 
                 handler.post(() -> {
                     // update the UI here
-                    try {
-                        for (int i = 0; i < results.size(); i++) {
-                            JSONObject employee = results.get(i);
-                            ml.setText("id: " +employee.getString("employeeId") +"," + "First Name: " + employee.getString("first_name") + ", Last Name: " + employee.getString("last_name"));
-                            Log.d("Employee", ""+employee.getString("employeeId") +"," + "First Name: " + employee.getString("first_name") + ", Last Name: " + employee.getString("last_name"));
-                        }
 
-
-//                        ml.setText(results.get(0).getString("employeeId"));
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+                    //testing
+                    RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setAdapter(new EmployeeAdapter(results));
                     progressBar.setVisibility(View.GONE);
 
-//                    for (JSONObject employee : results) {
-//                        try {
-//                            String employeeId = employee.getString("employeeId");
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
+                    //this is working
+//                    try {
+//                        for (int i = 0; i < results.size(); i++) {
+//                            JSONObject employee = results.get(i);
+//                            ml.setText("id: " +employee.getString("employeeId"));
+//                            Log.d("Employee", ""+employee.getString("employeeId") +"," + "Name: " + employee.getString("first_name") +" " + employee.getString("last_name"));
 //                        }
-//                        try {
-//                            String firstName = employee.getString("first_name");
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            String lastName = employee.getString("last_name");
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            String address = employee.getString("address");
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            String profile = employee.getString("Profile");
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            String rating = employee.getString("Rating");
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            String distance = employee.getString("distance");
-//                        } catch (JSONException e) {
-//                            throw new RuntimeException(e);
-//                        }
-
-                        // do something with the extracted employee details
-                        // e.g. display them in a TextView or add them to a list
+//
+//
+////                        ml.setText(results.get(0).getString("employeeId"));
+//                    } catch (JSONException e) {
+//                        throw new RuntimeException(e);
 //                    }
+//                    progressBar.setVisibility(View.GONE);
+
+//
                 });
             }).start();
 
