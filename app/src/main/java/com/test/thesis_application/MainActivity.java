@@ -1,7 +1,9 @@
 package com.test.thesis_application;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout get_email, get_password;
     private TextView registerButton;
 
+    private SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         get_email = findViewById(R.id.TIL_Emailinput);
         get_password = findViewById(R.id.TIL_PasswordInput);
         registerButton = findViewById(R.id.btn_register);
+
 
         mPermissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
             @Override
@@ -102,6 +107,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Get the shared preferences object
+        preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+        // Check if email and password are already saved in shared preferences
+        String savedEmail = preferences.getString("email", "");
+        String savedPassword = preferences.getString("password", "");
+        if (!savedEmail.equals("") && !savedPassword.equals("")) {
+            // If email and password are saved, automatically log in the user
+
+            get_email.getEditText().setText(savedEmail);
+            get_password.getEditText().setText(savedPassword);
+            Log.d("SharedPref","Successfully added credentials");
+            login(); // Call the login() method to log in the user
+            Log.d("SharedPref","Hopefully logs in the account");
+        }
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,65 +163,70 @@ public class MainActivity extends AppCompatActivity {
             int strength = 10;
 //         Generate a salt value
             String salt1 = BCrypt.gensalt(strength);
-            //hash the password`
-            String input = get_password.getEditText().getText().toString();
-//            String hashashin = hashPassword(input);
 
-            Document email = new Document("email", get_email.getEditText().getText().toString()); //
-            mongoCollection.findOne(email).getAsync(result -> {
-                Document resultData = result.get();
-                String id = resultData.getObjectId("_id").toString();
-                try {
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("email", get_email.getEditText().getText().toString());
+            editor.putString("password", get_password.getEditText().getText().toString());
+            editor.apply();
 
-                    if (resultData.getString("user").equals("Client")) {
-                        Log.v("resultData",resultData.getString("email"));
-                        Log.v("resultData",resultData.getString("password"));
+            if (sharedPreferences.contains("email") && sharedPreferences.contains("password")) {
+                String email = sharedPreferences.getString("email", "");
+                String password = sharedPreferences.getString("password", "");
 
-                            String input1 = get_password.getEditText().getText().toString();
+                Document emailQuery = new Document("email", email);
+                mongoCollection.findOne(emailQuery).getAsync(result -> {
+                    Document resultData = result.get();
+                    String id = resultData.getObjectId("_id").toString();
+                    try {
+
+                        if (resultData.getString("user").equals("Client")) {
+                            Log.v("resultData", resultData.getString("email"));
+                            Log.v("resultData", resultData.getString("password"));
+
+                            String input1 = password;
                             String hash = resultData.getString("password");
-                            Log.v("resultData",salt1);
+                            Log.v("resultData", salt1);
 
-//                            Boolean passwordMatch =
-                            if(BCrypt.checkpw(input1, hash)) {
+                            if (BCrypt.checkpw(input1, hash)) {
                                 Intent home_screen = new Intent(MainActivity.this, client_home.class);
                                 home_screen.putExtra("user_ID", id);
                                 startActivity(home_screen);
                                 Log.v("resultData", "oy gago bro tama pareho");
                             } else {
                                 Log.v("resultData", "beh bat ganon");
-//                        get_email.setError("Mali");
-//                        get_password.setError("Mali");
                             }
 
-                    }else {
-                        Log.v("resultData","ayaw beh di ko alam bakit");
-                    }
-                } catch (Exception client) {
-                    //Testing Employee Accounts
-                    mongoCollection = mongoDatabase.getCollection("employees");
-                    mongoCollection.findOne(email).getAsync(result1 -> {
-                        try {
-                            Document resultData1 = result1.get();
-                            Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
-
-                            if (resultData1.getString("user").equals("Employees")) {
-                                Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
-                                Log.v("resultAccount", "Found in Employee");
-                                Intent home_screen = new Intent(MainActivity.this, employee_home.class);
-                                home_screen.putExtra("user_ID", resultData1.getObjectId("_id").toString());
-                                startActivity(home_screen);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                Log.v("resultAccount", "Wala sa Employee");
-
-                            }
-                        } catch (Exception employee) {
-                            employee.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "wala pre di ko kita kahit sa employees", Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.v("resultData", "ayaw beh di ko alam bakit");
                         }
-                    });
-                }
-            });
+                    } catch (Exception client) {
+                        //Testing Employee Accounts
+                        mongoCollection = mongoDatabase.getCollection("employees");
+                        mongoCollection.findOne(emailQuery).getAsync(result1 -> {
+                            try {
+                                Document resultData1 = result1.get();
+                                Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
+
+                                if (resultData1.getString("user").equals("Employees")) {
+                                    Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
+                                    Log.v("resultAccount", "Found in Employee");
+                                    Intent home_screen = new Intent(MainActivity.this, employee_home.class);
+                                    home_screen.putExtra("user_ID", resultData1.getObjectId("_id").toString());
+                                    startActivity(home_screen);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                    Log.v("resultAccount", "Wala sa Employee");
+
+                                }
+                            } catch (Exception employee) {
+                                employee.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "wala pre di ko kita kahit sa employees", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
