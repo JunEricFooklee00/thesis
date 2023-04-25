@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
         String savedEmail = preferences.getString("email", "");
         String savedPassword = preferences.getString("password", "");
         if (!savedEmail.equals("") && !savedPassword.equals("")) {
-            // If email and password are saved, automatically log in the user
 
+            // If email and password are saved, automatically log in the user
             get_email.getEditText().setText(savedEmail);
             get_password.getEditText().setText(savedPassword);
             Log.d("SharedPref","Successfully added credentials");
@@ -235,11 +235,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean validateemail() {
         String emailinput = get_email.getEditText().getText().toString().trim();
         if (emailinput.isEmpty()) {
-            get_email.setError("Field Empty");
+            get_email.setError("Field Email is Empty.");
             return false;
-
         } else if (!Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()) {
-            get_email.setError("Email Invalid");
+            get_email.setError("Email is Invalid.");
             return false;
         } else {
             get_email.setError(null);
@@ -251,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean validatePassword() {
         String PasswordInput = get_password.getEditText().getText().toString().trim();
         if (PasswordInput.isEmpty()) {
-            get_password.setError("Field Empty");
+            get_password.setError("Field Password is Empty.");
             return false;
 
         } else {

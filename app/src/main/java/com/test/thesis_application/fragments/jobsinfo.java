@@ -37,12 +37,20 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class jobsinfo extends Fragment {
 
-    TextInputLayout output;
-    TextView TV_jobTitle, TV_jobid, TV_scope, TV_area, TV_location, TV_startdate, TV_expecteddate, TV_userid, ml;
+    TextInputLayout output, skilled, unskilled;
+    TextView TV_jobTitle;
+    TextView TV_jobid;
+    TextView TV_scope;
+    TextView TV_area;
+    TextView TV_location;
+    TextView TV_startdate;
+    TextView TV_expecteddate;
+    TextView ml;
     String jobtitle, userId, id, ScopeofWork, area, Location, ExpectedFinishDate, Startingdate;
     Button accept;
     int outputString;
@@ -63,6 +71,9 @@ public class jobsinfo extends Fragment {
         TV_expecteddate = view.findViewById(R.id.tv_expecteddate);
         output = view.findViewById(R.id.TIL_forcasted);
         ml = view.findViewById(R.id.outputssz);
+        skilled = view.findViewById(R.id.TIL_skilled);
+        unskilled = view.findViewById(R.id.TIL_unskilled);
+
         Bundle data = getArguments();
         if (data != null) {
             userId = data.getString("idUser");
@@ -82,18 +93,20 @@ public class jobsinfo extends Fragment {
         TV_location.setText(Location);
         TV_startdate.setText(Startingdate);
         TV_expecteddate.setText(ExpectedFinishDate);
-        Float area = new Float(TV_area.getText().toString());
-        Float hours = new Float(TV_expecteddate.getText().toString());
-
+        Float area = Float.valueOf(TV_area.getText().toString());
+        float hours = Float.parseFloat(TV_expecteddate.getText().toString());
+        float result;
 
         Log.v("Datatypenicharles", area.getClass().getSimpleName() + area);
         if (TV_scope.getText().equals("B2 - Carpentry Works for Main Counter")) {
             Toast.makeText(requireContext(), "B2", Toast.LENGTH_LONG).show();
             try {
                 hours = hours * 8;
-                float input1 = area, input2 = hours, productivityratio = 6f; // input1 is area, input 2 is hours , input 3?
+                Float RateOfWork = 2.6667f;
+                result = (RateOfWork * area) / hours;
+                float input2 = area, input3 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
 
-                float[] inputValues = new float[]{productivityratio, input1, input2};
+                float[] inputValues = new float[]{productivityratio, input2, input3};
                 B2CarpentryWorks model = B2CarpentryWorks.newInstance(requireContext());
 
                 // Creates inputs for reference.
@@ -113,7 +126,7 @@ public class jobsinfo extends Fragment {
                     outputString = Math.round(value);
                 }
 
-                output.getEditText().setText(String.valueOf(outputString));
+                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
                 output.setEnabled(false);
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
@@ -126,7 +139,9 @@ public class jobsinfo extends Fragment {
 
             try {
                 hours = hours * 8;
-                float input1 = area, input2 = hours, productivityratio = 8f; // input1 is area, input 2 is hours , input 3?
+                Float RateOfWork = 1f;
+                result = (RateOfWork * area) / hours;
+                float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
 
                 float[] inputValues = new float[]{productivityratio, input1, input2};
                 D2Pipeline model = D2Pipeline.newInstance(requireContext());
@@ -147,7 +162,7 @@ public class jobsinfo extends Fragment {
                 for (float value : outputValues) {
                     outputString = Math.round(value);
                 }
-                output.getEditText().setText(String.valueOf(outputString));
+                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
@@ -160,7 +175,9 @@ public class jobsinfo extends Fragment {
 
             try {
                 hours = hours * 8;
-                float input1 = area, input2 = hours, productivityratio = 6f; // input1 is area, input 2 is hours , input 3?
+                Float RateOfWork = 0.8f;
+                result = (RateOfWork * area) / hours;
+                float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
 
                 float[] inputValues = new float[]{productivityratio, input1, input2};
                 D3DrainagePipeline model = D3DrainagePipeline.newInstance(requireContext());
@@ -181,7 +198,7 @@ public class jobsinfo extends Fragment {
                 for (float value : outputValues) {
                     outputString = Math.round(value);
                 }
-                output.getEditText().setText(String.valueOf(outputString));
+                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
@@ -194,7 +211,9 @@ public class jobsinfo extends Fragment {
 
             try {
                 hours = hours * 8;
-                float input1 = area, input2 = hours, productivityratio = 6f; // input1 is area, input 2 is hours , input 3?
+                Float RateOfWork = 0.54f;
+                result = (RateOfWork * area) / hours;
+                float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
 
                 float[] inputValues = new float[]{productivityratio, input1, input2};
                 G1plainconcrete model = G1plainconcrete.newInstance(requireContext());
@@ -215,7 +234,7 @@ public class jobsinfo extends Fragment {
                 for (float value : outputValues) {
                     outputString = Math.round(value);
                 }
-                output.getEditText().setText(String.valueOf(outputString));
+                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
                 // Releases model resources if no longer used.
@@ -235,20 +254,24 @@ public class jobsinfo extends Fragment {
         final PyObject pyobj = py.getModule("myscript");
 
         accept.setOnClickListener((view1) -> {
-            ProgressBar progressBar = getView().findViewById(R.id.progressBar);
+
+            if (!validateskilled() | !validateunskilled() |!validateforcasted()) {
+                return;
+            }
+            ProgressBar progressBar = requireView().findViewById(R.id.progressBar);
             progressBar.setVisibility(View.VISIBLE);
-
             Handler handler = new Handler(Looper.getMainLooper());
-
             new Thread(() -> {
-                // execute the time-consuming function here
-                // recommend
-                PyObject obj = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString(), Integer.valueOf(output.getEditText().getText().toString()));
 
-                //store
+                // execute the time-consuming function here recommend
+                PyObject objskilled = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString());
+                PyObject objunskilled = pyobj.callAttr("find_closest_employee", "Labor", TV_location.getText().toString());
+
+
+                //store JSONObject in list results
                 List<JSONObject> results = new ArrayList<>();
-                for (PyObject element : obj.asList()) {
-                    JSONObject jsonObject = null;
+                for (PyObject element : objskilled.asList()) {
+                    JSONObject jsonObject;
                     try {
                         jsonObject = new JSONObject(element.toString());
                     } catch (JSONException e) {
@@ -256,42 +279,91 @@ public class jobsinfo extends Fragment {
                     }
                     results.add(jsonObject);
                 }
-//
-                String jsonResult = obj.toString();
 
+                //store JSONObject in list results
+                List<JSONObject> resultsunskilled = new ArrayList<>();
+                for (PyObject element : objunskilled.asList()) {
+                    JSONObject jsonObject;
+                    try {
+                        jsonObject = new JSONObject(element.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    resultsunskilled.add(jsonObject);
+                }
+                List<JSONObject> mergedList = new ArrayList<>();
+                mergedList.addAll(results);
+                mergedList.addAll(resultsunskilled);
+//
+                String jsonResult = objskilled.toString();
+                String jsonResult2 = objunskilled.toString();
+                Log.d("resultdata", jsonResult + jsonResult2);
                 handler.post(() -> {
                     // update the UI here
-
-                    //testing
-                    RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
+                    RecyclerView recyclerView = requireView().findViewById(R.id.recyclerView);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    recyclerView.setAdapter(new EmployeeAdapter(results));
+                    recyclerView.setAdapter(new EmployeeAdapter(mergedList));
                     progressBar.setVisibility(View.GONE);
 
-                    //this is working
-//                    try {
-//                        for (int i = 0; i < results.size(); i++) {
-//                            JSONObject employee = results.get(i);
-//                            ml.setText("id: " +employee.getString("employeeId"));
-//                            Log.d("Employee", ""+employee.getString("employeeId") +"," + "Name: " + employee.getString("first_name") +" " + employee.getString("last_name"));
-//                        }
-//
-//
-////                        ml.setText(results.get(0).getString("employeeId"));
-//                    } catch (JSONException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    progressBar.setVisibility(View.GONE);
-
-//
                 });
             }).start();
 
         });//end of onclick listener
-
-
-
         return view;
     }//end of oncreateView
+
+    private boolean validateskilled() {
+        String strskilled = Objects.requireNonNull(skilled.getEditText()).getText().toString().trim();
+        String strunskilled = Objects.requireNonNull(unskilled.getEditText()).getText().toString().trim();
+        if (strskilled.isEmpty()) {
+            skilled.getEditText().setText("0");
+            skilled.setError("Atleast 1 skilled worker is required.");
+            return false;
+        } else if (strskilled.equals("0")) {
+            skilled.setError("Atleast 1 skilled worker is required.");
+            return false;
+        }
+        else {
+            skilled.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateunskilled() {
+        String strunskilled = Objects.requireNonNull(unskilled.getEditText()).getText().toString().trim();
+        if (strunskilled.isEmpty()) {
+            unskilled.getEditText().setText("0");
+            return true;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean validateforcasted() {
+        int forecastedoutput = Integer.valueOf(Objects.requireNonNull(output.getEditText()).getText().toString());
+
+        int givenskilled = Integer.valueOf(Objects.requireNonNull(skilled.getEditText()).getText().toString());
+        int givenunskilled = Integer.valueOf(Objects.requireNonNull(unskilled.getEditText()).getText().toString());
+
+
+        float sum = givenskilled + givenunskilled;
+        if (sum == forecastedoutput) {
+            unskilled.setError(null);
+            skilled.setError(null);
+            return true;
+        } else if (sum < forecastedoutput) {
+            unskilled.setError("The sum is less than the forcasted.");
+            skilled.setError("The sum is less than the forcasted.");
+            return false;
+        } else if (sum > forecastedoutput) {
+            unskilled.setError("The sum is greater than the forcasted.");
+            skilled.setError("The sum is greater than the forcasted.");
+            return false;
+        } else {
+            unskilled.setError("The sum must equal the forcasted.");
+            skilled.setError("The sum must equal the forcasted.");
+            return false;
+        }
+    }
 
 }
