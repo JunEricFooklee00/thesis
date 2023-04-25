@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,18 +19,18 @@ import java.util.List;
 
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHolder> {
 
-    private List<JSONObject> results;
+    private static List<JSONObject> results;
 
 
-    QuantityListener quantityListener;
-    ArrayList<String> selected;
+    static QuantityListener quantityListener;
+    static ArrayList<String> selected;
 
     //    public EmployeeAdapter(List<JSONObject> results) {
 //        this.results = results;
 //    }
     public EmployeeAdapter(List<JSONObject> results) {
         this.results = results;
-
+//        selected = new ArrayList<>();
 
     }
 
@@ -48,6 +49,19 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
             locationTextView = itemView.findViewById(R.id.tv_employee_location);
             job = itemView.findViewById(R.id.tv_jobtype);
             employee = itemView.findViewById(R.id.checkBox);
+
+//            employee.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    int position = getAdapterPosition();
+//                    if (isChecked) {
+//                        selected.add(String.valueOf(results.get(position)));
+//                    } else {
+//                        selected.remove(results.get(position));
+//                    }
+//                    quantityListener.onQuantityChange(selected);
+//                }
+//            });
         }
     }
 
@@ -63,17 +77,12 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
             JSONObject employee = results.get(position);
-            holder.employee.setText(employee.getString("first_name") + "" + employee.getString("last_name"));
+            holder.employee.setText(employee.getString("first_name") + " " + employee.getString("last_name"));
             holder.job.setText(employee.getString("Profile"));
 //            holder.nameTextView.setText(employee.getString("first_name") + " " + employee.getString("last_name"));
             holder.idTextView.setText("ID: " + employee.getString("employeeId"));
             holder.locationTextView.setText("Location: " + employee.getString("address"));
-//            if (holder.employee.isChecked()){
-//                selected.add(results.get(position));
-//            }else {
-//                selected.remove(results.get(position));
-//            }
-//            quantityListener.onQuantityChange(selected);
+
 
         } catch (JSONException e) {
             throw new RuntimeException(e);
