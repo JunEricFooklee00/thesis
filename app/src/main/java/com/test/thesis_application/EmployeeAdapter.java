@@ -50,18 +50,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
             job = itemView.findViewById(R.id.tv_jobtype);
             employee = itemView.findViewById(R.id.checkBox);
 
-//            employee.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    int position = getAdapterPosition();
-//                    if (isChecked) {
-//                        selected.add(String.valueOf(results.get(position)));
-//                    } else {
-//                        selected.remove(results.get(position));
-//                    }
-//                    quantityListener.onQuantityChange(selected);
-//                }
-//            });
+//
         }
     }
 

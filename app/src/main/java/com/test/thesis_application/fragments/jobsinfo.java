@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -291,9 +292,9 @@ public class jobsinfo extends Fragment {
                     }
                     resultsunskilled.add(jsonObject);
                 }
-                List<JSONObject> mergedList = new ArrayList<>();
-                mergedList.addAll(results);
-                mergedList.addAll(resultsunskilled);
+//                List<JSONObject> mergedList = new ArrayList<>();
+//                mergedList.addAll(results);
+//                mergedList.addAll(resultsunskilled);
 //
                 String jsonResult = objskilled.toString();
                 String jsonResult2 = objunskilled.toString();
@@ -301,8 +302,18 @@ public class jobsinfo extends Fragment {
                 handler.post(() -> {
                     // update the UI here
                     RecyclerView recyclerView = requireView().findViewById(R.id.recyclerView);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    recyclerView.setAdapter(new EmployeeAdapter(mergedList));
+                    RecyclerView recyclerView2 = requireView().findViewById(R.id.recyclerView2);
+
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                    LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView2.setLayoutManager(layoutManager2);
+                    recyclerView.setAdapter(new EmployeeAdapter(results));
+                    recyclerView2.setAdapter(new EmployeeAdapter(resultsunskilled));
+//                    layoutManager.getItemCount();
+
+
+
                     progressBar.setVisibility(View.GONE);
 
                 });
