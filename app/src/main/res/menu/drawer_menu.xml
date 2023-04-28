@@ -41,6 +41,13 @@
                     android:icon="@drawable/ic_baseline_settings_24"
                     android:title="Settings" />
                 <item
+                    android:id="@+id/Proponents"
+                    android:icon="@drawable/baseline_favorite_24"
+                    android:title="Proponents"/>
+
+
+
+                <item
                     android:id="@+id/nav_logout"
                     android:icon="@drawable/ic_baseline_logout_24"
                     android:title="Logout" />

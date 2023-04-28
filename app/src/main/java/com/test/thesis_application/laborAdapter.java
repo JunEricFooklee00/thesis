@@ -22,28 +22,29 @@ import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
-public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHolder> {
+public class laborAdapter extends RecyclerView.Adapter<laborAdapter.ViewHolder> {
+
 
     private List<JSONObject> results;
     private List<JSONObject> mCheckedItems = new ArrayList<>();
 
     private CompoundButton.OnCheckedChangeListener mListener;
 
-    public EmployeeAdapter(List<JSONObject> results, List<JSONObject> mCheckedItems, CompoundButton.OnCheckedChangeListener mListener) {
+    public laborAdapter(List<JSONObject> results, List<JSONObject> mCheckedItems, CompoundButton.OnCheckedChangeListener mListener) {
         this.results = results;
         this.mCheckedItems = mCheckedItems;
         this.mListener = mListener;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public String imgpath;
 
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public String imgpath;
         public TextView idTextView;
         public TextView locationTextView;
         public TextView job;
         public CheckBox employee;
         public ImageView emp_Avatar;
-
         public ViewHolder(View itemView) {
             super(itemView);
             idTextView = itemView.findViewById(R.id.tv_employee_id);
@@ -51,6 +52,8 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
             job = itemView.findViewById(R.id.tv_jobtype);
             employee = itemView.findViewById(R.id.checkBox);
             emp_Avatar = itemView.findViewById(R.id.employee_avatar);
+
+//
         }
     }
 
@@ -67,14 +70,12 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
         try {
             JSONObject employeedata = results.get(position);
             holder.imgpath = employeedata.getString("avatar");
-
-            holder.employee.setText(employeedata.getString("name"));
+            holder.employee.setText(employeedata.getString("name") );
             holder.job.setText(employeedata.getString("jobType"));
             holder.idTextView.setText("ID: " + employeedata.getString("employeeId"));
             holder.locationTextView.setText("Location: " + employeedata.getString("address"));
-//            holder.employee.setOnCheckedChangeListener(null); // To prevent triggering the listener when the view is recycled
+            holder.employee.setOnCheckedChangeListener(null); // To prevent triggering the listener when the view is recycled
             holder.employee.setChecked(mCheckedItems.contains(employeedata));
-            holder.employee.setOnCheckedChangeListener(mListener);
 
             Picasso.get()
                     .load(holder.imgpath).transform(new CropCircleTransformation())
@@ -123,20 +124,13 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
-//                            String rating = null;
-//                            try {
-//                                rating = jsonObject.getString("Rating");
-//                            } catch (JSONException e) {
-//                                throw new RuntimeException(e);
-//                            }
                             String distance = null;
                             try {
                                 distance = jsonObject.getString("distance");
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
-
-                            Log.v("mchecked", "Checked Item " + i + ": " + employeeId  + ", " + address + ", " + profile  + ", " + distance);
+                            Log.v("mchecked", "Checked Item " + i + ": " + employeeId + ", "  + address + ", " + profile + ", " + distance);
                         }
 
 //                        Log.v("mchecked","dewow "+ mCheckedItems.toString() ); //how do i print the mcheckeditems here
@@ -159,5 +153,4 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
     public List<JSONObject> getCheckedItems() {
         return mCheckedItems;
     }
-
 }

@@ -25,6 +25,7 @@ import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
 import com.test.thesis_application.fragments.fragment_settings;
+import com.test.thesis_application.fragments.proponents;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -133,6 +134,12 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
             case R.id.Mycalendar:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                                 new calendarview()).setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.Proponents:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new proponents()).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;

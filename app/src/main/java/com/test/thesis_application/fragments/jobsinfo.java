@@ -8,23 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
-
 import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.textfield.TextInputLayout;
 import com.test.thesis_application.EmployeeAdapter;
 import com.test.thesis_application.R;
+import com.test.thesis_application.laborAdapter;
 import com.test.thesis_application.ml.B2CarpentryWorks;
 import com.test.thesis_application.ml.D2Pipeline;
 import com.test.thesis_application.ml.D3DrainagePipeline;
@@ -41,9 +41,10 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class jobsinfo extends Fragment {
-
+public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChangeListener {
+    Button stringbuilder;
     TextInputLayout output, skilled, unskilled;
+    TextView cv4tv;
     TextView TV_jobTitle;
     TextView TV_jobid;
     TextView TV_scope;
@@ -51,10 +52,19 @@ public class jobsinfo extends Fragment {
     TextView TV_location;
     TextView TV_startdate;
     TextView TV_expecteddate;
-    TextView ml;
     String jobtitle, userId, id, ScopeofWork, area, Location, ExpectedFinishDate, Startingdate;
     Button accept;
     int outputString;
+    CardView cv4, cv5;
+    String jsonResult2;
+    String jsonResult;
+    TextView stringbuild;
+
+    EmployeeAdapter skilledAdapter;
+    laborAdapter unskilledAdapter;
+    RecyclerView recyclerView,recyclerView2;
+    private List<JSONObject> mCheckedItems = new ArrayList<>();
+//    List<JSONObject> checkedItems = skilledAdapter();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,10 +81,15 @@ public class jobsinfo extends Fragment {
         TV_startdate = view.findViewById(R.id.tv_startingdate);
         TV_expecteddate = view.findViewById(R.id.tv_expecteddate);
         output = view.findViewById(R.id.TIL_forcasted);
-        ml = view.findViewById(R.id.outputssz);
+        cv4 = view.findViewById(R.id.cardview4);
+        cv5 = view.findViewById(R.id.cardView5);
+
         skilled = view.findViewById(R.id.TIL_skilled);
         unskilled = view.findViewById(R.id.TIL_unskilled);
 
+        stringbuilder = view.findViewById(R.id.accept);
+        stringbuild = view.findViewById(R.id.textbuilder);
+        cv4tv = view.findViewById(R.id.cv4tv);
         Bundle data = getArguments();
         if (data != null) {
             userId = data.getString("idUser");
@@ -97,6 +112,9 @@ public class jobsinfo extends Fragment {
         Float area = Float.valueOf(TV_area.getText().toString());
         float hours = Float.parseFloat(TV_expecteddate.getText().toString());
         float result;
+        cv4.setVisibility(View.INVISIBLE);
+        cv5.setVisibility(View.INVISIBLE);
+        List<String> checkedItems = new ArrayList<>();
 
         Log.v("Datatypenicharles", area.getClass().getSimpleName() + area);
         if (TV_scope.getText().equals("B2 - Carpentry Works for Main Counter")) {
@@ -245,8 +263,9 @@ public class jobsinfo extends Fragment {
             }
         } else {
             Toast.makeText(requireContext(), "No need i forcast po", Toast.LENGTH_LONG).show();
-        }
+        }// end of forcasting.
 
+        //start of machine learning recommendation
         if (!Python.isStarted())
             Python.start(new AndroidPlatform(requireContext()));
 
@@ -256,18 +275,18 @@ public class jobsinfo extends Fragment {
 
         accept.setOnClickListener((view1) -> {
 
-            if (!validateskilled() | !validateunskilled() |!validateforcasted()) {
+            if (!validateskilled() | !validateunskilled() | !validateforcasted()) {
                 return;
             }
             ProgressBar progressBar = requireView().findViewById(R.id.progressBar);
+            ProgressBar progressBar2 = requireView().findViewById(R.id.progressBar2);
             progressBar.setVisibility(View.VISIBLE);
+            progressBar2.setVisibility(View.VISIBLE);
+
             Handler handler = new Handler(Looper.getMainLooper());
             new Thread(() -> {
-
                 // execute the time-consuming function here recommend
                 PyObject objskilled = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString());
-                PyObject objunskilled = pyobj.callAttr("find_closest_employee", "Labor", TV_location.getText().toString());
-
 
                 //store JSONObject in list results
                 List<JSONObject> results = new ArrayList<>();
@@ -281,51 +300,112 @@ public class jobsinfo extends Fragment {
                     results.add(jsonObject);
                 }
 
-                //store JSONObject in list results
-                List<JSONObject> resultsunskilled = new ArrayList<>();
-                for (PyObject element : objunskilled.asList()) {
-                    JSONObject jsonObject;
-                    try {
-                        jsonObject = new JSONObject(element.toString());
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                    resultsunskilled.add(jsonObject);
-                }
-//                List<JSONObject> mergedList = new ArrayList<>();
-//                mergedList.addAll(results);
-//                mergedList.addAll(resultsunskilled);
-//
-                String jsonResult = objskilled.toString();
-                String jsonResult2 = objunskilled.toString();
-                Log.d("resultdata", jsonResult + jsonResult2);
+                jsonResult = objskilled.toString();
+
+                Log.d("resultdata", jsonResult);
                 handler.post(() -> {
-                    // update the UI here
-                    RecyclerView recyclerView = requireView().findViewById(R.id.recyclerView);
-                    RecyclerView recyclerView2 = requireView().findViewById(R.id.recyclerView2);
+//                     update the UI here
+                    recyclerView = requireView().findViewById(R.id.recyclerView);
 
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-                    LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                     recyclerView.setLayoutManager(layoutManager);
-                    recyclerView2.setLayoutManager(layoutManager2);
-                    recyclerView.setAdapter(new EmployeeAdapter(results));
-                    recyclerView2.setAdapter(new EmployeeAdapter(resultsunskilled));
-//                    layoutManager.getItemCount();
+
+                    skilledAdapter = new EmployeeAdapter(results, mCheckedItems, null);
+
+                    recyclerView.setAdapter(skilledAdapter);
 
 
 
+                    recyclerView.setAdapter(skilledAdapter);
+                    cv4.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
+
 
                 });
             }).start();
 
+            Handler handler2 = new Handler(Looper.getMainLooper());
+            new Thread(() -> {
+                PyObject objunskilled = pyobj.callAttr("find_closest_employee", "Labor", TV_location.getText().toString());
+                //store JSONObject in list results
+                List<JSONObject> resultsunskilled = new ArrayList<>();
+                for (PyObject element : objunskilled.asList()) {
+                    JSONObject jsonObject2;
+                    try {
+                        jsonObject2 = new JSONObject(element.toString());
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    resultsunskilled.add(jsonObject2);
+                }
+
+
+                jsonResult2 = objunskilled.toString();
+                Log.d("resultdata", jsonResult2);
+                handler2.post(() -> {
+                    recyclerView2 = requireView().findViewById(R.id.recyclerView2);
+                    LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                    recyclerView2.setLayoutManager(layoutManager2);
+                    // Create separate adapters for each RecyclerView
+                    Log.d("EmployeeAdapter", "Resultsunskilled size: " + resultsunskilled.size());
+                    unskilledAdapter = new laborAdapter(resultsunskilled, new ArrayList<>(), null);
+                    recyclerView2.setAdapter(unskilledAdapter);
+                    progressBar2.setVisibility(View.GONE);
+                    cv5.setVisibility(View.VISIBLE);
+
+//                    for (int i = 0; i < unskilledAdapter.getItemCount(); i++) {
+//                        if (unskilledAdapter.getItem(i).isChecked()) {
+//                            checkedItems.add(unskilledAdapter.getItem(i).getEmployeeName());
+//                        }
+//                    }
+                    // you can now access the checked items list here
+                    Log.d("checkedItems", checkedItems.toString());
+                });
+            }).start();
+
         });//end of onclick listener
+
+        stringbuilder.setOnClickListener(v -> {
+            // get the checked items from the adapter
+            List<JSONObject> checkedItems1 = skilledAdapter.getCheckedItems();
+            List<JSONObject> checkedItems2 = unskilledAdapter.getCheckedItems();
+
+
+            // set a TextView with the selected items
+            StringBuilder selectedItemsBuilder = new StringBuilder();
+            for (JSONObject item : checkedItems2) {
+                selectedItemsBuilder.append(item.optString("employeeId")).append(", ");
+            }
+            String selectedItems = selectedItemsBuilder.toString().trim();
+            if (selectedItems.endsWith(",")) {
+                selectedItems = selectedItems.substring(0, selectedItems.length() - 1);
+            }
+
+            stringbuild.setText(selectedItems);
+        });
+
+//        Log.v("dataCount", String.valueOf(skilledAdapter.getItemCount()));
+        //        int numChecked = checkedItems.size();
+//        int limit = Integer.parseInt(skilled.getEditText().getText().toString());
+//
+//        for (int i = 0; i > limit; i++) {
+//            if () {
+//
+//            }
+//            if () {
+//                numDisabled++;
+//                continue;
+//            }
+//            if (numChecked + numDisabled >= limit) {
+//                checkBox.setEnabled(false);
+//            }
+//        }
         return view;
     }//end of oncreateView
 
     private boolean validateskilled() {
         String strskilled = Objects.requireNonNull(skilled.getEditText()).getText().toString().trim();
-        String strunskilled = Objects.requireNonNull(unskilled.getEditText()).getText().toString().trim();
         if (strskilled.isEmpty()) {
             skilled.getEditText().setText("0");
             skilled.setError("Atleast 1 skilled worker is required.");
@@ -333,8 +413,7 @@ public class jobsinfo extends Fragment {
         } else if (strskilled.equals("0")) {
             skilled.setError("Atleast 1 skilled worker is required.");
             return false;
-        }
-        else {
+        } else {
             skilled.setError(null);
             return true;
         }
@@ -351,10 +430,9 @@ public class jobsinfo extends Fragment {
     }
 
     private boolean validateforcasted() {
-        int forecastedoutput = Integer.valueOf(Objects.requireNonNull(output.getEditText()).getText().toString());
-
-        int givenskilled = Integer.valueOf(Objects.requireNonNull(skilled.getEditText()).getText().toString());
-        int givenunskilled = Integer.valueOf(Objects.requireNonNull(unskilled.getEditText()).getText().toString());
+        int forecastedoutput = Integer.parseInt(Objects.requireNonNull(output.getEditText()).getText().toString());
+        int givenskilled = Integer.parseInt(Objects.requireNonNull(skilled.getEditText()).getText().toString());
+        int givenunskilled = Integer.parseInt(Objects.requireNonNull(unskilled.getEditText()).getText().toString());
 
 
         float sum = givenskilled + givenunskilled;
@@ -377,4 +455,20 @@ public class jobsinfo extends Fragment {
         }
     }
 
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            mCheckedItems.add((JSONObject) buttonView.getTag()); // Add the checked item to the list
+        } else {
+            mCheckedItems.remove(buttonView.getTag()); // Remove the unchecked item from the list
+        }
+
+        // Perform any necessary actions with the updated checked items list
+        // For example, you can print the list to the logcat
+        for (JSONObject item : mCheckedItems) {
+            Log.d("MyFragment", "Checked item: " + item.toString());
+        }
+    }
 }
+
