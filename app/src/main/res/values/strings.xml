@@ -37,20 +37,51 @@
     </string-array>
     <string name="Scope_of_work">Scope of work.</string>
     <string-array name="scopeofwork">
+        <item>Site Preparation</item>
         <item>Carpentry Works</item>
         <item>Mechanical/Metal Works</item>
         <item>Plumbing Works</item>
+        <item>Electrical Works</item>
         <item>Painting Works</item>
     </string-array>
 
     <string name="type_of_work">Type of work.</string>
 
+    <string-array name="SitePreparations">
+        <item>L - Filling and backfilling works</item>
+        <item>L - Excavation of soil and/or Footing Excavation</item>
+        <item>L - Gravel bedding</item>
+        <item>L - Chipping of slab</item>
+        <item>L - Chipping of existing tiles</item>
+        <item>L - Chipping of existing slab for ducting</item>
+        <item>L - Demolish existing ceiling and wood truss</item>
+        <item>L - Demolish existing accordion door</item>
+        <item>L - Demolish front wall</item>
+        <item>L - Demolish existing staircase/stairway</item>
+        <item>L - Demolish existing grills</item>
+        <item>L - Demolish dilapidated roofing</item>
+        <item>L - Site Clearing/Hauling and Disposal works</item>
+    </string-array>
+
     <string-array name="CarpentryWorks">
         <item>B2 - Carpentry Works for Main Counter</item>
+        <item>B - Carpentry works for Ceiling, Parapet, and Canopy</item>
+        <item>B - Carpentry Works - Construction of Dry Wall (Interior Wall and Partition)</item>
+        <item>B - Carpentry Works - Construction of Exterior Wall using Rib type GI Sheet</item>
+        <item>B - Carpentry Works - Wall Cabinet and Shelves at Sink Area Installation</item>
     </string-array>
 
     <string-array name="MechanicalMetalWorks">
-        <item>Stainless Top at Main Top Counter</item>
+        <item>C1 - Stainless works for Main Counter</item>
+        <item>C - Mechanical/Metal Works - Welding works for Steel frame of Main Counter</item>
+        <item>C - Mechanical/Metal Works - Fabrication of Steel Gate</item>
+        <item>C - Mechanical/Metal Works - Fabrication of Steel columns and members</item>
+        <item>C - Mechanical/Metal Works - 40cmx30cm steel louvers installation</item>
+        <item>C - Mechanical/Metal Works - Installation of exhaust fans</item>
+        <item>C - Mechanical/Metal Works - Fabrication and Installation of metal roll up door</item>
+        <item>C - Mechanical/Metal Works - Menu Board Hooking and Installation</item>
+        <item>C - Mechanical/Metal Works - Steel ramp fabrication</item>
+        <item>C - Mechanical/Metal Works - LPG Cage Fabrication</item>
     </string-array>
 
     <string-array name="PlumbingWorks">
@@ -58,9 +89,14 @@
         <item>D3 - Drainage Pipeline Installation</item>
     </string-array>
 
+    <string-array name="ElectricalWorks">
+        <item>E - Electrical Works - Main Line and Wiring Distribution System</item>
+        <item>E - Electrical Works - Interior and Exterior Lightings</item>
+    </string-array>
+
     <string-array name="PaintingWorks">
         <item>G1 - Plain Concrete Surfaces (Surface Prep - Primer - Finish Coat)</item>
-        <item>Wooden_Metal Surfaces</item>
+        <item>G2 - Wooden_Metal Surfaces (Surface Prep - Primer - Finish Coat)s</item>
     </string-array>
 
     <string name="job_order">JOB ORDER.</string>

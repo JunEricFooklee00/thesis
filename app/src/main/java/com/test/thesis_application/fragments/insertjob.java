@@ -108,6 +108,12 @@ public class insertjob extends Fragment {
 
         actv_unit.setAdapter(Unit);
 
+        String[] LaborWork = getResources().getStringArray(R.array.SitePreparations);
+        ArrayAdapter<String> Labor = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, LaborWork);
+
+        String[] ElecWork = getResources().getStringArray(R.array.ElectricalWorks);
+        ArrayAdapter<String> Electrical = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, ElecWork);
+
         String[] CarpWork = getResources().getStringArray(R.array.CarpentryWorks);
         ArrayAdapter<String> carpentry = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, CarpWork);
 
@@ -129,11 +135,18 @@ public class insertjob extends Fragment {
             if (ScopeOfWork.getText().toString().equals("Carpentry Works")) {
                 TypeOfWork.setAdapter(carpentry);
                 actv_unit.setText("Square Meter");
-
                 TypeOfWork.setText("");
-//                if(TypeOfWork.getText().equals("Carpentry Works for Main Counter")){
-//                }
                 Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+            } else if (ScopeOfWork.getText().toString().equals("Electrical Works")) {//
+                TypeOfWork.setAdapter(Electrical);
+                TypeOfWork.setText("");
+                actv_unit.setText("");
+                actv_unit.setAdapter(Unit);
+            }else if (ScopeOfWork.getText().toString().equals("Site Preparation")) {
+                TypeOfWork.setAdapter(mechanical);
+                TypeOfWork.setText("");
+                actv_unit.setText("");
+                actv_unit.setAdapter(Unit);
             } else if (ScopeOfWork.getText().toString().equals("Mechanical/Metal Works")) {
                 TypeOfWork.setAdapter(mechanical);
                 TypeOfWork.setText("");

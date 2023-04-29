@@ -70,8 +70,8 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
 
             holder.employee.setText(employeedata.getString("name"));
             holder.job.setText(employeedata.getString("jobType"));
-            holder.idTextView.setText("ID: " + employeedata.getString("employeeId"));
-            holder.locationTextView.setText("Location: " + employeedata.getString("address"));
+            holder.idTextView.setText(employeedata.getString("employeeId"));
+            holder.locationTextView.setText(employeedata.getString("address"));
 //            holder.employee.setOnCheckedChangeListener(null); // To prevent triggering the listener when the view is recycled
             holder.employee.setChecked(mCheckedItems.contains(employeedata));
             holder.employee.setOnCheckedChangeListener(mListener);
@@ -81,6 +81,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
                     .fit()
                     .centerCrop()
                     .into(holder.emp_Avatar);
+
             holder.employee.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
