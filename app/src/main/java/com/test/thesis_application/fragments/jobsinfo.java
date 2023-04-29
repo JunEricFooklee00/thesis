@@ -1,5 +1,7 @@
 package com.test.thesis_application.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,8 @@ import com.test.thesis_application.ml.D2Pipeline;
 import com.test.thesis_application.ml.D3DrainagePipeline;
 import com.test.thesis_application.ml.G1plainconcrete;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.tensorflow.lite.DataType;
@@ -39,6 +44,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import io.realm.mongodb.App;
+import io.realm.mongodb.AppConfiguration;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
 
 
 public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChangeListener {
@@ -62,9 +76,15 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
 
     EmployeeAdapter skilledAdapter;
     laborAdapter unskilledAdapter;
-    RecyclerView recyclerView,recyclerView2;
+    RecyclerView recyclerView, recyclerView2;
+    ImageView del;
     private List<JSONObject> mCheckedItems = new ArrayList<>();
-//    List<JSONObject> checkedItems = skilledAdapter();
+    //    List<JSONObject> checkedItems = skilledAdapter();
+    String Appid = "employeems-mcwma";
+    User user;
+    MongoDatabase mongoDatabase;
+    MongoClient mongoClient;
+    MongoCollection<Document> mongoCollection;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,7 +103,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         output = view.findViewById(R.id.TIL_forcasted);
         cv4 = view.findViewById(R.id.cardview4);
         cv5 = view.findViewById(R.id.cardView5);
-
+        del = view.findViewById(R.id.delete);
         skilled = view.findViewById(R.id.TIL_skilled);
         unskilled = view.findViewById(R.id.TIL_unskilled);
 
@@ -112,11 +132,51 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         Float area = Float.valueOf(TV_area.getText().toString());
         float hours = Float.parseFloat(TV_expecteddate.getText().toString());
         float result;
-        cv4.setVisibility(View.INVISIBLE);
-        cv5.setVisibility(View.INVISIBLE);
+//        cv4.setVisibility(View.INVISIBLE);
+//        cv5.setVisibility(View.INVISIBLE);
         List<String> checkedItems = new ArrayList<>();
 
+
+        // all required for mongodb
+        App app = new App(new AppConfiguration.Builder(Appid).build());
+        user = app.currentUser();
+        assert user != null;
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("JobOrder");
+        mongoCollection = mongoDatabase.getCollection("joborders");
+
+        del.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setMessage("Are you sure you want to delete this job order?" + TV_jobid.getText().toString());
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ObjectId objectId = new ObjectId(id);
+                    Document filter = new Document("_id", objectId);
+                    mongoCollection.findOneAndDelete(filter).getAsync(result1 -> {
+                        if (result1.isSuccess()) {
+                            Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
+                            // Close the current fragment and go back to the previous one
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        } else {
+                            Toast.makeText(requireContext(), "Deletion failed.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
         Log.v("Datatypenicharles", area.getClass().getSimpleName() + area);
+
+
         if (TV_scope.getText().equals("B2 - Carpentry Works for Main Counter")) {
             Toast.makeText(requireContext(), "B2", Toast.LENGTH_LONG).show();
             try {
@@ -275,7 +335,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
 
         accept.setOnClickListener((view1) -> {
 
-            if (!validateskilled() | !validateunskilled() | !validateforcasted()) {
+            if (!validateforecastsize() ) {
                 return;
             }
             ProgressBar progressBar = requireView().findViewById(R.id.progressBar);
@@ -314,7 +374,6 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                     skilledAdapter = new EmployeeAdapter(results, mCheckedItems, null);
 
                     recyclerView.setAdapter(skilledAdapter);
-
 
 
                     recyclerView.setAdapter(skilledAdapter);
@@ -371,89 +430,102 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             List<JSONObject> checkedItems1 = skilledAdapter.getCheckedItems();
             List<JSONObject> checkedItems2 = unskilledAdapter.getCheckedItems();
 
-
-            // set a TextView with the selected items
-            StringBuilder selectedItemsBuilder = new StringBuilder();
-            for (JSONObject item : checkedItems2) {
-                selectedItemsBuilder.append(item.optString("employeeId")).append(", ");
+//             check that at least one item is selected in each list
+            if (!validateforecast()) {
+                return;
             }
+
+            // create a StringBuilder for the selected items
+            StringBuilder selectedItemsBuilder = new StringBuilder();
+
+            // add items from the first list to the StringBuilder
+            for (JSONObject item : checkedItems1) {
+                String objectId = item.optString("employeeId");
+                String employeeId = extractEmployeeId(objectId);
+                selectedItemsBuilder.append(employeeId).append(", ");
+            }
+
+            // add items from the second list to the StringBuilder
+            for (JSONObject item : checkedItems2) {
+                String objectId = item.optString("employeeId");
+                String employeeId = extractEmployeeId(objectId);
+                selectedItemsBuilder.append(employeeId).append(", ");
+            }
+
+            // convert the StringBuilder to a String and trim trailing commas
             String selectedItems = selectedItemsBuilder.toString().trim();
             if (selectedItems.endsWith(",")) {
                 selectedItems = selectedItems.substring(0, selectedItems.length() - 1);
             }
 
+            // set the TextView with the selected items
             stringbuild.setText(selectedItems);
         });
 
-//        Log.v("dataCount", String.valueOf(skilledAdapter.getItemCount()));
-        //        int numChecked = checkedItems.size();
-//        int limit = Integer.parseInt(skilled.getEditText().getText().toString());
-//
-//        for (int i = 0; i > limit; i++) {
-//            if () {
-//
-//            }
-//            if () {
-//                numDisabled++;
-//                continue;
-//            }
-//            if (numChecked + numDisabled >= limit) {
-//                checkBox.setEnabled(false);
-//            }
-//        }
+
         return view;
     }//end of oncreateView
 
-    private boolean validateskilled() {
-        String strskilled = Objects.requireNonNull(skilled.getEditText()).getText().toString().trim();
-        if (strskilled.isEmpty()) {
-            skilled.getEditText().setText("0");
-            skilled.setError("Atleast 1 skilled worker is required.");
+    private String extractEmployeeId(String objectId) {
+        String regex = "^ObjectId\\('(.+)'\\)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(objectId);
+        if (matcher.matches()) {
+            return matcher.group(1);
+        } else {
+            return objectId;
+        }
+    }
+    private boolean validateforecastsize(){
+        String stroutput = Objects.requireNonNull(output.getEditText().getText().toString().trim());
+        if (stroutput.isEmpty()){
+            output.setError("Cannot be Blank.");
             return false;
-        } else if (strskilled.equals("0")) {
-            skilled.setError("Atleast 1 skilled worker is required.");
+        } else  {
+            output.setError(null);
+            return true;
+        }
+    }
+    private boolean validateforecast(){
+
+        int intoutput = Integer.parseInt(Objects.requireNonNull(output.getEditText()).getText().toString());
+        int totalunskilled = unskilledAdapter.getCheckedItems().size();
+        int totalskilled = skilledAdapter.getCheckedItems().size();
+        int totalsum = totalunskilled + totalskilled;
+        if (intoutput > totalsum) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setMessage("Selected Number("+totalsum+") of Worker is less than the Required ("+intoutput+").")
+                    .setTitle("Error")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            return false;
+        } else if (intoutput < totalsum) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setMessage("Selected Number("+totalsum+") of Worker is greater than the Required ("+intoutput+").")
+                    .setTitle("Error")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Total Selected Worker is greater than the given number of employees.
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
             return false;
         } else {
-            skilled.setError(null);
+            output.setError(null);
             return true;
         }
     }
 
-    private boolean validateunskilled() {
-        String strunskilled = Objects.requireNonNull(unskilled.getEditText()).getText().toString().trim();
-        if (strunskilled.isEmpty()) {
-            unskilled.getEditText().setText("0");
-            return true;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean validateforcasted() {
-        int forecastedoutput = Integer.parseInt(Objects.requireNonNull(output.getEditText()).getText().toString());
-        int givenskilled = Integer.parseInt(Objects.requireNonNull(skilled.getEditText()).getText().toString());
-        int givenunskilled = Integer.parseInt(Objects.requireNonNull(unskilled.getEditText()).getText().toString());
 
 
-        float sum = givenskilled + givenunskilled;
-        if (sum == forecastedoutput) {
-            unskilled.setError(null);
-            skilled.setError(null);
-            return true;
-        } else if (sum < forecastedoutput) {
-            unskilled.setError("The sum is less than the forcasted.");
-            skilled.setError("The sum is less than the forcasted.");
-            return false;
-        } else if (sum > forecastedoutput) {
-            unskilled.setError("The sum is greater than the forcasted.");
-            skilled.setError("The sum is greater than the forcasted.");
-            return false;
-        } else {
-            unskilled.setError("The sum must equal the forcasted.");
-            skilled.setError("The sum must equal the forcasted.");
-            return false;
-        }
-    }
+
+
 
 
     @Override

@@ -1,7 +1,6 @@
 package com.test.thesis_application;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -178,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 mongoCollection.findOne(emailQuery).getAsync(result -> {
                     Document resultData = result.get();
                     String id = resultData.getObjectId("_id").toString();
+                    Log.v("ClientID",id);
                     try {
 
                         if (resultData.getString("user").equals("Client")) {
@@ -192,13 +192,13 @@ public class MainActivity extends AppCompatActivity {
                                 Intent home_screen = new Intent(MainActivity.this, client_home.class);
                                 home_screen.putExtra("user_ID", id);
                                 startActivity(home_screen);
-                                Log.v("resultData", "oy gago bro tama pareho");
+                                Log.v("resultData", "Password match");
                             } else {
-                                Log.v("resultData", "beh bat ganon");
+                                Log.v("resultData", "Error");
                             }
 
                         } else {
-                            Log.v("resultData", "ayaw beh di ko alam bakit");
+                            Log.v("resultData", "error");
                         }
                     } catch (Exception client) {
                         //Testing Employee Accounts
@@ -215,13 +215,13 @@ public class MainActivity extends AppCompatActivity {
                                     home_screen.putExtra("user_ID", resultData1.getObjectId("_id").toString());
                                     startActivity(home_screen);
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Employee Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                    Log.v("resultAccount", "Wala sa Employee");
+                                    Toast.makeText(getApplicationContext(), "Wrong Password or Username", Toast.LENGTH_LONG).show();
+                                    Log.v("resultAccount", "Account doesnt exist.");
 
                                 }
                             } catch (Exception employee) {
                                 employee.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "wala pre di ko kita kahit sa employees", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Account does not exist.", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
