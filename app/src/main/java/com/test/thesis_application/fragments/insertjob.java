@@ -108,6 +108,12 @@ public class insertjob extends Fragment {
 
         actv_unit.setAdapter(Unit);
 
+        String[] LaborWork = getResources().getStringArray(R.array.SitePreparations);
+        ArrayAdapter<String> Labor = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, LaborWork);
+
+        String[] ElecWork = getResources().getStringArray(R.array.ElectricalWorks);
+        ArrayAdapter<String> Electrical = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, ElecWork);
+
         String[] CarpWork = getResources().getStringArray(R.array.CarpentryWorks);
         ArrayAdapter<String> carpentry = new ArrayAdapter<>(requireContext(), R.layout.drop_down_item_gender, CarpWork);
 
@@ -129,11 +135,18 @@ public class insertjob extends Fragment {
             if (ScopeOfWork.getText().toString().equals("Carpentry Works")) {
                 TypeOfWork.setAdapter(carpentry);
                 actv_unit.setText("Square Meter");
-
                 TypeOfWork.setText("");
-//                if(TypeOfWork.getText().equals("Carpentry Works for Main Counter")){
-//                }
                 Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+            } else if (ScopeOfWork.getText().toString().equals("Electrical Works")) {//
+                TypeOfWork.setAdapter(Electrical);
+                TypeOfWork.setText("");
+                actv_unit.setText("");
+                actv_unit.setAdapter(Unit);
+            }else if (ScopeOfWork.getText().toString().equals("Site Preparation")) {
+                TypeOfWork.setAdapter(mechanical);
+                TypeOfWork.setText("");
+                actv_unit.setText("");
+                actv_unit.setAdapter(Unit);
             } else if (ScopeOfWork.getText().toString().equals("Mechanical/Metal Works")) {
                 TypeOfWork.setAdapter(mechanical);
                 TypeOfWork.setText("");
@@ -412,7 +425,7 @@ public class insertjob extends Fragment {
         } else if (TypeOfWork.getText().toString().equals("D3 - Drainage Pipeline Installation")) {
             try {
                 double value = Double.parseDouble(strfinishdate);
-                if (value >= 4 && value <= 12.2) {
+                if (value >= 1 && value <= 2) {
                     expected.setError(null);
                     return true;
                 } else {
@@ -431,7 +444,7 @@ public class insertjob extends Fragment {
                     return true;
 
                 } else {
-                    expected.setError("Value must be between 9.95 and 152.06");
+                    expected.setError("Value must be between 1 and 4");
                     return false;
                 }
             } catch (NumberFormatException e) {
@@ -489,7 +502,7 @@ public class insertjob extends Fragment {
                 .append("idUser", userid)
                 .append("name", name.getEditText().getText().toString().trim())
                 .append("TypeOfWork", TypeOfWork.getText().toString())
-                .append("jobTitle", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
+                .append("ProjectName", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
                 .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())
                 .append("Unit", Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
                 .append("Location", Objects.requireNonNull(TILlocation.getEditText()).getText().toString().trim())

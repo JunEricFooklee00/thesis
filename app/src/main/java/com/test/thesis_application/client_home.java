@@ -25,6 +25,7 @@ import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
 import com.test.thesis_application.fragments.fragment_settings;
+import com.test.thesis_application.fragments.proponents;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -136,14 +137,15 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .addToBackStack(null)
                         .commit();
                 break;
+            case R.id.Proponents:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new proponents()).setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+                break;
             case R.id.nav_map:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new fragment_maps()).setReorderingAllowed(true)
-//                        .addToBackStack(null)
-//                        .commit();
                 fragment_maps fragmentMaps = new fragment_maps();
                 FragmentTransaction mapsTransaction = getSupportFragmentManager().beginTransaction();
-                //bundle is to pass data
                 Bundle mapsuid = new Bundle();
                 mapsuid.putString("user_ID",str_UID); // to fragment_maps()
                 fragmentMaps.setArguments(mapsuid);
@@ -155,8 +157,6 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
             case R.id.nav_myproject:
                 fragment_project project_fragment =  new fragment_project();
                 FragmentTransaction projectTransaction = getSupportFragmentManager().beginTransaction();
-                //bundle is to pass data
-
                 Bundle projectuserid = new Bundle();
                 projectuserid.putString("user_ID",str_UID);
                 projectuserid.putString("name",navName.getText().toString());
@@ -175,8 +175,6 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.nav_profile:
 
-//                fragment_profile profile_fragment = fragment_profile.newInstance(navName.getText().toString(),navUsername.getText().toString());
-//                Toast.makeText(getApplicationContext(),navName.getText().toString(),Toast.LENGTH_LONG).show();
                 fragment_profile profile_fragment =  new fragment_profile();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 Bundle data = new Bundle();
@@ -194,8 +192,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 fragmentTransaction.replace(R.id.fragment_container,profile_fragment).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new fragment_profile()).commit();
+//
                 break;
             case R.id.nav_logout:
                 Intent logout = new Intent(client_home.this,MainActivity.class);

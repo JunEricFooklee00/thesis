@@ -1,25 +1,7 @@
 package com.test.thesis_application;
 
-import java.util.List;
-
-public class EmployeeList {
-    private List<EmployeeList> employees;
-
-    public EmployeeList(List<EmployeeList> employees) {
-        this.employees = employees;
-    }
-
-    public List<EmployeeList> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<EmployeeList> employees) {
-        this.employees = employees;
-    }
-}
-
-class Employee {
-    private String objectId;
+public class CheckedEmployee {
+    private String employeeId;
     private String firstName;
     private String lastName;
     private String address;
@@ -27,8 +9,8 @@ class Employee {
     private String rating;
     private String distance;
 
-    public Employee(String objectId, String firstName, String lastName, String address, String profile, String rating, String distance) {
-        this.objectId = objectId;
+    public CheckedEmployee(String employeeId, String firstName, String lastName, String address, String profile, String rating, String distance) {
+        this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -37,12 +19,14 @@ class Employee {
         this.distance = distance;
     }
 
-    public String getObjectId() {
-        return objectId;
+    // getters and setters
+
+    public String getEmployeeId() {
+        return employeeId;
     }
 
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getFirstName() {
@@ -91,5 +75,18 @@ class Employee {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    @Override
+    public String toString() {
+        return "CheckedEmployee{" +
+                "employeeId='" + employeeId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", profile='" + profile + '\'' +
+                ", rating='" + rating + '\'' +
+                ", distance='" + distance + '\'' +
+                '}';
     }
 }

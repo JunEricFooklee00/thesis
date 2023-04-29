@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?><!-- item_employee.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/beige"
+        app:cardCornerRadius="20dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view4"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/employee_avatar"
+                    android:layout_width="100dp"
+                    android:layout_height="125dp"
+                    android:src="@drawable/gen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--            <TextView-->
+                <!--                android:id="@+id/tv_employee_name"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:text="@string/Fname"-->
+                <!--                android:textAppearance="?attr/textAppearanceListItem"-->
+                <!--                android:textColor="@color/light_blue"-->
+                <!--                android:textSize="25dp" />-->
+
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:text="@string/Fname"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@color/light_blue"
+                    android:textSize="25dp"
+                    app:layout_constraintStart_toEndOf="@+id/employee_avatar"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_jobtype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="job"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    app:layout_constraintStart_toStartOf="@+id/tv_employee_id"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_employee_id" />
+
+                <TextView
+                    android:id="@+id/tv_employee_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="_id"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    app:layout_constraintStart_toEndOf="@+id/employee_avatar"
+                    app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+
+                <TextView
+                    android:id="@+id/tv_employee_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    app:layout_constraintStart_toStartOf="@+id/tv_jobtype"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_jobtype" />
+
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="4dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/employee_avatar" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

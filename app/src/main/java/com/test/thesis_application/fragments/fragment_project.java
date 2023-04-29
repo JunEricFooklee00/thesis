@@ -112,7 +112,7 @@ public class fragment_project extends Fragment implements Jobinterface {
                        jobOrder.set_id(document.getObjectId("_id"));
                        jobOrder.setUserId(document.getString("idUser"));
                        jobOrder.setScopeofwork(document.getString("TypeOfWork"));
-                       jobOrder.setJobTitle(document.getString("jobTitle"));
+                       jobOrder.setJobTitle(document.getString("ProjectName"));
                        jobOrder.setArea(document.getString("Area"));
                        jobOrder.setUnit(document.getString("Unit"));
                        jobOrder.setLocation(document.getString("Location"));
