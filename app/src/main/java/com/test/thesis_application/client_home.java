@@ -19,8 +19,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
+import com.test.thesis_application.fragments.JobList;
 import com.test.thesis_application.fragments.calendarview;
 import com.test.thesis_application.fragments.fragment_Dashboard;
+import com.test.thesis_application.fragments.fragment_currentJob;
 import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
@@ -29,6 +31,8 @@ import com.test.thesis_application.fragments.proponents;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+
+import java.text.DecimalFormat;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -41,8 +45,9 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class client_home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     TextView navName, navUsername;
-    private String imagepath,str_email,str_contact,str_birthday, str_address,str_zipcode,str_UID,newstr_UID,usertype;
-
+    private String imagepath,str_email,str_birthday, str_address,str_zipcode,str_UID,newstr_UID,usertype;
+    String value;
+    double str_contact;
     ImageView nav_avatar;
     String Appid = "employeems-mcwma";
     User user;
@@ -98,7 +103,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 str_email = resultdata.getString("email");
                 str_birthday = resultdata.getString("birthday");
 
-                str_contact = Double.valueOf(resultdata.getDouble("contactNumber")).toString();
+                str_contact = Double.valueOf(resultdata.getDouble("contactNumber"));
                 str_zipcode = resultdata.getString("zipcode");
                 str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
@@ -114,6 +119,10 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
             else {
                 Toast.makeText(getApplicationContext(),"Sorry Something is wrong with the application.",Toast.LENGTH_LONG).show();
             }
+
+            DecimalFormat df = new DecimalFormat("#");
+            df.setMaximumFractionDigits(0);
+            value = df.format(str_contact);
 
         });
 
@@ -160,9 +169,35 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 Bundle projectuserid = new Bundle();
                 projectuserid.putString("user_ID",str_UID);
                 projectuserid.putString("name",navName.getText().toString());
+                projectuserid.putString("contactnumber",value);
                 project_fragment.setArguments(projectuserid);// to pass data
 
                 projectTransaction.replace(R.id.fragment_container,project_fragment).setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.Joblist:
+                JobList joblist =  new JobList();
+                FragmentTransaction joblisttransaction = getSupportFragmentManager().beginTransaction();
+                Bundle joblistbundle = new Bundle();
+                joblistbundle.putString("user_ID",str_UID);
+                joblistbundle.putString("name",navName.getText().toString());
+
+                joblist.setArguments(joblistbundle);// to pass data
+
+                joblisttransaction.replace(R.id.fragment_container,joblist).setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.acceptedjobs:
+                fragment_currentJob fragment_currentJob = new fragment_currentJob();
+                FragmentTransaction currentjobtransaction = getSupportFragmentManager().beginTransaction();
+                Bundle currentbundle = new Bundle();
+                currentbundle.putString("user_ID",str_UID);
+                currentbundle.putString("name",navName.getText().toString());
+                fragment_currentJob.setArguments(currentbundle);// to pass data
+
+                currentjobtransaction.replace(R.id.fragment_container,fragment_currentJob).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;
@@ -179,15 +214,15 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 Bundle data = new Bundle();
                 data.putString("uid",newstr_UID);
-                data.putString("username",navUsername.getText().toString());
-                data.putString("name",navName.getText().toString());
-                data.putString("avatar",imagepath);
-                data.putString("email",str_email);
-                data.putString("birthday",str_birthday);
-                data.putString("contactNumber",str_contact);
-                data.putString("zipcode",str_zipcode);
-                data.putString("address",str_address);
-                data.putString("user",usertype);
+//                data.putString("username",navUsername.getText().toString());
+//                data.putString("name",navName.getText().toString());
+//                data.putString("avatar",imagepath);
+//                data.putString("email",str_email);
+//                data.putString("birthday",str_birthday);
+//                data.putString("contactNumber",value);
+//                data.putString("zipcode",str_zipcode);
+//                data.putString("address",str_address);
+//                data.putString("user",usertype);
                 profile_fragment.setArguments(data);
                 fragmentTransaction.replace(R.id.fragment_container,profile_fragment).setReorderingAllowed(true)
                         .addToBackStack(null)

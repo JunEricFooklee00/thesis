@@ -13,10 +13,12 @@ import android.os.Handler;
 import android.text.InputFilter;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -35,6 +37,7 @@ import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.squareup.picasso.Picasso;
 import com.test.thesis_application.fragments.DatePickerFragment;
 
 import org.bson.Document;
@@ -55,6 +58,7 @@ import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 
 public class Register_Form extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -68,19 +72,20 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
     MongoCollection<Document> mongoCollection;
 
     //    Map config = new HashMap();
-    private static final int IMAGE_REQ = 1;
-    private static final String TAG = "Upload ###";
     private Uri imagePath, imagePath2;
 
     private boolean isReadPermissionGranted = false;
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
 
-    private TextInputEditText TietAge, TietPicture, Tietresume, TIETContactNum, TIETzipcode;
-    private TextInputLayout email, username, password, name, confirmpassword, address, contactnumber, housenumber, barangay, city, zipcode, province, tilAge, picture, resume;
+    private TextInputEditText TietAge;
+    private TextInputEditText TietPicture;
+    private TextInputEditText Tietresume;
+    private TextInputLayout email, username, password, name, confirmpassword, address, level, contactnumber, housenumber, barangay, city, zipcode, province, tilAge, picture, resume;
 
     private Button register;
-    private AutoCompleteTextView autoCompleteTextView, autoCompleteTextViewgender;
+    private AutoCompleteTextView autoCompleteTextView, autoCompleteTextViewgender, jobselect;
     String hashedPassword;
+    TextInputLayout usertype;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -97,17 +102,14 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("CourseData");
 
+        jobselect = findViewById(R.id.ACT_Jobtype);
         //nav bar return icon
         Toolbar toolbar = findViewById(R.id.toolbar_register);
         setSupportActionBar(toolbar);
         drawer_reg = findViewById(R.id.drawer_layout_register);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_baseline_arrow_back_24));
+        toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.ic_baseline_arrow_back_24));
         toolbar.setNavigationOnClickListener(v -> onBackPressed());// end of navbar return icon
 
-//
-//        btn_uploadresume.setOnClickListener(view -> getImage());
-
-        //button
         register = findViewById(R.id.btn_register);
 
         //materialspinner
@@ -116,11 +118,31 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         autoCompleteTextView = findViewById(R.id.filled_exposed);
         autoCompleteTextView.setAdapter(adapter);
 
+        String[] jobtypesz = getResources().getStringArray(R.array.jobs);
+        ArrayAdapter<String> jobadapter = new ArrayAdapter<>(Register_Form.this, R.layout.drop_down_item, jobtypesz);
+        jobselect.setAdapter(jobadapter);
         //materialspinner
         String[] gender = getResources().getStringArray(R.array.gender);
         ArrayAdapter<String> genderadapter = new ArrayAdapter<>(Register_Form.this, R.layout.drop_down_item_gender, gender);
         autoCompleteTextViewgender = findViewById(R.id.filled_exposedgender);
         autoCompleteTextViewgender.setAdapter(genderadapter);
+
+        usertype = findViewById(R.id.TIL_SPINNER);
+        level = findViewById(R.id.TIL_level);
+        level.setVisibility(View.INVISIBLE);
+//        String selectedUserType = usertype.getEditText().toString();
+        autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
+            String selectedUserType = autoCompleteTextView.getText().toString();
+            Log.d("Register_Form", "AutoCompleteTextView value: " + selectedUserType);
+
+            if (selectedUserType.equals("Clients")) {
+                level.setVisibility(View.INVISIBLE);
+            } else if (selectedUserType.equals("Employees")) {
+                level.setVisibility(View.VISIBLE);
+            } else {
+                Log.d("Register_Form", "AutoCompleteTextView value: " + selectedUserType);
+            }
+        });
 
         //Text Input Layout
         address = findViewById(R.id.TIL_address);
@@ -141,8 +163,10 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         TietPicture = findViewById(R.id.TIET_Picture);
         resume = findViewById(R.id.TIL_resume);
         Tietresume = findViewById(R.id.TIET_resume);
-        TIETContactNum = findViewById(R.id.TIET_ContactNum);
-        TIETzipcode = findViewById(R.id.TIET_zipcode);
+        TextInputEditText TIETContactNum = findViewById(R.id.TIET_ContactNum);
+        TextInputEditText TIETzipcode = findViewById(R.id.TIET_zipcode);
+
+
         //inputfilter
         InputFilter[] filters = new InputFilter[]{new InputFilter.LengthFilter(10), new InputFilter.AllCaps()};
         InputFilter[] zipcodefilter = new InputFilter[]{new InputFilter.LengthFilter(4), new InputFilter.AllCaps()};
@@ -160,6 +184,10 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         });
 
         register.setOnClickListener(v -> {
+            if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
+                    !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage() |!validateJobType()) {
+                return;
+            }
             register.setEnabled(false);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -167,10 +195,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     register.setEnabled(true);
                 }
             }, 10000); // Delay in milliseconds, adjust as needed
-            if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
-                    !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage()) {
-                return;
-            }
+
             MediaManager.get().upload(imagePath).callback(new UploadCallback() {
                 @Override
                 public void onStart(String requestId) {
@@ -232,22 +257,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         });
     }// end of onCreate
 
-    private void upload() {
-
-    }
-
-
-    //    private String generateSHA256(String input) throws NoSuchAlgorithmException {
-//        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-//        byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-//        StringBuilder hexString = new StringBuilder();
-//        for (byte b : hash) {
-//            String hex = Integer.toHexString(0xff & b);
-//            if (hex.length() == 1) hexString.append('0');
-//            hexString.append(hex);
-//        }
-//        return hexString.toString();
-//    }
     private String hashPassword(String input) {
         // Define the strength of the hashing algorithm
         int strength = 10;
@@ -260,30 +269,54 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
         return hashedPassword;
     }
+
+
+    private boolean validateJobType() {
+        String sow = Objects.requireNonNull(jobselect.getText()).toString().trim();
+
+        if (sow.isEmpty()) {
+            jobselect.setError("this field cannot be empty.");
+
+            return false;
+        } else if (sow.equals("Unit")) {
+            jobselect.setError("Please Choose a user type.");
+            return false;
+        } else {
+            autoCompleteTextView.setError("Please Select A Job Title.");
+
+            return true;
+        }
+    }
     private boolean validateusertype() {
         if (autoCompleteTextView.getText().toString().equals("Clients")) {
             autoCompleteTextView.setError(null);
 
             return true;
         } else if (autoCompleteTextView.getText().toString().equals("Employees")) {
+            autoCompleteTextViewgender.setError(null);
+
             return true;
         } else {
             autoCompleteTextView.setError("Please Choose a user type.");
             return false;
         }
     }
+
     private boolean validategender() {
         if (autoCompleteTextViewgender.getText().toString().equals("Male")) {
             autoCompleteTextViewgender.setError(null);
 
             return true;
         } else if (autoCompleteTextViewgender.getText().toString().equals("Female")) {
+            autoCompleteTextViewgender.setError(null);
+
             return true;
         } else {
             autoCompleteTextViewgender.setError("Please Choose a gender");
             return false;
         }
     }
+
     private boolean validateage() {
         String str_age = Objects.requireNonNull(tilAge.getEditText()).getText().toString().trim();
         if (str_age.isEmpty()) {
@@ -296,6 +329,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validateemail() {
 
         String emailinput = Objects.requireNonNull(email.getEditText()).getText().toString().trim();
@@ -311,28 +345,9 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             email.setError(null);
             email.setErrorEnabled(false);
             return true;
-//
-//            email.setError(null);
-//            email.setErrorEnabled(false);
-
-//            // Check if email already exists in MongoDB
-//            Document find = new Document("email", email.getEditText().getText().toString());
-//            mongoCollection.findOne(find).getAsync(result -> {
-//                if (result.isSuccess()) {
-//                    // Email already exists, set error message
-//                    email.setError("Email already exists.");
-//                    email.requestFocus();
-//                }
-//            });
-
-            // If email exists, return false
-//            if (email.getError() != null) {
-//                return false;
-//            } else {
-//                return true;
-//            }
         }
     }
+
     private boolean validateusername() {
         String usernameInput = Objects.requireNonNull(username.getEditText()).getText().toString().trim();
         if (usernameInput.isEmpty()) {
@@ -345,6 +360,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validatefullname() {
         String fullnameInput = Objects.requireNonNull(name.getEditText()).getText().toString().trim();
         if (fullnameInput.isEmpty()) {
@@ -357,6 +373,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validateaddress() {
         String str_address = Objects.requireNonNull(address.getEditText()).getText().toString();
         if (str_address.isEmpty()) {
@@ -369,6 +386,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validatebarangay() {
         String str_barangay = Objects.requireNonNull(barangay.getEditText()).getText().toString();
         if (str_barangay.isEmpty()) {
@@ -381,6 +399,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validatehousenumber() {
         String str_housenumber = Objects.requireNonNull(housenumber.getEditText()).getText().toString();
         if (str_housenumber.isEmpty()) {
@@ -393,6 +412,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validatecity() {
         String str_city = Objects.requireNonNull(city.getEditText()).getText().toString();
 
@@ -406,6 +426,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validatezipcode() {
         String str_zipcode = Objects.requireNonNull(zipcode.getEditText()).getText().toString().trim();
         if (str_zipcode.isEmpty()) {
@@ -426,6 +447,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         }
 
     }
+
     private boolean validateprovince() {
         String str_province = Objects.requireNonNull(province.getEditText()).getText().toString();
 
@@ -439,6 +461,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     private boolean validatePassword() {
         String PasswordInput = Objects.requireNonNull(password.getEditText()).getText().toString().trim();
         String confirmPasswordInput = Objects.requireNonNull(confirmpassword.getEditText()).getText().toString().trim();
@@ -455,6 +478,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return false;
         }
     }
+
     private boolean validateConfirmPassword() {
         String PasswordInput = Objects.requireNonNull(password.getEditText()).getText().toString().trim();
         String confirmPasswordInput = Objects.requireNonNull(confirmpassword.getEditText()).getText().toString().trim();
@@ -471,6 +495,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return false;
         }
     }
+
     private boolean validatecontactnum() {
         String ContactNumberInput = Objects.requireNonNull(contactnumber.getEditText()).getText().toString().trim();
         if (ContactNumberInput.isEmpty()) {
@@ -490,6 +515,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             return true;
         }
     }
+
     @Override
     public void onBackPressed() {
         if (drawer_reg.isDrawerOpen(GravityCompat.START)) {
@@ -530,7 +556,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
         } else {
             picture.setError(null);
-            picture.setErrorEnabled(false);
             return true;
         }
     }
@@ -543,7 +568,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
         } else {
             resume.setError(null);
-            resume.setErrorEnabled(false);
+
             return true;
         }
     }
@@ -564,10 +589,11 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // There are no request codes
                         Intent data = result.getData();
+                        ImageView img = findViewById(R.id.AvaterPreview);
                         imagePath = data.getData();
                         String imagetxt = data.getData().toString();
                         TietPicture.setText(imagetxt);
-                        Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_LONG).show();
+                        Picasso.get().load(imagePath).transform(new CropCircleTransformation()).into(img);
                     }
                 }
             });
@@ -587,10 +613,13 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // There are no request codes
                         Intent data = result.getData();
+                        ImageView img2 = findViewById(R.id.ResumePreview);
+
                         imagePath2 = data.getData();
                         String imagetxt = data.getData().toString();
                         Tietresume.setText(imagetxt);
-                        Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_LONG).show();
+                        Picasso.get().load(imagePath2).into(img2);
+
                     }
                 }
             });
@@ -641,29 +670,58 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         Double contactnum = Double.parseDouble(CN);
         String hash = hashPassword(input);
         // do something with the hash
-        mongoCollection = mongoDatabase.getCollection(autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT));
-        Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
-                .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
-                .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
-                .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
-                .append("contactNumber", contactnum)
-                .append("password", Objects.requireNonNull(hash))
-                .append("gender", autoCompleteTextViewgender.getText().toString())
-                .append("birthday", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
-                .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
-                        Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
-                .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("avatar", TietPicture.getText().toString()).append("resume", Tietresume.getText().toString()).append("created", new Date());
+        String depende = autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT);
+        if (depende.equals("employees")){
+            mongoCollection = mongoDatabase.getCollection("employees");
+            Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
+                    .append("jobType",jobselect.getText().toString())
+                    .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
+                    .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
+                    .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
+                    .append("contactNumber", contactnum)
+                    .append("password", Objects.requireNonNull(hash))
+                    .append("gender", autoCompleteTextViewgender.getText().toString())
+                    .append("birthday", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
+                    .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
+                            Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
+                    .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("avatar", TietPicture.getText().toString()).append("resume", Tietresume.getText().toString()).append("created", new Date());
 
-        mongoCollection.insertOne(registerAccount).getAsync(result -> {
-            if (result.isSuccess()) {
-                Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
-                Log.v("Data", "Data successfully addedd");
-                Intent intent = new Intent(Register_Form.this, splashScreen.class);
-                startActivity(intent);
-            } else {
-                Log.v("Mongodb", "Error:" + result.getError().toString());
-            }
-        });
+            mongoCollection.insertOne(registerAccount).getAsync(result -> {
+                if (result.isSuccess()) {
+                    Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
+                    Log.v("Data", "Data successfully addedd");
+                    Intent intent = new Intent(Register_Form.this, splashScreen.class);
+                    startActivity(intent);
+                } else {
+                    Log.v("Mongodb", "Error:" + result.getError().toString());
+                }
+            });
+        } else if (depende.equals("clients")) {
+            mongoCollection = mongoDatabase.getCollection("clients");
+            Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
+                    .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
+                    .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
+                    .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
+                    .append("contactNumber", contactnum)
+                    .append("password", Objects.requireNonNull(hash))
+                    .append("gender", autoCompleteTextViewgender.getText().toString())
+                    .append("birthday", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
+                    .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
+                            Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
+                    .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("avatar", TietPicture.getText().toString()).append("resume", Tietresume.getText().toString()).append("created", new Date());
+
+            mongoCollection.insertOne(registerAccount).getAsync(result -> {
+                if (result.isSuccess()) {
+                    Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
+                    Log.v("Data", "Data successfully addedd");
+                    Intent intent = new Intent(Register_Form.this, splashScreen.class);
+                    startActivity(intent);
+                } else {
+                    Log.v("Mongodb", "Error:" + result.getError().toString());
+                }
+            });
+        }
+
 
 
     }

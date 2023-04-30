@@ -44,11 +44,11 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <CheckBox
-                    android:id="@+id/checkBox"
+                <TextView
+                    android:id="@+id/Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
+                    android:layout_marginStart="30dp"
                     android:text="@string/Fname"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textColor="@color/light_blue"
@@ -73,7 +73,17 @@
                     android:text="_id"
                     android:textAppearance="?attr/textAppearanceListItem"
                     app:layout_constraintStart_toEndOf="@+id/employee_avatar"
-                    app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+                    app:layout_constraintTop_toBottomOf="@+id/Name" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Contact_Number"
+                    android:textAppearance="?attr/textAppearanceListItem"
+
+                    app:layout_constraintStart_toStartOf="@+id/tv_jobtype"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_jobtype" />
 
                 <TextView
                     android:id="@+id/tv_employee_location"
@@ -82,7 +92,7 @@
                     android:text="@string/location"
                     android:textAppearance="?attr/textAppearanceListItem"
                     app:layout_constraintStart_toStartOf="@+id/tv_jobtype"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_jobtype" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
                 <View
                     android:id="@+id/view4"

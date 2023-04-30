@@ -31,9 +31,17 @@
         <item>Meter</item>
     </string-array>
     <string-array name="userTypes">
-        <item>Choose type of user.</item>
         <item>Clients</item>
         <item>Employees</item>
+    </string-array>
+    <string-array name="jobs">
+        <item>Labor</item>
+        <item>Carpenter</item>
+        <item>Welder</item>
+        <item>Plumber</item>
+        <item>Painter</item>
+        <item>Electrician</item>
+
     </string-array>
     <string name="Scope_of_work">Scope of work.</string>
     <string-array name="scopeofwork">
@@ -151,4 +159,7 @@
     <string name="dashboard">DASHBOARD</string>
     <string name="notification">Notification</string>
     <string name="plumbing">Plumbing</string>
+    <string name="job_type">Job Type.</string>
+    <string name="job_id">Job ID:</string>
+    <string name="name">Name:</string>
 </resources>

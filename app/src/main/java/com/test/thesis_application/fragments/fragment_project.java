@@ -49,7 +49,7 @@ public class fragment_project extends Fragment implements Jobinterface {
     MongoCollection<Document> mongoCollection;
 
     FloatingActionButton insert;
-    private String userid,name;
+    private String userid,name,contactnumber;
     private ObjectId objectId;
 
     @Nullable
@@ -63,8 +63,9 @@ public class fragment_project extends Fragment implements Jobinterface {
         if (projectuserid != null) {
             userid = projectuserid.getString("user_ID");
             name = projectuserid.getString("name");
+            contactnumber = projectuserid.getString("contactnumber");
         }
-
+        Log.v("fragmentproject",contactnumber);
 //        objectId = new ObjectId(userid);
 
         // all required for mongodb
@@ -95,9 +96,6 @@ public class fragment_project extends Fragment implements Jobinterface {
 
 
     private void loadJobsOrders() {
-//        List<JobsOrderClass> orders = new ArrayList<>();
-//        String userid =userid;
-        // Create a filter using the objectId
         Document filter = new Document("idUser", userid);
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(filter).iterator();
         findTask.getAsync(task -> {
@@ -109,8 +107,13 @@ public class fragment_project extends Fragment implements Jobinterface {
                        JobsOrderClass jobOrder = new JobsOrderClass();
 
                        Document document = results.next();
+
+//                       Log.v("RESULTSDATA",);
+                        // Change things here if may binago sa database
                        jobOrder.set_id(document.getObjectId("_id"));
                        jobOrder.setUserId(document.getString("idUser"));
+                       jobOrder.setName(document.getString("ClientName"));
+                       jobOrder.setContactNumber(document.getDouble("ContactNumber"));
                        jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                        jobOrder.setJobTitle(document.getString("ProjectName"));
                        jobOrder.setArea(document.getString("Area"));
@@ -118,7 +121,6 @@ public class fragment_project extends Fragment implements Jobinterface {
                        jobOrder.setLocation(document.getString("Location"));
                        jobOrder.setStartingDate(document.getString("StartingDate"));
                        jobOrder.setExpectedFinishDate(document.getString("ExpectedFinishDate"));
-
                        orders.add(jobOrder);
 
                        // Set up adapter
@@ -126,6 +128,7 @@ public class fragment_project extends Fragment implements Jobinterface {
 //                       adapter.notifyItemInserted();
                        recyclerView.setAdapter(adapter);
                    }
+
                } else {
                    Log.e("EXAMPLE", "failed to find documents with: ", task.getError());
                }
@@ -143,6 +146,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         Bundle bundle = new Bundle();
         bundle.putString("uid", userid); // Example of adding a String to the Bundle
         bundle.putString("name",name);
+        bundle.putString("contactnumber",contactnumber);
         // Set the Bundle as an argument for your fragment
         fragment.setArguments(bundle);
 
@@ -162,18 +166,18 @@ public class fragment_project extends Fragment implements Jobinterface {
 
         // Create a Bundle to pass your data
         Bundle bundle = new Bundle();
-        bundle.putString("scopeofwork", orders.get(position).getScopeofwork()); // Example of adding a String to the Bundle
+        bundle.putString("Name",orders.get(position).getName());  // from joborderclass
+        bundle.putDouble("contactNumber",orders.get(position).getContactNumber());
+        bundle.putString("Unit",orders.get(position).getUnit());
+        bundle.putString("scopeofwork", orders.get(position).getScopeofwork());
         bundle.putString("area", orders.get(position).getArea());
-        bundle.putString("location", orders.get(position).getLocation()); // Example of adding a String to the Bundle
-        bundle.putString("startingdate", orders.get(position).getStartingDate()); // Example of adding a String to the Bundle
-        bundle.putString("_id", orders.get(position).get_id().toString()); // Example of adding a String to the Bundle
-        bundle.putString("jobtitle", orders.get(position).getJobTitle()); // Example of adding a String to the Bundle
-        bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate()); // Example of adding a String to the Bundle
-        bundle.putString("idUser", orders.get(position).getUserId()); // Example of adding a String to the Bundle
-//
-//
-//        Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();
-//        // Set the Bundle as an argument for your fragment
+        bundle.putString("location", orders.get(position).getLocation());
+        bundle.putString("startingdate", orders.get(position).getStartingDate());
+        bundle.putString("_id", orders.get(position).get_id().toString());
+        bundle.putString("jobtitle", orders.get(position).getJobTitle());
+        bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate());
+        bundle.putString("idUser", orders.get(position).getUserId());
+
         fragmentjob.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.fragment_container,fragmentjob);

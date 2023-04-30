@@ -26,7 +26,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
 
     private List<JSONObject> results;
     private List<JSONObject> mCheckedItems = new ArrayList<>();
-
     private CompoundButton.OnCheckedChangeListener mListener;
 
     public EmployeeAdapter(List<JSONObject> results, List<JSONObject> mCheckedItems, CompoundButton.OnCheckedChangeListener mListener) {
@@ -37,7 +36,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public String imgpath;
-
         public TextView idTextView;
         public TextView locationTextView;
         public TextView job;
@@ -67,12 +65,10 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
         try {
             JSONObject employeedata = results.get(position);
             holder.imgpath = employeedata.getString("avatar");
-
             holder.employee.setText(employeedata.getString("name"));
             holder.job.setText(employeedata.getString("jobType"));
             holder.idTextView.setText(employeedata.getString("employeeId"));
             holder.locationTextView.setText(employeedata.getString("address"));
-//            holder.employee.setOnCheckedChangeListener(null); // To prevent triggering the listener when the view is recycled
             holder.employee.setChecked(mCheckedItems.contains(employeedata));
             holder.employee.setOnCheckedChangeListener(mListener);
 
@@ -137,7 +133,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
                                 throw new RuntimeException(e);
                             }
 
-                            Log.v("mchecked", "Checked Item " + i + ": " + employeeId  + ", " + address + ", " + profile  + ", " + distance);
+                            Log.v("mchecked", "Checked Item " + i + ": " + employeeId + ", " + address + ", " + profile + ", " + distance);
                         }
 
 //                        Log.v("mchecked","dewow "+ mCheckedItems.toString() ); //how do i print the mcheckeditems here
@@ -157,6 +153,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
     public int getItemCount() {
         return results.size();
     }
+
     public List<JSONObject> getCheckedItems() {
         return mCheckedItems;
     }
