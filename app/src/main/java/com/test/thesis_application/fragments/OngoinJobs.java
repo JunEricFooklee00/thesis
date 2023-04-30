@@ -34,7 +34,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class OngoinJobs extends Fragment {
     String userId, id, nameuser, Unitstr, ScopeofWork, area, Location, ExpectedFinishDate, jobtitle, Startingdate, Worker1, Worker2, Worker3, Worker4, Worker5;
     Double contactNumber;
-    TextView tv_jobID, tv_name, Tv_contactNumber, tv_scope, tv_Area, Tv_unit, tv_location, tv_startingdate, tv_expecteddate;
+    TextView tv_jobID, tv_name, Tv_contactNumber, tv_scope, tv_Area, Tv_unit, tv_location, tv_startingdate, tv_expecteddate,textView_jobTitle;
     TextView WorkerName1,WorkerName2,WorkerName3,WorkerName4,WorkerName5;
     TextView Workerjob1,Workerjob2,Workerjob3,Workerjob4,Workerjob5;
     TextView workercontact1,workercontact2,workercontact3,workercontact4,workercontact5;
@@ -63,7 +63,7 @@ public class OngoinJobs extends Fragment {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
 
-
+        textView_jobTitle = view.findViewById(R.id.textView_jobTitle);
         tv_jobID = view.findViewById(R.id.tv_jobID);
         tv_name = view.findViewById(R.id.tv_name);
         Tv_contactNumber = view.findViewById(R.id.Tv_contactNumber);
@@ -131,20 +131,31 @@ public class OngoinJobs extends Fragment {
         }
         if (Worker2 != null && !Worker2.isEmpty()) {
             LoadEmployee2();
+        }else {
+            location2.setEnabled(false);
         }
         if (Worker3 != null && !Worker3.isEmpty()) {
             LoadEmployee3();
+        }else {
+            location3.setEnabled(false);
         }
         if (Worker4 != null && !Worker4.isEmpty()) {
             LoadEmployee4();
+        }else {
+            location4.setEnabled(false);
         }
         if (Worker5 != null && !Worker5.isEmpty()) {
             LoadEmployee5();
+        }else {
+            location5.setEnabled(false);
         }
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
 
+        textView_jobTitle.setText(jobtitle);
         tv_jobID.setText(id);
         tv_name.setText(nameuser);
-        Tv_contactNumber.setText(contactNumber.toString());
+        Tv_contactNumber.setText(df.format(contactNumber));
         tv_scope.setText(ScopeofWork);
         tv_Area.setText(area);
         Tv_unit.setText(Unitstr);
@@ -248,6 +259,7 @@ public class OngoinJobs extends Fragment {
                     String name1 = resultdata.getString("name");
                     Double contact1 = resultdata.getDouble("contactNumber");
                     String job1 = resultdata.getString("jobType");
+
                     DecimalFormat df = new DecimalFormat("#");
                     df.setMaximumFractionDigits(0);
                     workercontact1.setText(df.format(contact1));
@@ -276,8 +288,10 @@ public class OngoinJobs extends Fragment {
                     Double contact2 = resultdata.getDouble("contactNumber");
                     String job2 = resultdata.getString("jobType");
 
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    workercontact2.setText(df.format(contact2));
                     WorkerName2.setText(name2);
-                    workercontact2.setText(String.valueOf(contact2));
                     Workerjob2.setText(job2);
                     Picasso.get().load(display2).transform(new CropCircleTransformation()).into(avatar2);
 
@@ -304,8 +318,10 @@ public class OngoinJobs extends Fragment {
                     Double contact3 = resultdata.getDouble("contactNumber");
                     String job3 = resultdata.getString("jobType");
 
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    workercontact3.setText(df.format(contact3));
                     WorkerName3.setText(name3);
-                    workercontact3.setText(String.valueOf(contact3));
                     Workerjob3.setText(job3);
                     Picasso.get().load(display3).transform(new CropCircleTransformation()).into(avatar3);
                 } else {
@@ -329,6 +345,9 @@ public class OngoinJobs extends Fragment {
                     Double contact4 = resultdata.getDouble("contactNumber");
                     String job4 = resultdata.getString("jobType");
 
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    workercontact4.setText(df.format(contact4));
                     WorkerName4.setText(name4);
                     workercontact4.setText(String.valueOf(contact4));
                     Workerjob4.setText(job4);
@@ -354,8 +373,10 @@ public class OngoinJobs extends Fragment {
                     Double contact5 = resultdata.getDouble("contactNumber");
                     String job5 = resultdata.getString("jobType");
 
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    workercontact5.setText(df.format(contact5));
                     WorkerName5.setText(name5);
-                    workercontact5.setText(String.valueOf(contact5));
                     Workerjob5.setText(job5);
                     Picasso.get().load(display5).transform(new CropCircleTransformation()).into(avatar5);
                 } else {

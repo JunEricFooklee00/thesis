@@ -17,6 +17,7 @@ import com.test.thesis_application.R;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class PendingJobs extends Fragment {
 
     String userId, id, nameuser, Unitstr, ScopeofWork, area, Location, ExpectedFinishDate, jobtitle, Startingdate, Worker1, Worker2, Worker3, Worker4, Worker5;
     Double contactNumber;
-    TextView tv_jobID, tv_name, Tv_contactNumber, tv_scope, tv_Area, Tv_unit, tv_location, tv_startingdate, tv_expecteddate;
+    TextView tv_jobID, tv_name, Tv_contactNumber, tv_scope, tv_Area, Tv_unit, tv_location, tv_startingdate, tv_expecteddate,textView_jobTitle;
     TextView WorkerName1,WorkerName2,WorkerName3,WorkerName4,WorkerName5;
     TextView Workerjob1,Workerjob2,Workerjob3,Workerjob4,Workerjob5;
     TextView workercontact1,workercontact2,workercontact3,workercontact4,workercontact5;
@@ -63,7 +64,7 @@ public class PendingJobs extends Fragment {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
 
-
+        textView_jobTitle = view.findViewById(R.id.textView_jobTitle);
         tv_jobID = view.findViewById(R.id.tv_jobID);
         tv_name = view.findViewById(R.id.tv_name);
         Tv_contactNumber = view.findViewById(R.id.Tv_contactNumber);
@@ -140,9 +141,13 @@ public class PendingJobs extends Fragment {
             LoadEmployee5();
         }
 
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
+
+        textView_jobTitle.setText(jobtitle);
         tv_jobID.setText(id);
         tv_name.setText(nameuser);
-        Tv_contactNumber.setText(contactNumber.toString());
+        Tv_contactNumber.setText(df.format(contactNumber));
         tv_scope.setText(ScopeofWork);
         tv_Area.setText(area);
         Tv_unit.setText(Unitstr);
