@@ -21,6 +21,10 @@
                 android:id="@+id/cardView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +57,7 @@
                     <View
                         android:id="@+id/view"
                         android:layout_width="wrap_content"
-                        android:layout_height="2dp"
+                        android:layout_height="1dp"
                         android:layout_marginTop="10dp"
                         android:background="@color/black"
                         app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle"
@@ -79,13 +83,49 @@
                         app:layout_constraintTop_toTopOf="@+id/Job" />
 
                     <TextView
+                        android:id="@+id/Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+
+                        android:layout_marginTop="5dp"
+                        android:text="Name: "
+                        app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/Job" />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="charles"
+                        app:layout_constraintStart_toEndOf="@+id/Name"
+                        app:layout_constraintTop_toTopOf="@+id/Name" />
+
+                    <TextView
+                        android:id="@+id/contactnumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Contact Number: "
+                        app:layout_constraintStart_toStartOf="@+id/Name"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+                    <TextView
+                        android:id="@+id/Tv_contactNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Contact_Number"
+                        app:layout_constraintStart_toEndOf="@+id/contactnumber"
+                        app:layout_constraintTop_toTopOf="@+id/contactnumber" />
+
+                    <TextView
                         android:id="@+id/Scope"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="Scope: "
                         app:layout_constraintStart_toStartOf="@+id/Job"
-                        app:layout_constraintTop_toBottomOf="@+id/Job" />
+                        app:layout_constraintTop_toBottomOf="@+id/contactnumber" />
 
                     <TextView
                         android:id="@+id/tv_scope"
@@ -113,6 +153,14 @@
                         app:layout_constraintStart_toEndOf="@+id/Areaunit"
                         app:layout_constraintTop_toTopOf="@+id/Areaunit" />
 
+                    <TextView
+                        android:id="@+id/Tv_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Unit"
+                        app:layout_constraintStart_toEndOf="@+id/tv_Area"
+                        app:layout_constraintTop_toTopOf="@+id/tv_Area" />
 
                     <TextView
                         android:id="@+id/Loc"
@@ -179,6 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                app:cardCornerRadius="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2">
@@ -200,6 +249,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/black"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3"
+                        tools:ignore="MissingConstraints" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/TIL_forcasted"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -217,18 +275,39 @@
                             android:id="@+id/TextinputET_forcasted"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end" />
+                            android:ellipsize="end"
+                            tools:ignore="DuplicateClickableBoundsCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TIL_Suggested"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="32dp"
+                        android:hint="Suggest Number of Workers"
+                        android:textColorHint="@color/black"
+                        app:layout_constraintStart_toStartOf="@+id/textView3"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/TextinputET_Suggested"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:id="@+id/tv8"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:inputType="textMultiLine"
                         android:minHeight="48dp"
-                        android:text="*note to user the value above is the optimal number of workers for the job."
 
+                        android:text="*note to user the value above is the optimal number of workers for the job."
                         app:layout_constraintEnd_toEndOf="@+id/TIL_forcasted"
                         app:layout_constraintStart_toStartOf="@+id/TIL_forcasted"
                         app:layout_constraintTop_toBottomOf="@+id/TIL_forcasted" />
@@ -245,7 +324,7 @@
                         android:textColorHint="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/TIL_forcasted"/>
+                        app:layout_constraintTop_toBottomOf="@+id/TIL_forcasted" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/TIL_unskilled"
@@ -259,16 +338,19 @@
                         android:textColorHint="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/TIL_skilled"/>
+                        app:layout_constraintTop_toBottomOf="@+id/TIL_skilled" />
 
                     <Button
                         android:id="@+id/Accept"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/button_bg"
                         android:text="SHOW RECCOMEND WORKERS"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/TIL_forcasted"
-                        app:layout_constraintStart_toStartOf="@+id/TIL_forcasted"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/TIL_skilled" />
 
 
@@ -280,6 +362,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="15dp"
+                app:cardCornerRadius="24dp"
                 app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
                 <LinearLayout
@@ -288,11 +371,20 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/skilledTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Recommended Workers"
                         android:textColor="@color/light_blue"
                         android:textSize="29dp" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/black"
+                        tools:ignore="MissingConstraints" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
@@ -316,6 +408,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="15dp"
+                app:cardCornerRadius="24dp"
                 app:layout_constraintTop_toBottomOf="@+id/cardview4">
 
                 <LinearLayout
@@ -324,12 +417,21 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/cv4tv"
+                        android:id="@+id/unskilledtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Recommended Workers"
+                        android:text="Recommended Labor Helper"
                         android:textColor="@color/light_blue"
                         android:textSize="29dp" />
+
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/black"
+                        app:layout_constraintTop_toBottomOf="@+id/cv4tv"
+                        tools:ignore="MissingConstraints" />
 
                     <ProgressBar
                         android:id="@+id/progressBar2"
@@ -347,34 +449,18 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+            <Button
+                android:id="@+id/accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp">
-
-                    <Button
-                        android:id="@+id/accept"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="set string builder"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textbuilder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="textbuilder"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/accept" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_bg"
+                android:text="set string builder"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

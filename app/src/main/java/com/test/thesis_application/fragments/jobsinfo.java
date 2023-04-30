@@ -1,7 +1,6 @@
 package com.test.thesis_application.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,7 +40,9 @@ import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -57,7 +58,8 @@ import io.realm.mongodb.mongo.MongoDatabase;
 
 public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChangeListener {
     Button stringbuilder;
-    TextInputLayout output, skilled, unskilled;
+    String workertype;
+    TextInputLayout output, skilled, unskilled, suggested;
     TextView cv4tv;
     TextView TV_jobTitle;
     TextView TV_jobid;
@@ -65,26 +67,33 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
     TextView TV_area;
     TextView TV_location;
     TextView TV_startdate;
+    TextView titleskilled;
+    TextView titleUnskilled;
     TextView TV_expecteddate;
+    TextView Tv_contactNumber;
     String jobtitle, userId, id, ScopeofWork, area, Location, ExpectedFinishDate, Startingdate;
+    Double contactNumber;
     Button accept;
     int outputString;
     CardView cv4, cv5;
     String jsonResult2;
     String jsonResult;
-    TextView stringbuild;
+    String nameuser;
 
+    TextView pangalan;
     EmployeeAdapter skilledAdapter;
     laborAdapter unskilledAdapter;
     RecyclerView recyclerView, recyclerView2;
     ImageView del;
     private List<JSONObject> mCheckedItems = new ArrayList<>();
-    //    List<JSONObject> checkedItems = skilledAdapter();
     String Appid = "employeems-mcwma";
     User user;
     MongoDatabase mongoDatabase;
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
+    TextView Unitval ;
+    String Unitstr;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,6 +101,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_jobsinfo, container, false);
 
+        suggested = view.findViewById(R.id.TIL_Suggested);
         accept = view.findViewById(R.id.Accept);
         TV_jobTitle = view.findViewById(R.id.textView_jobTitle);
         TV_jobid = view.findViewById(R.id.tv_jobID);
@@ -106,14 +116,20 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         del = view.findViewById(R.id.delete);
         skilled = view.findViewById(R.id.TIL_skilled);
         unskilled = view.findViewById(R.id.TIL_unskilled);
-
+        pangalan = view.findViewById(R.id.tv_name);
         stringbuilder = view.findViewById(R.id.accept);
-        stringbuild = view.findViewById(R.id.textbuilder);
-        cv4tv = view.findViewById(R.id.cv4tv);
+        titleskilled = view.findViewById(R.id.skilledTitle);
+        titleUnskilled = view.findViewById(R.id.unskilledtitle);
+        Tv_contactNumber = view.findViewById(R.id.Tv_contactNumber);
+        Unitval = view.findViewById(R.id.Tv_unit);
+
         Bundle data = getArguments();
-        if (data != null) {
+        if (data != null) {//from
             userId = data.getString("idUser");
             id = data.getString("_id");
+            nameuser = data.getString("Name");
+            contactNumber = data.getDouble("contactNumber");
+            Unitstr = data.getString("Unit");
             ScopeofWork = data.getString("scopeofwork");
             area = data.getString("area");
             Location = data.getString("location");
@@ -122,6 +138,14 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             Startingdate = data.getString("startingdate");
         }
 
+        Log.v("doublevaluedapat",contactNumber.toString());
+        DecimalFormat contactformat = new DecimalFormat("#");
+        contactformat.setMaximumFractionDigits(0);
+        String tae = contactformat.format(contactNumber);
+
+        Tv_contactNumber.setText(tae);
+        Unitval.setText(Unitstr);
+        pangalan.setText(nameuser);
         TV_jobTitle.setText(jobtitle);
         TV_jobid.setText(id);
         TV_scope.setText(ScopeofWork);
@@ -132,8 +156,8 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         Float area = Float.valueOf(TV_area.getText().toString());
         float hours = Float.parseFloat(TV_expecteddate.getText().toString());
         float result;
-//        cv4.setVisibility(View.INVISIBLE);
-//        cv5.setVisibility(View.INVISIBLE);
+        Double stringdouble = Double.valueOf(Tv_contactNumber.getText().toString());
+
         List<String> checkedItems = new ArrayList<>();
 
 
@@ -148,194 +172,251 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         del.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setMessage("Are you sure you want to delete this job order?" + TV_jobid.getText().toString());
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ObjectId objectId = new ObjectId(id);
-                    Document filter = new Document("_id", objectId);
-                    mongoCollection.findOneAndDelete(filter).getAsync(result1 -> {
-                        if (result1.isSuccess()) {
-                            Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
-                            // Close the current fragment and go back to the previous one
-                            requireActivity().getSupportFragmentManager().popBackStack();
-                        } else {
-                            Toast.makeText(requireContext(), "Deletion failed.", Toast.LENGTH_LONG).show();
-                        }
-                    });
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                ObjectId objectId = new ObjectId(id);
+                Document filter = new Document("_id", objectId);
+                mongoCollection.findOneAndDelete(filter).getAsync(result1 -> {
+                    if (result1.isSuccess()) {
+                        Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
+                        // Close the current fragment and go back to the previous one
+                        requireActivity().getSupportFragmentManager().popBackStack();
+                    } else {
+                        Toast.makeText(requireContext(), "Deletion failed.", Toast.LENGTH_LONG).show();
+                    }
+                });
 
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            });// end of DialogInterface :D
+            builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
         });
         Log.v("Datatypenicharles", area.getClass().getSimpleName() + area);
 
 
-        if (TV_scope.getText().equals("B2 - Carpentry Works for Main Counter")) {
-            Toast.makeText(requireContext(), "B2", Toast.LENGTH_LONG).show();
-            try {
-                hours = hours * 8;
-                Float RateOfWork = 2.6667f;
-                result = (RateOfWork * area) / hours;
-                float input2 = area, input3 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
+        String scopetv = TV_scope.getText().toString();
+        String firstLetter = scopetv.substring(0, 1); // extract the first two letters
+        String firstTwoLetters = scopetv.substring(0, 2); // extract the first two letters
 
-                float[] inputValues = new float[]{productivityratio, input2, input3};
-                B2CarpentryWorks model = B2CarpentryWorks.newInstance(requireContext());
+        if (firstLetter.equals("G")) { // use .equals() to compare strings
+            workertype = "Painter";
+            titleskilled.setText("Recommended "+workertype  );
 
-                // Creates inputs for reference.
-                TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
+            if(firstTwoLetters.equals("G1")){
+                try {
+                    hours = hours * 8;
+                    Float RateOfWork = 0.54f;
+                    result = (RateOfWork * area) / hours;
+                    float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
 
-                inputFeature0.loadArray(inputValues);
+                    float[] inputValues = new float[]{productivityratio, input1, input2};
+                    G1plainconcrete model = G1plainconcrete.newInstance(requireContext());
 
-                // Runs model inference and gets result.
-                B2CarpentryWorks.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                    // Creates inputs for reference.
+                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
 
-                float[] outputValues = outputFeature0.getFloatArray();
+                    inputFeature0.loadArray(inputValues);
 
-                outputString = 0;
+                    // Runs model inference and gets result.
+                    G1plainconcrete.Outputs outputs = model.process(inputFeature0);
+                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-                for (float value : outputValues) {
-                    outputString = Math.round(value);
-                }
+                    float[] outputValues = outputFeature0.getFloatArray();
 
-                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
-                output.setEnabled(false);
-//            Log.v("Model Output", outputString);
-                // Releases model resources if no longer used.
-                model.close();
-            } catch (IOException e) {
-                // TODO Handle the exception
-            }
-        } else if (TV_scope.getText().equals("D2 - Pipeline and Fixture Installation")) {
-            Toast.makeText(requireContext(), "Pipeline and Fixture Installation", Toast.LENGTH_LONG).show();
+                    outputString = 0;
 
-            try {
-                hours = hours * 8;
-                Float RateOfWork = 1f;
-                result = (RateOfWork * area) / hours;
-                float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
-
-                float[] inputValues = new float[]{productivityratio, input1, input2};
-                D2Pipeline model = D2Pipeline.newInstance(requireContext());
-
-                // Creates inputs for reference.
-                TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
-
-                inputFeature0.loadArray(inputValues);
-
-                // Runs model inference and gets result.
-                D2Pipeline.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-                float[] outputValues = outputFeature0.getFloatArray();
-
-                outputString = 0;
-
-                for (float value : outputValues) {
-                    outputString = Math.round(value);
-                }
-                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
+                    for (float value : outputValues) {
+                        outputString = Math.round(value);
+                    }
+                    suggested.getEditText().setText("0");
+                    output.setVisibility(View.VISIBLE);
+                    suggested.setVisibility(View.INVISIBLE);
+                    Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
-                // Releases model resources if no longer used.
-                model.close();
-            } catch (IOException e) {
-                // TODO Handle the exception
-            }
-        } else if (TV_scope.getText().equals("D3 - Drainage Pipeline Installation")) {
-            Toast.makeText(requireContext(), "D3", Toast.LENGTH_LONG).show();
-
-            try {
-                hours = hours * 8;
-                Float RateOfWork = 0.8f;
-                result = (RateOfWork * area) / hours;
-                float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
-
-                float[] inputValues = new float[]{productivityratio, input1, input2};
-                D3DrainagePipeline model = D3DrainagePipeline.newInstance(requireContext());
-
-                // Creates inputs for reference.
-                TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
-
-                inputFeature0.loadArray(inputValues);
-
-                // Runs model inference and gets result.
-                D3DrainagePipeline.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-                float[] outputValues = outputFeature0.getFloatArray();
-
-                outputString = 0;
-
-                for (float value : outputValues) {
-                    outputString = Math.round(value);
+                    // Releases model resources if no longer used.
+                    model.close();
+                } catch (IOException e) {
+                    // TODO Handle the exception
                 }
-                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
-
-//            Log.v("Model Output", outputString);
-                // Releases model resources if no longer used.
-                model.close();
-            } catch (IOException e) {
-                // TODO Handle the exception
+            }else{
+                output.getEditText().setText("0");
+                output.setVisibility(View.INVISIBLE);
+                suggested.setVisibility(View.VISIBLE);
+                Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
             }
-        } else if (TV_scope.getText().equals("G1 - Plain Concrete Surfaces (Surface Prep - Primer - Finish Coat)")) {
-            Toast.makeText(requireContext(), "G1", Toast.LENGTH_LONG).show();
+        } else if (firstLetter.equals("D")) {
+            workertype = "Plumber";
+            titleskilled.setText("Recommended "+workertype  );
+            if (firstTwoLetters.equals("D2")){
+                Toast.makeText(requireContext(), "D2", Toast.LENGTH_LONG).show();
+                try {
+                    hours = hours * 8;
+                    Float RateOfWork = 1f;
+                    result = (RateOfWork * area) / hours;
+                    float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
 
-            try {
-                hours = hours * 8;
-                Float RateOfWork = 0.54f;
-                result = (RateOfWork * area) / hours;
-                float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
+                    float[] inputValues = new float[]{productivityratio, input1, input2};
+                    D2Pipeline model = D2Pipeline.newInstance(requireContext());
 
-                float[] inputValues = new float[]{productivityratio, input1, input2};
-                G1plainconcrete model = G1plainconcrete.newInstance(requireContext());
+                    // Creates inputs for reference.
+                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
 
-                // Creates inputs for reference.
-                TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
+                    inputFeature0.loadArray(inputValues);
 
-                inputFeature0.loadArray(inputValues);
+                    // Runs model inference and gets result.
+                    D2Pipeline.Outputs outputs = model.process(inputFeature0);
+                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-                // Runs model inference and gets result.
-                G1plainconcrete.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                    float[] outputValues = outputFeature0.getFloatArray();
 
-                float[] outputValues = outputFeature0.getFloatArray();
+                    outputString = 0;
 
-                outputString = 0;
+                    for (float value : outputValues) {
+                        outputString = Math.round(value);
+                    }
+                    Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
 
-                for (float value : outputValues) {
-                    outputString = Math.round(value);
+                    suggested.getEditText().setText("0");
+                    output.setVisibility(View.VISIBLE);
+                    suggested.setVisibility(View.INVISIBLE);
+                    model.close();
+                } catch (IOException e) {
+                    // TODO Handle the exception
                 }
-                Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
+            } else if (firstTwoLetters.equals("D3")) {//TV_scope.getText().equals("D3 - Drainage Pipeline Installation")
+                Toast.makeText(requireContext(), "D3", Toast.LENGTH_LONG).show();
+                try {
+                    hours = hours * 8;
+                    Float RateOfWork = 0.8f;
+                    result = (RateOfWork * area) / hours;
+                    float input1 = area, input2 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
 
-//            Log.v("Model Output", outputString);
-                // Releases model resources if no longer used.
-                model.close();
-            } catch (IOException e) {
-                // TODO Handle the exception
+                    float[] inputValues = new float[]{productivityratio, input1, input2};
+                    D3DrainagePipeline model = D3DrainagePipeline.newInstance(requireContext());
+
+                    // Creates inputs for reference.
+                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
+
+                    inputFeature0.loadArray(inputValues);
+
+                    // Runs model inference and gets result.
+                    D3DrainagePipeline.Outputs outputs = model.process(inputFeature0);
+                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+                    float[] outputValues = outputFeature0.getFloatArray();
+
+                    outputString = 0;
+
+                    for (float value : outputValues) {
+                        outputString = Math.round(value);
+                    }
+                    Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
+                    suggested.getEditText().setText("0");
+                    output.setVisibility(View.VISIBLE);
+                    suggested.setVisibility(View.INVISIBLE);
+                    model.close();
+                } catch (IOException e) {
+                    // TODO Handle the exception
+                }
+            } else {
+                //if it doesnt have any model to forecast
+                output.getEditText().setText("0");
+                output.setVisibility(View.INVISIBLE);
+                suggested.setVisibility(View.VISIBLE);
+                Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
             }
+
+
+        } else if (firstLetter.equals("B")) {
+            workertype = "Carpenter";
+            titleskilled.setText("Recommended "+workertype  );
+
+            if (firstTwoLetters.equals("B2")){
+                Toast.makeText(requireContext(), "B2", Toast.LENGTH_LONG).show();
+                try {
+                    hours = hours * 8;
+                    Float RateOfWork = 2.6667f;
+                    result = (RateOfWork * area) / hours;
+                    float input2 = area, input3 = hours, productivityratio = result; // input1 is area, input 2 is hours , input 3?
+
+                    float[] inputValues = new float[]{productivityratio, input2, input3};
+                    B2CarpentryWorks model = B2CarpentryWorks.newInstance(requireContext());
+
+                    // Creates inputs for reference.
+                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 3}, DataType.FLOAT32);
+
+                    inputFeature0.loadArray(inputValues);
+
+                    // Runs model inference and gets result.
+                    B2CarpentryWorks.Outputs outputs = model.process(inputFeature0);
+                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+                    float[] outputValues = outputFeature0.getFloatArray();
+
+                    outputString = 0;
+
+                    for (float value : outputValues) {
+                        outputString = Math.round(value);
+                    }
+
+                    Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
+                    suggested.getEditText().setText("0");
+                    output.setVisibility(View.VISIBLE);
+                    suggested.setVisibility(View.INVISIBLE);
+                    model.close();
+                } catch (IOException e) {
+                    // TODO Handle the exception
+                }
+            }else{
+                //if it doesnt have any model to forecast
+                output.getEditText().setText("0");
+                output.setVisibility(View.INVISIBLE);
+                suggested.setVisibility(View.VISIBLE);
+                Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
+            }
+
+        } else if (firstLetter.equals("L")) {
+            workertype = "Labor";
+            titleskilled.setText("Recommended "+workertype  );
+
+            output.getEditText().setText("0");
+            output.setVisibility(View.INVISIBLE);
+            suggested.setVisibility(View.VISIBLE);
+            Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
+
+
+        } else if (firstLetter.equals("C")) { //Metal Works
+            workertype = "Welder";
+            titleskilled.setText("Recommended "+workertype);
+            output.getEditText().setText("0");
+            output.setVisibility(View.INVISIBLE);
+            suggested.setVisibility(View.VISIBLE);
+            Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
+
+
+        }else if (firstLetter.equals("E")) { // Electrical Works
+            workertype = "Electrician";
+            titleskilled.setText("Recommended "+workertype  );
+
+            output.getEditText().setText("0");
+            output.setVisibility(View.INVISIBLE);
+            suggested.setVisibility(View.VISIBLE);
+            Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
+
+
         } else {
-            Toast.makeText(requireContext(), "No need i forcast po", Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
         }// end of forcasting.
 
         //start of machine learning recommendation
         if (!Python.isStarted())
             Python.start(new AndroidPlatform(requireContext()));
-
-
         Python py = Python.getInstance();
         final PyObject pyobj = py.getModule("myscript");
 
         accept.setOnClickListener((view1) -> {
 
-            if (!validateforecastsize() ) {
+            if (!validateforecastsize() |!validateSuggested()) {
                 return;
             }
             ProgressBar progressBar = requireView().findViewById(R.id.progressBar);
@@ -346,7 +427,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             Handler handler = new Handler(Looper.getMainLooper());
             new Thread(() -> {
                 // execute the time-consuming function here recommend
-                PyObject objskilled = pyobj.callAttr("find_closest_employee", "Mason", TV_location.getText().toString());
+                PyObject objskilled = pyobj.callAttr("find_closest_employee", workertype, TV_location.getText().toString());
 
                 //store JSONObject in list results
                 List<JSONObject> results = new ArrayList<>();
@@ -366,16 +447,10 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                 handler.post(() -> {
 //                     update the UI here
                     recyclerView = requireView().findViewById(R.id.recyclerView);
-
-
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                     recyclerView.setLayoutManager(layoutManager);
 
                     skilledAdapter = new EmployeeAdapter(results, mCheckedItems, null);
-
-                    recyclerView.setAdapter(skilledAdapter);
-
-
                     recyclerView.setAdapter(skilledAdapter);
                     cv4.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
@@ -426,53 +501,74 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         });//end of onclick listener
 
         stringbuilder.setOnClickListener(v -> {
+
             // get the checked items from the adapter
             int totalunskilled = unskilledAdapter.getCheckedItems().size();
             int totalskilled = skilledAdapter.getCheckedItems().size();
-            Toast.makeText(requireContext(),totalskilled,Toast.LENGTH_LONG).show();
-            Toast.makeText(requireContext(),totalunskilled,Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), String.valueOf(totalskilled),Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(),String.valueOf(totalunskilled),Toast.LENGTH_LONG).show();
             List<JSONObject> checkedItems1 = skilledAdapter.getCheckedItems();
             List<JSONObject> checkedItems2 = unskilledAdapter.getCheckedItems();
-            Document test = null;
-//             check that at least one item is selected in each list
+            Document test = new Document();
+            Log.v("charleskendrickmagalued",checkedItems1.toString());
+//  check that at least one item is selected in each list
             if (!validateforecast()) {
                 return;
             }
+            DecimalFormat df = new DecimalFormat("#");
+            df.setMaximumFractionDigits(0);
+            ObjectId jobid = new ObjectId(id);
+            test.append("_id",jobid).append("idUser",userId).append("ProjectName",jobtitle).append("ClientName",nameuser).append("ContactNumber",stringdouble).append("TypeOfWork", ScopeofWork).append("Area",df.format(area)).append("Unit",Unitstr).append("Location",Location)
+                    .append("StartingDate",Startingdate).append("ExpectedFinishDate",ExpectedFinishDate).append("ForecastedNum",Integer.valueOf(output.getEditText().getText().toString())).append("SuggestedNum",Integer.valueOf(suggested.getEditText().getText().toString())); //
 
-            // create a StringBuilder for the selected items
-            StringBuilder selectedItemsBuilder = new StringBuilder();
 
+            int n = 0;
+            int z = 0;
             // add items from the first list to the StringBuilder
             for (JSONObject item : checkedItems1) {
-                String objectId = item.optString("name");
+                String objectId = item.optString("employeeId");
+                String name = item.optString("name");
                 String employeeId = extractEmployeeId(objectId);
                 for (int i = 0; i < totalskilled; i++) {
-                     test = new Document("tae" + i, employeeId);
+                      n = i +1;
+                     test.append("Worker" + n, employeeId).append("WorkerName"+n, name);
                     // Do something with the 'test' Document object here
                 }
-
             }
 
             // add items from the second list to the StringBuilder
             for (JSONObject item : checkedItems2) {
                 String objectId = item.optString("employeeId");
                 String employeeId = extractEmployeeId(objectId);
+                String name = item.optString("name");
+
                 for (int i = 0; i < totalunskilled; i++) {
-                     test = new Document("tae" + i, employeeId);
-                    // Do something with the 'test' Document object here
+                    z = n +i+1;
+                    test.append("Worker" + z, employeeId).append("WorkerName"+z, name);
                 }
-//                selectedItemsBuilder.append(employeeId).append(", ");
             }
 
-//            // convert the StringBuilder to a String and trim trailing commas
-//            String selectedItems = selectedItemsBuilder.toString().trim();
-//            if (selectedItems.endsWith(",")) {
-//                selectedItems = selectedItems.substring(0, selectedItems.length() - 1);
-//            }
             String testString = test.toJson();
-//            System.out.println(testString);
-            // set the TextView with the selected items
-            stringbuild.setText(testString);
+
+            ObjectId objectId = new ObjectId(id);
+            Document filter = new Document("_id", objectId);
+            mongoCollection.findOneAndDelete(filter).getAsync(result1 -> {
+                if (result1.isSuccess()) {
+                    Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
+                    mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
+                    mongoCollection = mongoDatabase.getCollection("joborders");
+
+                    mongoCollection.insertOne(test.append("created", new Date())).getAsync(result2 -> {
+                        if (result2.isSuccess()){
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        }else{
+                            Toast.makeText(requireContext(),"failed",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(requireContext(), "Deletion failed.", Toast.LENGTH_LONG).show();
+                }
+            });
         });
 
 
@@ -499,32 +595,40 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             return true;
         }
     }
+    private boolean validateSuggested(){
+        String stroutput = Objects.requireNonNull(suggested.getEditText().getText().toString().trim());
+        if (stroutput.isEmpty()){
+            suggested.setError("Cannot be Blank.");
+            return false;
+        } else  {
+            suggested.setError(null);
+            return true;
+        }
+    }
     private boolean validateforecast(){
 
         int intoutput = Integer.parseInt(Objects.requireNonNull(output.getEditText()).getText().toString());
+        int intsuggested = Integer.parseInt(Objects.requireNonNull(suggested.getEditText()).getText().toString());
+        int sum = intoutput + intsuggested;
         int totalunskilled = unskilledAdapter.getCheckedItems().size();
         int totalskilled = skilledAdapter.getCheckedItems().size();
         int totalsum = totalunskilled + totalskilled;
-        if (intoutput > totalsum) {
+        if (sum > totalsum) {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setMessage("Selected Number("+totalsum+") of Worker is less than the Required ("+intoutput+").")
                     .setTitle("Error")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //
-                        }
+                    .setPositiveButton("OK", (dialog, id) -> {
+                        //
                     });
             AlertDialog dialog = builder.create();
             dialog.show();
             return false;
-        } else if (intoutput < totalsum) {
+        } else if (sum < totalsum) {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setMessage("Selected Number("+totalsum+") of Worker is greater than the Required ("+intoutput+").")
                     .setTitle("Error")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Total Selected Worker is greater than the given number of employees.
-                        }
+                    .setPositiveButton("OK", (dialog, id) -> {
+                        // Total Selected Worker is greater than the given number of employees.
                     });
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -534,12 +638,6 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             return true;
         }
     }
-
-
-
-
-
-
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

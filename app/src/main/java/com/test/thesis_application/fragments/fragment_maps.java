@@ -56,7 +56,7 @@ public class fragment_maps extends Fragment {
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
 
-    private String userid;
+    private String userid,employeeid;
 
     @Nullable
     @Override
@@ -67,10 +67,12 @@ public class fragment_maps extends Fragment {
         Bundle projectuserid = getArguments();
         if (projectuserid != null) {
             userid = projectuserid.getString("user_ID"); //coming from client home
+            employeeid = projectuserid.getString("employeeID");
         }
 
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.google_map);
+
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         client = LocationServices.getFusedLocationProviderClient(requireActivity());
 
@@ -153,7 +155,7 @@ public class fragment_maps extends Fragment {
 //                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
 //
 //                        googleMap.addMarker(markerOptions);
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
 
                         googleMap.setMyLocationEnabled(true);
                     }

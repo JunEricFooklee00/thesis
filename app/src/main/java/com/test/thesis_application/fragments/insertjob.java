@@ -59,13 +59,13 @@ public class insertjob extends Fragment {
 
     //declare variables
     private AutoCompleteTextView ScopeOfWork, TypeOfWork, actv_unit;
-    private TextInputLayout title, area, unit, TILlocation, Sdate, expected, name;
+    private TextInputLayout title, area, unit, TILlocation, Sdate, expected, name,contactnumber;
     private int mYear;
     private int mMonth;
     private int mDayOfMonth;
     private TextInputEditText TietAge;
     //    private TextInputLayout  ;
-    private String userid, nameuser, geocode;
+    private String userid, nameuser, geocode, contactnumber1;
 
     @Nullable
     @Override
@@ -77,7 +77,7 @@ public class insertjob extends Fragment {
         area = view.findViewById(R.id.TIL_Area);
         unit = view.findViewById(R.id.TIL_unit);
         TILlocation = view.findViewById(R.id.TIL_location);
-
+        contactnumber = view.findViewById(R.id.TIL_ContactNumber);
         Sdate = view.findViewById(R.id.TIL_Age);
         expected = view.findViewById(R.id.TIL_expected);
         name = view.findViewById(R.id.TIL_name);
@@ -85,8 +85,11 @@ public class insertjob extends Fragment {
         if (projectuserid != null) {
             userid = projectuserid.getString("uid");
             nameuser = projectuserid.getString("name");
+            contactnumber1 = projectuserid.getString("contactnumber");
+            Log.v("Insertjob",contactnumber1);
         }
         name.getEditText().setText(nameuser);
+        contactnumber.getEditText().setText(contactnumber1);
         TietAge.setOnClickListener(v -> {
             // Get the current date
             Calendar calendar = Calendar.getInstance();
@@ -143,7 +146,7 @@ public class insertjob extends Fragment {
                 actv_unit.setText("");
                 actv_unit.setAdapter(Unit);
             }else if (ScopeOfWork.getText().toString().equals("Site Preparation")) {
-                TypeOfWork.setAdapter(mechanical);
+                TypeOfWork.setAdapter(Labor);
                 TypeOfWork.setText("");
                 actv_unit.setText("");
                 actv_unit.setAdapter(Unit);
@@ -191,7 +194,7 @@ public class insertjob extends Fragment {
 
         submit.setOnClickListener(v -> {
             if (!validateScopeofWork() | !validatetitle() | !validateexpectedfinishdate() | !validateArea() | !validatesubdiv() | !validateunit() | !validatelocation()
-                    | !validatestartingdate() | !validateexpectedfinishdate() | !validatename() | !validateInputArea() |!validateinputDate()) {
+                    | !validatestartingdate() | !validateexpectedfinishdate() | !validatename() | !validateInputArea() |!validateinputDate() |!validatecontactnum()) {
                 return;
             }
             // TODO: add code po here idol
@@ -212,19 +215,31 @@ public class insertjob extends Fragment {
             });
         }
     }
+    private boolean validatecontactnum() {
+        String ContactNumberInput = Objects.requireNonNull(contactnumber.getEditText()).getText().toString().trim();
+        if (ContactNumberInput.isEmpty()) {
+            contactnumber.setError("Contact number cannot be empty");
+            return false;
 
+        } else if (ContactNumberInput.length() > 10) {
+            contactnumber.setError("Contact Number is Too long");
+            return false;
+
+        } else if (ContactNumberInput.length() <= 9) {
+            contactnumber.setError("Contact Number is Too short");
+            return false;
+        } else {
+            contactnumber.setError(null);
+            contactnumber.setErrorEnabled(false);
+            return true;
+        }
+    }
     private void getAddress(@NonNull Location location) {
         Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
-//                StringBuilder sb = new StringBuilder();
-//                for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-//                    sb.append(address.getAddressLine(i)).append("\n");
-//                }
-//                tvAddress.setText(sb.toString());
-//                 geocode = sb.toString();
                 geocode = address.getAddressLine(0);
             } else {
                 geocode = "Cannot get location";
@@ -500,7 +515,8 @@ public class insertjob extends Fragment {
         //Create a new order document
         Document orderDocument = new Document()
                 .append("idUser", userid)
-                .append("name", name.getEditText().getText().toString().trim())
+                .append("ClientName", name.getEditText().getText().toString().trim())
+                .append("ContactNumber",Double.parseDouble(contactnumber.getEditText().getText().toString()))
                 .append("TypeOfWork", TypeOfWork.getText().toString())
                 .append("ProjectName", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
                 .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())

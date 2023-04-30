@@ -26,9 +26,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="User Type"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/light_blue" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_SPINNER"
@@ -38,13 +48,9 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:hint="@string/usertype"
                     app:errorEnabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_ConfirmPassword"
-                    app:layout_constraintTop_toTopOf="parent"
+
                     app:startIconDrawable="@drawable/ic_baseline_person_24">
 
                     <AutoCompleteTextView
@@ -56,24 +62,21 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TIL_SPINNERGender"
+                    android:id="@+id/TIL_level"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
-
-                    android:hint="@string/gender"
-
-                    app:errorEnabled="true"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_Age"
+                    android:layout_marginBottom="20dp"
+                    android:hint="@string/job_type"
+                    app:errorEnabled="false"
 
                     app:startIconDrawable="@drawable/ic_baseline_person_24">
 
                     <AutoCompleteTextView
-                        android:id="@+id/filled_exposedgender"
+                        android:id="@+id/ACT_Jobtype"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
@@ -81,19 +84,31 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/grey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:text="Account Details"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/light_blue" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_Email"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="32dp"
                     android:hint="@string/textview_email"
                     android:textColorHint="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/TIL_SPINNER"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_SPINNER"
+
                     app:startIconDrawable="@drawable/ic_baseline_email_24">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -112,12 +127,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:textColorHint="@color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_Email"
-                    app:startIconDrawable="@drawable/ic_baseline_alternate_email_24">
+
+                    tools:layout_editor_absoluteX="32dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -134,11 +148,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:textColorHint="@color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_Username"
+
                     app:startIconDrawable="@drawable/ic_baseline_person_24">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -156,14 +169,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
+
                     android:textColorHint="@color/black"
                     app:counterEnabled="true"
                     app:counterMaxLength="10"
                     app:errorIconDrawable="@drawable/ic_baseline_error_24"
-                    app:layout_constraintTop_toBottomOf="@+id/TIL_FullName"
                     app:prefixText="+63"
                     app:startIconDrawable="@drawable/ic_baseline_local_phone_24">
 
@@ -182,9 +194,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="10dp"
                     android:clickable="true"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_ContactNumber"
@@ -199,6 +210,44 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TIL_SPINNERGender"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+
+                    android:hint="@string/gender"
+
+                    app:errorEnabled="true"
+                    app:layout_constraintTop_toBottomOf="@+id/TIL_Age"
+
+                    app:startIconDrawable="@drawable/ic_baseline_person_24">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/filled_exposedgender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/grey" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:text="Address"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+
+                    android:textColor="@color/light_blue" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_address"
@@ -206,9 +255,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
+
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_houseNumber"
                     app:startIconDrawable="@drawable/ic_baseline_edit_location_24">
@@ -228,9 +277,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="10dp"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_SPINNERGender"
                     app:startIconDrawable="@drawable/ic_baseline_edit_location_24">
@@ -250,9 +299,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_address"
                     app:startIconDrawable="@drawable/ic_baseline_edit_location_24">
@@ -274,7 +321,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="10dp"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_Barangay"
                     app:startIconDrawable="@drawable/ic_baseline_edit_location_24">
@@ -293,7 +340,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="10dp"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_City"
                     app:startIconDrawable="@drawable/ic_baseline_edit_location_24">
@@ -315,7 +362,6 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:textColorHint="@color/black"
                     app:counterEnabled="true"
                     app:counterMaxLength="4"
@@ -331,15 +377,29 @@
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/grey" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:text="Password"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/light_blue" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_Password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:textColorHint="@color/black"
                     app:endIconMode="password_toggle"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_ZipCode"
@@ -355,13 +415,14 @@
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_ConfirmPassword"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="32dp"
                     android:textColorHint="@color/black"
@@ -380,15 +441,35 @@
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/grey" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Upload Photos"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/light_blue" />
+
+                <ImageView
+                    android:id="@+id/AvaterPreview"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_picture"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:clickable="true"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_ConfirmPassword"
@@ -405,15 +486,21 @@
                         android:maxLines="1"
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/ResumePreview"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TIL_resume"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="32dp"
                     android:clickable="true"
                     android:textColorHint="@color/black"
                     app:layout_constraintTop_toBottomOf="@+id/TIL_picture"
@@ -430,10 +517,12 @@
                         android:maxLines="1"
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <Button
                     android:id="@+id/btn_register"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="Register"
                     app:layout_constraintEnd_toEndOf="@+id/TIL_resume"
@@ -441,7 +530,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/TIL_resume" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </ScrollView>
 
 
