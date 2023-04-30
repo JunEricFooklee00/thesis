@@ -93,6 +93,8 @@ dependencies {
     //password hash
     implementation 'org.mindrot:jbcrypt:0.4'
 
+    implementation 'me.biubiubiu.justifytext:library:1.1'
+
 //    //tenserflow
 //    implementation 'org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2'
 //    implementation 'com.google.android.gms:play-services-tflite-gpu:16.1.0'

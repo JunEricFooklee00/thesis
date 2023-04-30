@@ -4,6 +4,7 @@
     tools:showIn="navigation_view"
     >
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_baseline_dashboard_24"
@@ -45,6 +46,7 @@
                     android:id="@+id/nav_setting"
                     android:icon="@drawable/ic_baseline_settings_24"
                     android:title="Settings" />
+
                 <item
                     android:id="@+id/Proponents"
                     android:icon="@drawable/baseline_favorite_24"

@@ -111,11 +111,10 @@
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
-                        android:id="@+id/terms"
+                        android:src="@drawable/baseline_notes_24"
+
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:clickable="true"
-                        android:src="@drawable/baseline_notes_24"
                         tools:ignore="ContentDescription" />
                     <TextView
                         android:layout_margin="12dp"

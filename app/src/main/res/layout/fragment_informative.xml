@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Informative"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="To prevent harm and health issues in a construction site, it is crucial to adhere to general safety rules. These safety rules include:"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="1.	Mandatory use of Personal Protective Equipment (PPE) by all workers and visitors in the construction site to minimize exposure to different hazards on the worksite. Common PPEs are helmets, goggles, gloves, earplugs, high visibility vests, and boots."
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="2.	Awareness of safety signs and following them correctly. Workers should understand different safety signs such as prohibition signs, warning signs, mandatory signs, safe condition signs, and fire fighting equipment signs."
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="3.	Providing clear instructions through site induction, toolbox talks, and contractor induction. Workers should know site operations and adhere to health and safety instructions before starting work."/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="4.	Maintaining a clean and clutter-free site by removing debris, dust, and stagnant water from excavations and backfilling to prevent slips and trips."/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="5.	Proper organization and storage of tools and equipment to prevent injuries or damages. Workers should avoid using makeshift tools and use the correct equipment for specific tasks."/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="6.	Developing an emergency response plan, which includes a dedicated team responsible for managing crises, reporting hazards, and answering questions when incidents like natural disasters, fire, or hazardous material spills occur."/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="7.	Installation of safeguards and engineering controls such as barriers, fences, and safeguards to prevent exposure to hazardous areas."/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="8.	Conducting pre-checks on tools and equipment to ensure that they are free of defects and damages before starting work."/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="9.	Encouraging workers to report issues immediately to management to prevent worsening of problems that could cause accidents or damage."/>
+
+
+
+    </LinearLayout>
+
+</ScrollView>
