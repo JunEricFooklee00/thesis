@@ -21,12 +21,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 import com.test.thesis_application.MainActivity;
 import com.test.thesis_application.R;
-import com.test.thesis_application.fragments.JobList;
 import com.test.thesis_application.fragments.calendarview;
 import com.test.thesis_application.fragments.fragment_Dashboard;
-import com.test.thesis_application.fragments.fragment_currentJob;
 import com.test.thesis_application.fragments.fragment_profile;
-import com.test.thesis_application.fragments.fragment_project;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -139,38 +136,13 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
                         .commit();
                 break;
 
-            case R.id.nav_myproject:
-                fragment_project project_fragment =  new fragment_project();
+            case R.id.nav_mytask:
+                mytasks mytaskss =  new mytasks();
                 FragmentTransaction projectTransaction = getSupportFragmentManager().beginTransaction();
                 Bundle projectuserid = new Bundle();
                 projectuserid.putString("user_ID",str_UID);
-                projectuserid.putString("name",navName.getText().toString());
-                projectuserid.putString("contactnumber",value);
-                project_fragment.setArguments(projectuserid);// to pass data
-                projectTransaction.replace(R.id.fragment_container,project_fragment).setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            case R.id.Joblist:
-                JobList joblist =  new JobList();
-                FragmentTransaction joblisttransaction = getSupportFragmentManager().beginTransaction();
-                Bundle joblistbundle = new Bundle();
-                joblistbundle.putString("user_ID",str_UID);
-                joblistbundle.putString("name",navName.getText().toString());
-                joblist.setArguments(joblistbundle);// to pass data
-                joblisttransaction.replace(R.id.fragment_container,joblist).setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            case R.id.acceptedjobs:
-                fragment_currentJob fragment_currentJob = new fragment_currentJob();
-                FragmentTransaction currentjobtransaction = getSupportFragmentManager().beginTransaction();
-                Bundle currentbundle = new Bundle();
-                currentbundle.putString("user_ID",str_UID);
-                currentbundle.putString("name",navName.getText().toString());
-                fragment_currentJob.setArguments(currentbundle);// to pass data
-
-                currentjobtransaction.replace(R.id.fragment_container,fragment_currentJob).setReorderingAllowed(true)
+                mytaskss.setArguments(projectuserid);// to pass data
+                projectTransaction.replace(R.id.fragment_container,mytaskss).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;

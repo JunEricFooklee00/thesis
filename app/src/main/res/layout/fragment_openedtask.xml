@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/red"
+    tools:context=".fragments.PendingJobs">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_blue">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/grey">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:id="@+id/textView_jobTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:text="@string/jobtitle"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:textColor="@color/light_blue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.055"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardView6"
+                        app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
+                        app:layout_constraintTop_toTopOf="@+id/cardView6" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#00FF00"
+                        app:cardCornerRadius="10dp"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintStart_toEndOf="@+id/textView4"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_jobTitle">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OnGoing."
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toEndOf="@+id/textView4"
+                            app:layout_constraintTop_toTopOf="@+id/textView4" />
+                    </androidx.cardview.widget.CardView>
+
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/black"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:id="@+id/Job"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+
+                        android:text="@string/job_id"
+                        app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+                    <TextView
+                        android:id="@+id/tv_jobID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="JobID"
+                        app:layout_constraintStart_toEndOf="@+id/Job"
+                        app:layout_constraintTop_toTopOf="@+id/Job" />
+
+                    <TextView
+                        android:id="@+id/Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+
+                        android:layout_marginTop="5dp"
+                        android:text="@string/name"
+                        app:layout_constraintStart_toStartOf="@+id/textView_jobTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/Job" />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="charles"
+                        app:layout_constraintStart_toEndOf="@+id/Name"
+                        app:layout_constraintTop_toTopOf="@+id/Name" />
+
+                    <TextView
+                        android:id="@+id/contactnumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Contact Number: "
+                        app:layout_constraintStart_toStartOf="@+id/Name"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+                    <TextView
+                        android:id="@+id/Tv_contactNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Contact_Number"
+                        app:layout_constraintStart_toEndOf="@+id/contactnumber"
+                        app:layout_constraintTop_toTopOf="@+id/contactnumber" />
+
+                    <TextView
+                        android:id="@+id/Scope"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Scope: "
+                        app:layout_constraintStart_toStartOf="@+id/Job"
+                        app:layout_constraintTop_toBottomOf="@+id/contactnumber" />
+
+                    <TextView
+                        android:id="@+id/tv_scope"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Scope_of_work"
+                        app:layout_constraintStart_toEndOf="@+id/Scope"
+                        app:layout_constraintTop_toTopOf="@+id/Scope" />
+
+                    <TextView
+                        android:id="@+id/Areaunit"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Area: "
+                        app:layout_constraintStart_toStartOf="@+id/Scope"
+                        app:layout_constraintTop_toBottomOf="@+id/Scope" />
+
+                    <TextView
+                        android:id="@+id/tv_Area"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/area"
+                        app:layout_constraintStart_toEndOf="@+id/Areaunit"
+                        app:layout_constraintTop_toTopOf="@+id/Areaunit" />
+
+                    <TextView
+                        android:id="@+id/Tv_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Unit"
+                        app:layout_constraintStart_toEndOf="@+id/tv_Area"
+                        app:layout_constraintTop_toTopOf="@+id/tv_Area" />
+
+                    <TextView
+                        android:id="@+id/Loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Location: "
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/Areaunit"
+                        app:layout_constraintTop_toBottomOf="@+id/Areaunit" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+
+                        app:layout_constraintStart_toEndOf="@+id/Loc"
+                        app:layout_constraintTop_toTopOf="@+id/Loc" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Client"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
+                        android:textSize="50dp"
+                        app:cardPreventCornerOverlap="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view5"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/grey"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView5" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/worker1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView7">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/avatar1"
+                        android:layout_width="86dp"
+                        android:layout_height="98dp"
+                        android:src="@drawable/user86"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/clientcontact1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="contact"
+                        app:layout_constraintEnd_toEndOf="@+id/avatar1"
+                        app:layout_constraintStart_toStartOf="@+id/avatar1"
+                        app:layout_constraintTop_toBottomOf="@+id/ClientName1" />
+
+                    <TextView
+                        android:id="@+id/ClientName1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Empty"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
+                        android:textColor="@color/light_blue"
+                        android:textSize="25dp"
+                        app:layout_constraintEnd_toEndOf="@+id/avatar1"
+                        app:layout_constraintStart_toStartOf="@+id/avatar1"
+                        app:layout_constraintTop_toBottomOf="@+id/avatar1" />
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/clientcontact1">
+
+                        <Button
+                            android:id="@+id/location1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/button_bg"
+                            android:padding="16dp"
+                            android:shadowColor="#000000"
+                            android:shadowDx="0"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+
+                            android:text="View Location" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/worker2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/worker1"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/worker3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/worker2"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/worker4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/worker3"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/worker5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/worker4"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>
