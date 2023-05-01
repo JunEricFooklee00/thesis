@@ -13,6 +13,7 @@ import android.view.WindowManager;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -21,7 +22,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.karumi.dexter.Dexter;
@@ -30,6 +30,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.test.thesis_application.LocationNotFoundDialogFragment;
 import com.test.thesis_application.R;
 
 import org.bson.Document;
@@ -81,9 +82,9 @@ public class fragment_maps_employee extends Fragment {
         user = app.currentUser();
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("CourseData");
-        mongoCollection = mongoDatabase.getCollection("clientslocation");
-        loademployeelocation();
+        mongoDatabase = mongoClient.getDatabase("Users");
+        mongoCollection = mongoDatabase.getCollection("employees");
+//        loademployeelocation();
         Dexter.withContext(getContext())
                 .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
@@ -107,27 +108,43 @@ public class fragment_maps_employee extends Fragment {
         return view;
     }
 
-    public void loademployeelocation() {
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Users");
-        mongoCollection = mongoDatabase.getCollection("employees");
-        ObjectId employeeId = new ObjectId(employeeid);
+//    public void loademployeelocation() {
+//        mongoClient = user.getMongoClient("mongodb-atlas");
+//        mongoDatabase = mongoClient.getDatabase("Users");
+//        mongoCollection = mongoDatabase.getCollection("clients");
+//        ObjectId employeeId = new ObjectId(userid);
+//
+//        // Create a filter using the objectId
+//        Document employee = new Document("_id", employeeId);
+//
+//        mongoCollection.findOne(employee).getAsync(result1 -> {
+//            if (result1.isSuccess()) {
+//                Document resultdata = result1.get();
+//                if (resultdata == null) {
+//                    Log.e("maps", "Error: Document with id " + employeeId + " not found");
+//                    showLocationNotFoundDialog();
+//                    return;
+//                }
+//                employeelongitude = resultdata.getDouble("longitude");
+//                employeelatitude = resultdata.getDouble("latitude");
+//                Log.v("maps", employeelongitude.toString() + " " + employeelatitude.toString());
+//                lat = employeelatitude;
+//                longitude = employeelongitude;
+//            } else {
+//                Log.v("maps", "Error");
+//                showLocationNotFoundDialog();
+//            }
+//        });
+//    }
 
-        // Create a filter using the objectId
-        Document employee = new Document("_id", employeeId);
+    private void showLocationNotFoundDialog() {
+        // Show a dialog fragment informing the user that the employee's location was not found
+        LocationNotFoundDialogFragment dialogFragment = new LocationNotFoundDialogFragment();
+        dialogFragment.show(getSupportFragmentManager(), "LocationNotFoundDialogFragment");
+    }
 
-        mongoCollection.findOne(employee).getAsync(result1 -> {
-            if (result1.isSuccess()) {
-                Document resultdata = result1.get();
-                employeelongitude = resultdata.getDouble("longitude");
-                employeelatitude = resultdata.getDouble("latitude");
-                Log.v("maps", employeelongitude.toString() + " " + employeelatitude.toString());
-                lat = employeelatitude;
-                longitude = employeelongitude;
-            } else {
-                Log.v("maps", "Error");
-            }
-        });
+    private FragmentManager getSupportFragmentManager() {
+        return null;
     }
 
     public void getmylocation() {
@@ -148,7 +165,7 @@ public class fragment_maps_employee extends Fragment {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
-                ObjectId objectId = new ObjectId(userid);
+                ObjectId objectId = new ObjectId(employeeid);
 
                 // Create a filter using the objectId
                 Document filter = new Document("_id", objectId);
@@ -177,17 +194,17 @@ public class fragment_maps_employee extends Fragment {
                     public void onMapReady(GoogleMap googleMap) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 //                        LatLng employeelatlng = new LatLng(employeelatitude,employeelongitude);
-                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
+//                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
 
-                        MarkerOptions markerOptions1 = new MarkerOptions()
-                                .position(new LatLng(lat, longitude))
-                                .title("Marker Title");
+//                        MarkerOptions markerOptions1 = new MarkerOptions()
+//                                .position(new LatLng(lat, longitude))
+//                                .title("Marker Title");
 
                         // Add the marker to the map
 //                        googleMap.addMarker(markerOptions);
 //                        MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title("Employee Location");
 //                        googleMap.addMarker(employeemarker);
-                        googleMap.addMarker(markerOptions1);
+//                        googleMap.addMarker(markerOptions1);
 
 
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
