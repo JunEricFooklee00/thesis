@@ -3,11 +3,11 @@ package com.test.thesis_application;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,11 +23,8 @@ import com.test.thesis_application.fragments.JobList;
 import com.test.thesis_application.fragments.calendarview;
 import com.test.thesis_application.fragments.fragment_Dashboard;
 import com.test.thesis_application.fragments.fragment_currentJob;
-import com.test.thesis_application.fragments.fragment_maps;
 import com.test.thesis_application.fragments.fragment_profile;
 import com.test.thesis_application.fragments.fragment_project;
-import com.test.thesis_application.fragments.fragment_settings;
-import com.test.thesis_application.fragments.proponents;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -45,9 +42,9 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class client_home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     TextView navName, navUsername;
-    private String imagepath,str_email,str_birthday, str_address,str_zipcode,str_UID,newstr_UID,usertype;
+    private String imagepath,str_email,str_birthday, str_address,str_UID,newstr_UID,usertype;
     String value;
-    double str_contact;
+    double str_contact,str_zipcode;
     ImageView nav_avatar;
     String Appid = "employeems-mcwma";
     User user;
@@ -61,8 +58,10 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 
         Toolbar toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setTitle("");
         drawer = findViewById(R.id.drawer_layout);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.menu_Open,R.string.menu_Close);
@@ -97,15 +96,9 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         mongoCollection.findOne(filter).getAsync(result -> {
             if (result.isSuccess()){
                 Document resultdata = result.get();
-
                 usertype = resultdata.getString("user");
                 newstr_UID = resultdata.getObjectId("_id").toString();
                 str_email = resultdata.getString("email");
-                str_birthday = resultdata.getString("birthday");
-
-                str_contact = Double.valueOf(resultdata.getDouble("contactNumber"));
-                str_zipcode = resultdata.getString("zipcode");
-                str_address = resultdata.getString("address");
                 navUsername.setText(resultdata.getString("username"));
                 navName.setText(resultdata.getString("name"));
                 imagepath = resultdata.getString("avatar");
@@ -117,7 +110,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .into(nav_avatar);
             }
             else {
-                Toast.makeText(getApplicationContext(),"Sorry Something is wrong with the application.",Toast.LENGTH_LONG).show();
+                Log.v("ERRORTHESISEMS","ERROR");
             }
 
             DecimalFormat df = new DecimalFormat("#");
@@ -146,22 +139,6 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .addToBackStack(null)
                         .commit();
                 break;
-            case R.id.Proponents:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new proponents()).setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            case R.id.nav_map:
-                fragment_maps fragmentMaps = new fragment_maps();
-                FragmentTransaction mapsTransaction = getSupportFragmentManager().beginTransaction();
-                Bundle mapsuid = new Bundle();
-                mapsuid.putString("user_ID",str_UID); // to fragment_maps()
-                fragmentMaps.setArguments(mapsuid);
-                mapsTransaction.replace(R.id.fragment_container,fragmentMaps).setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-                break;
 
             case R.id.nav_myproject:
                 fragment_project project_fragment =  new fragment_project();
@@ -171,7 +148,6 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 projectuserid.putString("name",navName.getText().toString());
                 projectuserid.putString("contactnumber",value);
                 project_fragment.setArguments(projectuserid);// to pass data
-
                 projectTransaction.replace(R.id.fragment_container,project_fragment).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
@@ -182,9 +158,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 Bundle joblistbundle = new Bundle();
                 joblistbundle.putString("user_ID",str_UID);
                 joblistbundle.putString("name",navName.getText().toString());
-
                 joblist.setArguments(joblistbundle);// to pass data
-
                 joblisttransaction.replace(R.id.fragment_container,joblist).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
@@ -201,33 +175,18 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                         .addToBackStack(null)
                         .commit();
                 break;
-            case R.id.nav_setting:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new fragment_settings())
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-                break;
+
             case R.id.nav_profile:
 
                 fragment_profile profile_fragment =  new fragment_profile();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 Bundle data = new Bundle();
                 data.putString("uid",newstr_UID);
-//                data.putString("username",navUsername.getText().toString());
-//                data.putString("name",navName.getText().toString());
-//                data.putString("avatar",imagepath);
-//                data.putString("email",str_email);
-//                data.putString("birthday",str_birthday);
-//                data.putString("contactNumber",value);
-//                data.putString("zipcode",str_zipcode);
-//                data.putString("address",str_address);
-//                data.putString("user",usertype);
                 profile_fragment.setArguments(data);
                 fragmentTransaction.replace(R.id.fragment_container,profile_fragment).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
-//
+
                 break;
             case R.id.nav_logout:
                 Intent logout = new Intent(client_home.this,MainActivity.class);

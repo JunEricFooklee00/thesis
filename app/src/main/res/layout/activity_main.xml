@@ -121,6 +121,15 @@
             app:layout_constraintEnd_toEndOf="@+id/click_login"
             app:layout_constraintStart_toStartOf="@+id/click_login"
             app:layout_constraintTop_toBottomOf="@+id/click_login" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="gotohash"
+            app:layout_constraintEnd_toEndOf="@+id/gifImageView"
+            app:layout_constraintStart_toStartOf="@+id/gifImageView"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

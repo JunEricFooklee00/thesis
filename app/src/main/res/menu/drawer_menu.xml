@@ -9,11 +9,7 @@
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_baseline_dashboard_24"
             android:title="DashBoard" />
-        <item
-            android:id="@+id/nav_map"
 
-            android:icon="@drawable/ic_baseline_map_24"
-            android:title="Maps" />
         <item android:id="@+id/Mycalendar"
             android:icon="@drawable/ic_baseline_calendar_month_24"
             android:title="My Calendar"
@@ -42,18 +38,6 @@
                     android:id="@+id/nav_profile"
                     android:icon="@drawable/ic_baseline_person_24"
                     android:title="Profile" />
-                <item
-                    android:id="@+id/nav_setting"
-                    android:icon="@drawable/ic_baseline_settings_24"
-                    android:title="Settings" />
-
-                <item
-                    android:id="@+id/Proponents"
-                    android:icon="@drawable/baseline_favorite_24"
-                    android:title="Proponents"/>
-
-
-
                 <item
                     android:id="@+id/nav_logout"
                     android:icon="@drawable/ic_baseline_logout_24"

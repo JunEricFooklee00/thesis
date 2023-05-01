@@ -3,6 +3,7 @@ package com.test.thesis_application;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,8 +18,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -30,7 +33,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -38,7 +40,6 @@ import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
-import com.test.thesis_application.fragments.DatePickerFragment;
 
 import org.bson.Document;
 import org.mindrot.jbcrypt.BCrypt;
@@ -61,8 +62,11 @@ import io.realm.mongodb.mongo.MongoDatabase;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 
-public class Register_Form extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class Register_Form extends AppCompatActivity{
     private DrawerLayout drawer_reg;
+
+    private boolean isReadPermissionGranted = false;
+    ActivityResultLauncher<String[]> mPermissionResultLauncher;
 
     String Appid = "employeems-mcwma";
     private App app;
@@ -73,10 +77,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
     //    Map config = new HashMap();
     private Uri imagePath, imagePath2;
-
-    private boolean isReadPermissionGranted = false;
-    ActivityResultLauncher<String[]> mPermissionResultLauncher;
-
     private TextInputEditText TietAge;
     private TextInputEditText TietPicture;
     private TextInputEditText Tietresume;
@@ -86,7 +86,15 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
     private AutoCompleteTextView autoCompleteTextView, autoCompleteTextViewgender, jobselect;
     String hashedPassword;
     TextInputLayout usertype;
+    TextView tac;
+    private CheckBox termsAndConditionsCheckbox;
+    private boolean termsAndConditionsAccepted = false;
 
+
+
+    private int mYear;
+    private int mMonth;
+    private int mDayOfMonth;
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +152,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             }
         });
 
+        tac = findViewById(R.id.termsandcondition);
         //Text Input Layout
         address = findViewById(R.id.TIL_address);
         housenumber = findViewById(R.id.TIL_houseNumber);
@@ -165,7 +174,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
         Tietresume = findViewById(R.id.TIET_resume);
         TextInputEditText TIETContactNum = findViewById(R.id.TIET_ContactNum);
         TextInputEditText TIETzipcode = findViewById(R.id.TIET_zipcode);
-
+        termsAndConditionsCheckbox = findViewById(R.id.CB_terms);
 
         //inputfilter
         InputFilter[] filters = new InputFilter[]{new InputFilter.LengthFilter(10), new InputFilter.AllCaps()};
@@ -179,15 +188,49 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             getresume();
         });
         TietAge.setOnClickListener(v -> {
-            DialogFragment dp = new DatePickerFragment();
-            dp.show(getSupportFragmentManager(), "Date Picker");
+            // Get the current date
+            Calendar calendar = Calendar.getInstance();
+            mYear = calendar.get(Calendar.YEAR);
+            mMonth = calendar.get(Calendar.MONTH);
+            mDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+            // Set the maximum date to December 2005
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.set(Calendar.YEAR, 2005);
+            maxDate.set(Calendar.MONTH, Calendar.JANUARY);
+            maxDate.set(Calendar.DAY_OF_MONTH, 31);
+
+// Create a new instance of DatePickerDialog and set the maximum date
+            DatePickerDialog datePickerDialog = new DatePickerDialog(Register_Form.this, mDateSetListener, mYear, mMonth, mDayOfMonth);
+            datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
+// Show the DatePickerDialog
+            datePickerDialog.show();
+
+            datePickerDialog.show();
         });
 
-        register.setOnClickListener(v -> {
-            if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
-                    !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage() |!validateJobType()) {
-                return;
+        tac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home_screen = new Intent(Register_Form.this, termsactivity.class);
+
+                startActivity(home_screen);
             }
+        });
+        register.setOnClickListener(v -> {
+           if(autoCompleteTextView.getText().toString().equals("Employees")){
+               if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
+                       !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage() |!validateJobType() |!termsandconditions()) {
+                   return;
+               }
+           }else {
+               if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
+                       !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage()  |!termsandconditions()) {
+                   Toast.makeText(this,"Clients ang pinili",Toast.LENGTH_LONG).show();
+                   return;
+               }
+           }
             register.setEnabled(false);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -209,7 +252,6 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
                 @Override
                 public void onSuccess(String requestId, Map resultData) {
-                    Toast.makeText(getApplicationContext(), "Success1", Toast.LENGTH_LONG).show();
                     TietPicture.setText(resultData.get("secure_url").toString());
 
                     MediaManager.get().upload(imagePath2).callback(new UploadCallback() {
@@ -227,6 +269,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                         public void onSuccess(String requestId, Map resultData) {
                             Tietresume.setText(resultData.get("secure_url").toString());
                             registerAccount();
+                            Toast.makeText(getApplicationContext(), "Register Success!", Toast.LENGTH_LONG).show();
+
                         }
 
                         @Override
@@ -260,10 +304,8 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
     private String hashPassword(String input) {
         // Define the strength of the hashing algorithm
         int strength = 10;
-
         // Generate a salt value
         String salt = BCrypt.gensalt(strength);
-
         // Hash the password using the generated salt
         String hashedPassword = BCrypt.hashpw(input, salt);
 
@@ -278,11 +320,13 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
             jobselect.setError("this field cannot be empty.");
 
             return false;
-        } else if (sow.equals("Unit")) {
+        }else if(autoCompleteTextView.getText().toString().equals("Clients")){
+            return true;
+        }else if (sow.equals("Unit")) {
             jobselect.setError("Please Choose a user type.");
             return false;
         } else {
-            autoCompleteTextView.setError("Please Select A Job Title.");
+            autoCompleteTextView.setError(null);
 
             return true;
         }
@@ -661,14 +705,33 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
 
     }
 
+    private boolean termsandconditions(){
+        if (termsAndConditionsCheckbox.isChecked()){
+            return true;
+        }else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please indicate that you have read and agree to the terms and conditions.")
+                    .setTitle("Error")
+                    .setPositiveButton("OK", (dialog, id) -> {
+// do nothing, the user will remain on the same screen
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            return false;
+        }
+    }
 
     private void registerAccount() {
-
-        String input = password.getEditText().getText().toString().trim();
-
         String CN = contactnumber.getEditText().getText().toString();
         Double contactnum = Double.parseDouble(CN);
-        String hash = hashPassword(input);
+
+
+        String inputPassword = password.getEditText().getText().toString();
+        String hashedPassword = hashPassword(inputPassword);
+
+
+
+
         // do something with the hash
         String depende = autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT);
         if (depende.equals("employees")){
@@ -679,12 +742,12 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
                     .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
                     .append("contactNumber", contactnum)
-                    .append("password", Objects.requireNonNull(hash))
+                    .append("password",hashedPassword)
                     .append("gender", autoCompleteTextViewgender.getText().toString())
                     .append("birthday", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
                     .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
                             Objects.requireNonNull(barangay.getEditText()).getText().toString() + ", " + Objects.requireNonNull(city.getEditText()).getText().toString() + ", " + Objects.requireNonNull(province.getEditText()).getText().toString())
-                    .append("zipcode", Objects.requireNonNull(zipcode.getEditText()).getText().toString()).append("avatar", TietPicture.getText().toString()).append("resume", Tietresume.getText().toString()).append("created", new Date());
+                    .append("zipcode", Integer.valueOf(zipcode.getEditText().getText().toString())).append("avatar", TietPicture.getText().toString()).append("resume", Tietresume.getText().toString()).append("created", new Date());
 
             mongoCollection.insertOne(registerAccount).getAsync(result -> {
                 if (result.isSuccess()) {
@@ -703,7 +766,7 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                     .append("username", Objects.requireNonNull(username.getEditText()).getText().toString().trim())
                     .append("name", Objects.requireNonNull(name.getEditText()).getText().toString().trim())
                     .append("contactNumber", contactnum)
-                    .append("password", Objects.requireNonNull(hash))
+                    .append("password", hashedPassword)
                     .append("gender", autoCompleteTextViewgender.getText().toString())
                     .append("birthday", Objects.requireNonNull(tilAge.getEditText()).getText().toString())
                     .append("address", Objects.requireNonNull(housenumber.getEditText()).getText().toString() + ", " +
@@ -721,21 +784,20 @@ public class Register_Form extends AppCompatActivity implements DatePickerDialog
                 }
             });
         }
-
-
-
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        String datepickerstring = DateFormat.getDateInstance(DateFormat.SHORT).format(cal.getTime());
-        TietAge.setText(datepickerstring);
-    }
+            String datepickerstring = DateFormat.getDateInstance(DateFormat.SHORT).format(cal.getTime());
+            TietAge.setText(datepickerstring);
+        }
+    };
 
 
 }

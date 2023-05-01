@@ -16,18 +16,22 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-
         android:label="@string/app_name"
-
-
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Thesis_Application"
         tools:replace="android:fullBackupContent"
         tools:targetApi="31">
         <activity
+            android:name=".bcryptest"
+            android:exported="false" />
+        <activity
+            android:name=".termsactivity"
+            android:exported="false" />
+        <activity
             android:name=".splashScreen"
             android:exported="true" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBlxbOaqFlaEpuzox2WjSpsR8nFtuFe06w" />
@@ -59,9 +63,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".employee.employee_home">
-
-        </activity>
+        <activity android:name=".employee.employee_home" />
 
         <meta-data
             android:name="CLOUDINARY_URL"

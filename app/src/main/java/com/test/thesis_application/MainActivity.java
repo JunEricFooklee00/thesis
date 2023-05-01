@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView registerButton;
 
     private SharedPreferences preferences;
-
+    Button button3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         get_email = findViewById(R.id.TIL_Emailinput);
         get_password = findViewById(R.id.TIL_PasswordInput);
         registerButton = findViewById(R.id.btn_register);
-
+        button3 = findViewById(R.id.button3);
 
         mPermissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
             @Override
@@ -117,9 +117,9 @@ public class MainActivity extends AppCompatActivity {
             // If email and password are saved, automatically log in the user
             get_email.getEditText().setText(savedEmail);
             get_password.getEditText().setText(savedPassword);
-            Log.d("SharedPref","Successfully added credentials");
+            Log.d("SharedPref", "Successfully added credentials");
             login(); // Call the login() method to log in the user
-            Log.d("SharedPref","Hopefully logs in the account");
+            Log.d("SharedPref", "Hopefully logs in the account");
         }
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,19 +137,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bcrypt = new Intent(MainActivity.this, bcryptest.class);
+                startActivity(bcrypt);
+            }
+        });
+
         requestPermission();
     }// end of onCreate
 
-    private String hashPassword(String input) {
-//         Define the strength of the hashing algorithm
-        int strength = 10;
-//         Generate a salt value
-        String salt = BCrypt.gensalt(strength);
-//         Hash the password using the generated salt
-        String hashedPassword = BCrypt.hashpw(input, salt);
-
-        return hashedPassword;
-    }
 
     private void login() {
         try {
@@ -158,10 +156,6 @@ public class MainActivity extends AppCompatActivity {
             }
             mongoDatabase = mongoClient.getDatabase("Users");
             mongoCollection = mongoDatabase.getCollection("clients");
-
-            int strength = 10;
-//         Generate a salt value
-            String salt1 = BCrypt.gensalt(strength);
 
             SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -172,64 +166,76 @@ public class MainActivity extends AppCompatActivity {
             if (sharedPreferences.contains("email") && sharedPreferences.contains("password")) {
                 String email = sharedPreferences.getString("email", "");
                 String password = sharedPreferences.getString("password", "");
-
+                // Check if the user is a client
+                mongoCollection = mongoDatabase.getCollection("clients");
                 Document emailQuery = new Document("email", email);
                 mongoCollection.findOne(emailQuery).getAsync(result -> {
-                    Document resultData = result.get();
-                    String id = resultData.getObjectId("_id").toString();
-                    Log.v("ClientID",id);
                     try {
+                        Document resultData = result.get();
+                        String id = resultData.getObjectId("_id").toString();
+                        String hashedPassword = resultData.getString("password");
+                        Log.v("resultpassword",hashedPassword);
+                        Log.v("resultpassword",password);
+                        if (resultData != null && resultData.getString("user").equals("Client")) {
 
-                        if (resultData.getString("user").equals("Client")) {
-                            Log.v("resultData", resultData.getString("email"));
-                            Log.v("resultData", resultData.getString("password"));
-
-                            String input1 = password;
-                            String hash = resultData.getString("password");
-                            Log.v("resultData", salt1);
-
-                            if (BCrypt.checkpw(input1, hash)) {
-                                Intent home_screen = new Intent(MainActivity.this, client_home.class);
-                                home_screen.putExtra("user_ID", id);
-                                startActivity(home_screen);
-                                Log.v("resultData", "Password match");
+                            boolean passwordMatch = verifyPassword(password, hashedPassword);
+                            if (passwordMatch) {
+                                Toast.makeText(MainActivity.this, "tama", Toast.LENGTH_LONG).show();
+                                Intent homeScreen = new Intent(MainActivity.this, client_home.class);
+                                homeScreen.putExtra("user_ID", id);
+                                startActivity(homeScreen);
                             } else {
-                                Log.v("resultData", "Error");
+                                Toast.makeText(MainActivity.this,"Wrong password",Toast.LENGTH_LONG).show();
                             }
-
-                        } else {
-                            Log.v("resultData", "error");
+                            return;
                         }
-                    } catch (Exception client) {
-                        //Testing Employee Accounts
-                        mongoCollection = mongoDatabase.getCollection("employees");
-                        mongoCollection.findOne(emailQuery).getAsync(result1 -> {
-                            try {
-                                Document resultData1 = result1.get();
-                                Toast.makeText(getApplicationContext(), resultData1.toString(), Toast.LENGTH_LONG).show();
-
-                                if (resultData1.getString("user").equals("Employees")) {
-                                    Toast.makeText(getApplicationContext(), "Employee Logged in", Toast.LENGTH_LONG).show();
-                                    Log.v("resultAccount", "Found in Employee");
-                                    Intent home_screen = new Intent(MainActivity.this, employee_home.class);
-                                    home_screen.putExtra("user_ID", resultData1.getObjectId("_id").toString());
-                                    startActivity(home_screen);
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Wrong Password or Username", Toast.LENGTH_LONG).show();
-                                    Log.v("resultAccount", "Account doesnt exist.");
-
-                                }
-                            } catch (Exception employee) {
-                                employee.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "Account does not exist.", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
+                    // Check if the user is an employee
+                    mongoCollection = mongoDatabase.getCollection("employees");
+                    Document employeeQuery = new Document("email", email);
+                    mongoCollection.findOne(employeeQuery).getAsync(result1 -> {
+                        try {
+                            Document resultData1 = result1.get();
+                            String idEmployee = resultData1.getObjectId("_id").toString();
+                            Log.v("resultData",idEmployee);
+                            String hashedPassword2 = resultData1.getString("password");
+
+                            if (resultData1 != null && resultData1.getString("user").equals("Employee")) {
+
+                                boolean passwordMatch = verifyPassword(password, hashedPassword2);
+                                if (passwordMatch) {
+                                    Toast.makeText(MainActivity.this, "tama", Toast.LENGTH_LONG).show();
+                                    Intent homeScreen = new Intent(MainActivity.this, employee_home.class);
+                                    homeScreen.putExtra("user_ID", idEmployee);
+                                    startActivity(homeScreen);
+                                } else {
+                                    Toast.makeText(MainActivity.this,"Wrong password",Toast.LENGTH_LONG).show();
+                                }
+
+                                return;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        // User not found
+                        Toast.makeText(MainActivity.this, "Wrong password or username", Toast.LENGTH_LONG).show();
+                        Log.v("resultAccount", "Account doesn't exist.");
+                    });
                 });
+
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e){
+            Log.v("result","error");
         }
+    }
+    private boolean verifyPassword(String inputPassword, String hashedPassword) {
+        // Check if the input password matches the hashed password
+        boolean passwordMatch = BCrypt.checkpw(inputPassword, hashedPassword);
+        return passwordMatch;
     }
 
     private boolean validateemail() {

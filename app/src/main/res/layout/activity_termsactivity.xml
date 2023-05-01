@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:text="Terms and Conditions"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Welcome to our mobile application “Employee Management System”. These terms and conditions govern your use of our App. By using our App, you agree to these Terms. If you do not agree with these Terms, please do not use our App."
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="a.)	Privacy Policy
+Please refer to our Privacy Policy for information about how we collect, use, and disclose information from our users. By using our App, you agree to the terms of our Privacy Policy.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="b.)	User Data
+Our App collects and uses data from both clients and employees for thesis purposes. By using our App, you consent to the collection and use of your data for these purposes.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="c.)	Intellectual Property
+Our App and all content, including but not limited to text, graphics, logos, images, and software, are the property of our company or its licensors and are protected by copyright, trademark, and other intellectual property laws. You may not use our content without our express written permission.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="d.)	User Conduct
+You agree to use our App for lawful purposes only and not to engage in any conduct that may harm our company or our users. You are solely responsible for your use of our App.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="e.)	Limitation of Liability
+Our company is not liable for any damages arising from your use of our App, including but not limited to direct, indirect, incidental, consequential, or punitive damages. This limitation of liability applies even if our company has been advised of the possibility of such damages.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="f.)	Indemnification
+You agree to indemnify and hold harmless our company and its affiliates, officers, agents, and employees from any claims, damages, liabilities, costs, or expenses arising from your use of our App or your violation of these Terms.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="g.)	Modification of Terms
+We reserve the right to modify these Terms at any time. Your continued use of our App after any changes to these Terms constitutes your acceptance of the modified Terms.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="h.)	Termination
+We may terminate your access to our App at any time without notice or liability.
+
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="i.)	Governing Law
+These Terms are governed by the laws of Data Privacy act of 2012, without regard to its conflict of law provisions.
+"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:text="j.)	Entire Agreement
+These Terms constitute the entire agreement between you and our company with respect to your use of our App.
+"/>
+
+    </LinearLayout>
+</ScrollView>

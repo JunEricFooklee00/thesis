@@ -31,8 +31,8 @@
         <item>Meter</item>
     </string-array>
     <string-array name="userTypes">
-        <item>Clients</item>
-        <item>Employees</item>
+        <item>Client</item>
+        <item>Employee</item>
     </string-array>
     <string-array name="jobs">
         <item>Labor</item>

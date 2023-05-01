@@ -90,6 +90,7 @@ public class insertjob extends Fragment {
         }
         name.getEditText().setText(nameuser);
         contactnumber.getEditText().setText(contactnumber1);
+
         TietAge.setOnClickListener(v -> {
             // Get the current date
             Calendar calendar = Calendar.getInstance();

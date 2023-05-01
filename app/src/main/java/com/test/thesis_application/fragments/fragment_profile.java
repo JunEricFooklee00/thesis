@@ -1,7 +1,6 @@
 package com.test.thesis_application.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.squareup.picasso.Picasso;
 import com.test.thesis_application.R;
@@ -39,16 +35,16 @@ public class fragment_profile extends Fragment {
     private static final String arg_name = "argName";
     private static final String arg_Username = "argUserName";
 
-    private String name, email, resume, username, birthday, address, zipcode, uid, utype;
+    private String name, email, resume, username, birthday, address,  uid, utype;
     Double contactNumber;
     private Button button;
     private ImageView profile_pic;
     private TextView tv_profilename, tv_birthday, tv_zipcode, tv_uid, userType;
     private EditText tv_username, tv_profileEmail, tv_contactNumber, tv_address;
     private Button editprofile;
-
+    Integer zipcode;
     //mongodb
-    //mongodb
+    //mongodbzip
     String Appid = "employeems-mcwma";
     private App app;
     User user;
@@ -97,7 +93,6 @@ public class fragment_profile extends Fragment {
                 username = resultdata.getString("username");
                 contactNumber = resultdata.getDouble("contactNumber");
                 address = resultdata.getString("address");
-                zipcode = resultdata.getString("zipcode");
                 utype = resultdata.getString("user");
 
                 DecimalFormat df = new DecimalFormat("#");

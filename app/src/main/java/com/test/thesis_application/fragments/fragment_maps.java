@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.karumi.dexter.Dexter;
@@ -57,7 +58,7 @@ public class fragment_maps extends Fragment {
     MongoCollection<Document> mongoCollection;
 
     private String userid,employeeid;
-
+    Double employeelongitude, employeelatitude, lat ,longitude;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -77,13 +78,13 @@ public class fragment_maps extends Fragment {
         client = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         // all required for mongodb
-        App app = new App(new AppConfiguration.Builder(Appid).build());
+        app = new App(new AppConfiguration.Builder(Appid).build());
         user = app.currentUser();
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("CourseData");
         mongoCollection = mongoDatabase.getCollection("clientslocation");
-
+        loademployeelocation();
         Dexter.withContext(getContext())
                 .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
@@ -106,7 +107,28 @@ public class fragment_maps extends Fragment {
 
         return view;
     }
+    public void loademployeelocation(){
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Users");
+        mongoCollection = mongoDatabase.getCollection("employees");
+        ObjectId employeeId = new ObjectId(employeeid);
 
+        // Create a filter using the objectId
+        Document employee = new Document("_id", employeeId);
+
+        mongoCollection.findOne(employee).getAsync(result1 ->{
+            if (result1.isSuccess()){
+                Document resultdata = result1.get();
+                employeelongitude = resultdata.getDouble("longitude");
+                employeelatitude = resultdata.getDouble("latitude");
+                Log.v("maps",employeelongitude.toString()+" "+employeelatitude.toString());
+                lat = employeelatitude;
+                longitude = employeelongitude;
+            }else {
+                Log.v("maps","Error");
+            }
+        } );
+    }
     public void getmylocation() {
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -147,14 +169,26 @@ public class fragment_maps extends Fragment {
                     }
                 });
 
+
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
-//
+//                        LatLng employeelatlng = new LatLng(employeelatitude,employeelongitude);
+                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
+
+                        MarkerOptions markerOptions1 = new MarkerOptions()
+                                .position(new LatLng(lat, longitude))
+                                .title("Marker Title");
+
+                        // Add the marker to the map
 //                        googleMap.addMarker(markerOptions);
+//                        MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title("Employee Location");
+//                        googleMap.addMarker(employeemarker);
+                        googleMap.addMarker(markerOptions1);
+
+
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
 
                         googleMap.setMyLocationEnabled(true);
