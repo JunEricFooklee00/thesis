@@ -119,11 +119,11 @@ public class fragment_maps extends Fragment {
         mongoCollection.findOne(employee).getAsync(result1 ->{
             if (result1.isSuccess()){
                 Document resultdata = result1.get();
-                employeelongitude = resultdata.getDouble("longitude");
-                employeelatitude = resultdata.getDouble("latitude");
-                Log.v("maps",employeelongitude.toString()+" "+employeelatitude.toString());
-                lat = employeelatitude;
-                longitude = employeelongitude;
+//                employeelongitude = resultdata.getDouble("longitude");
+//                employeelatitude = resultdata.getDouble("latitude");
+//                Log.v("maps",employeelongitude.toString()+" "+employeelatitude.toString());
+//                lat = employeelatitude;
+//                longitude = employeelongitude;
             }else {
                 Log.v("maps","Error");
             }
@@ -178,15 +178,15 @@ public class fragment_maps extends Fragment {
 //                        LatLng employeelatlng = new LatLng(employeelatitude,employeelongitude);
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
 
-                        MarkerOptions markerOptions1 = new MarkerOptions()
-                                .position(new LatLng(lat, longitude))
-                                .title("Marker Title");
+//                        MarkerOptions markerOptions1 = new MarkerOptions()
+//                                .position(new LatLng(lat, longitude))
+//                                .title("Marker Title");
 
                         // Add the marker to the map
-//                        googleMap.addMarker(markerOptions);
+                        googleMap.addMarker(markerOptions);
 //                        MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title("Employee Location");
 //                        googleMap.addMarker(employeemarker);
-                        googleMap.addMarker(markerOptions1);
+//                        googleMap.addMarker(markerOptions1);
 
 
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));

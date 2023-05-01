@@ -81,9 +81,9 @@ public class fragment_maps_employee extends Fragment {
         app = new App(new AppConfiguration.Builder(Appid).build());
         user = app.currentUser();
         assert user != null;
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Users");
-        mongoCollection = mongoDatabase.getCollection("employees");
+
+        //{_id: ObjectId('64414c33d746a74fb1cdd9cb')}
+
 //        loademployeelocation();
         Dexter.withContext(getContext())
                 .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -91,6 +91,7 @@ public class fragment_maps_employee extends Fragment {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                         getmylocation();
+                        loademployeelocation();
                     }
 
                     @Override
@@ -108,34 +109,34 @@ public class fragment_maps_employee extends Fragment {
         return view;
     }
 
-//    public void loademployeelocation() {
-//        mongoClient = user.getMongoClient("mongodb-atlas");
-//        mongoDatabase = mongoClient.getDatabase("Users");
-//        mongoCollection = mongoDatabase.getCollection("clients");
-//        ObjectId employeeId = new ObjectId(userid);
-//
-//        // Create a filter using the objectId
-//        Document employee = new Document("_id", employeeId);
-//
-//        mongoCollection.findOne(employee).getAsync(result1 -> {
-//            if (result1.isSuccess()) {
-//                Document resultdata = result1.get();
-//                if (resultdata == null) {
-//                    Log.e("maps", "Error: Document with id " + employeeId + " not found");
-//                    showLocationNotFoundDialog();
-//                    return;
-//                }
-//                employeelongitude = resultdata.getDouble("longitude");
-//                employeelatitude = resultdata.getDouble("latitude");
+    public void loademployeelocation() {
+        mongoClient = user.getMongoClient("mongodb-atlas");
+        mongoDatabase = mongoClient.getDatabase("Users");
+        mongoCollection = mongoDatabase.getCollection("clients");
+        ObjectId employeeId = new ObjectId(userid);
+
+        // Create a filter using the objectId
+        Document employee = new Document("_id", employeeId);
+
+        mongoCollection.findOne(employee).getAsync(result1 -> {
+            if (result1.isSuccess()) {
+                Document resultdata = result1.get();
+                if (resultdata == null) {
+                    Log.e("maps", "Error: Document with id " + employeeId + " not found");
+                    showLocationNotFoundDialog();
+                    return;
+                }
+                employeelongitude = resultdata.getDouble("longitude");
+                employeelatitude = resultdata.getDouble("latitude");
 //                Log.v("maps", employeelongitude.toString() + " " + employeelatitude.toString());
-//                lat = employeelatitude;
-//                longitude = employeelongitude;
-//            } else {
-//                Log.v("maps", "Error");
-//                showLocationNotFoundDialog();
-//            }
-//        });
-//    }
+                lat = employeelatitude;
+                longitude = employeelongitude;
+            } else {
+                Log.v("maps", "Error");
+                showLocationNotFoundDialog();
+            }
+        });
+    }
 
     private void showLocationNotFoundDialog() {
         // Show a dialog fragment informing the user that the employee's location was not found
@@ -165,6 +166,10 @@ public class fragment_maps_employee extends Fragment {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
+                mongoClient = user.getMongoClient("mongodb-atlas");
+                mongoDatabase = mongoClient.getDatabase("Users");
+                mongoCollection = mongoDatabase.getCollection("employees");
+
                 ObjectId objectId = new ObjectId(employeeid);
 
                 // Create a filter using the objectId
@@ -186,7 +191,6 @@ public class fragment_maps_employee extends Fragment {
                         Log.e("MongoDB", "Failed to update document: " + result.getError().getErrorMessage());
                     }
                 });
-
 
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @SuppressLint("MissingPermission")

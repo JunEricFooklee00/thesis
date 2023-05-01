@@ -102,7 +102,7 @@ public class openedtask extends Fragment {
         location1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment_maps fragmentMaps = new fragment_maps();
+                fragment_maps_employee fragmentMaps = new fragment_maps_employee();
                 Bundle mapsuid = new Bundle();
                 mapsuid.putString("user_ID",userId); // to fragment_maps()
                 mapsuid.putString("employeeID",myid);

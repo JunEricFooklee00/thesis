@@ -22,8 +22,6 @@ import com.squareup.picasso.Picasso;
 import com.test.thesis_application.MainActivity;
 import com.test.thesis_application.R;
 import com.test.thesis_application.fragments.calendarview;
-import com.test.thesis_application.fragments.fragment_Dashboard;
-import com.test.thesis_application.fragments.fragment_profile;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -74,7 +72,7 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
 
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new fragment_Dashboard()).commit();
+                            new employeedashboard()).commit();
             navigationView.setCheckedItem(R.id.nav_dashboard);
         }
         Intent account = getIntent();
@@ -125,7 +123,7 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
             case R.id.nav_dashboard:
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new fragment_Dashboard()).setReorderingAllowed(true)
+                                new employeedashboard()).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;
@@ -149,7 +147,7 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
 
             case R.id.nav_profile:
 
-                fragment_profile profile_fragment =  new fragment_profile();
+                employee_profile profile_fragment =  new employee_profile();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 Bundle data = new Bundle();
                 data.putString("uid",newstr_UID);

@@ -1,4 +1,4 @@
-package com.test.thesis_application.fragments;
+package com.test.thesis_application.employee;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,8 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
@@ -31,7 +29,9 @@ import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.options.UpdateOptions;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
-public class fragment_profile extends Fragment {
+
+public class employee_profile extends Fragment {
+
     private String name, email, resume, username, birthday, address,  uid, utype;
     Double contactNumber;
     private Button button;
@@ -40,7 +40,6 @@ public class fragment_profile extends Fragment {
     private EditText tv_username, tv_profileEmail, tv_contactNumber, tv_address;
     private Button editprofile;
     Integer zipcode;
-
     String Appid = "employeems-mcwma";
     private App app;
     User user;
@@ -49,10 +48,12 @@ public class fragment_profile extends Fragment {
     MongoCollection<Document> mongoCollection;
     boolean isEditing = false;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_employee_profile, container, false);
+
         tv_profilename = view.findViewById(R.id.profile_name);
         tv_profileEmail = view.findViewById(R.id.db_email);
         tv_username = view.findViewById(R.id.profile_username);
@@ -70,7 +71,7 @@ public class fragment_profile extends Fragment {
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("Users");
-        mongoCollection = mongoDatabase.getCollection("clients");
+        mongoCollection = mongoDatabase.getCollection("employees");
 
         Bundle data = getArguments();
         if (data != null) {
@@ -94,7 +95,7 @@ public class fragment_profile extends Fragment {
                 DecimalFormat df = new DecimalFormat("#");
                 df.setMaximumFractionDigits(0);
                 userType.setText(utype);
-                tv_contactNumber.setText(""+df.format(contactNumber));
+//                tv_contactNumber.setText(""+df.format(contactNumber));
                 tv_address.setText(address);
                 tv_username.setText(username);
                 tv_profilename.setText(name);
@@ -133,7 +134,7 @@ public class fragment_profile extends Fragment {
                     tv_address.setEnabled(false);
                     updateOne();
                 } else {
-                   Log.v("MongoDB","HUH");
+                    Log.v("MongoDB","HUH");
 //GOLTEB SHEET
                 }
             }
@@ -169,13 +170,9 @@ public class fragment_profile extends Fragment {
             }
         });
     }
-
-
-
     @Override
     public void onResume() {
         super.onResume();
 
     }
-
 }
