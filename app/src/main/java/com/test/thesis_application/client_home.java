@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
+import com.test.thesis_application.employee.employeedashboard;
 import com.test.thesis_application.fragments.JobList;
 import com.test.thesis_application.fragments.calendarview;
 import com.test.thesis_application.fragments.fragment_Dashboard;
@@ -51,6 +52,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
     MongoDatabase mongoDatabase;
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
+    double contact1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,14 +75,21 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         navUsername = headerView.findViewById(R.id.user_username);
         nav_avatar = headerView.findViewById(R.id.user_profilePic);
 
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new fragment_Dashboard()).commit();
-            navigationView.setCheckedItem(R.id.nav_dashboard);
-        }
 
         Intent account = getIntent();
         str_UID = account.getStringExtra("user_ID");
+
+        if(savedInstanceState == null){
+            fragment_Dashboard employeeDash =  new fragment_Dashboard();
+            FragmentTransaction empdashTransac = getSupportFragmentManager().beginTransaction();
+            Bundle employeedashbundle = new Bundle();
+            employeedashbundle.putString("user_ID",str_UID);
+            employeeDash.setArguments(employeedashbundle);// to pass data
+            empdashTransac.replace(R.id.fragment_container,employeeDash).setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
 
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
@@ -102,7 +111,14 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
                 navUsername.setText(resultdata.getString("username"));
                 navName.setText(resultdata.getString("name"));
                 imagepath = resultdata.getString("avatar");
-
+                Object contactNumberObj = resultdata.get("ContactNumber");
+                if (contactNumberObj instanceof Double) {
+                    contact1 = (Double) contactNumberObj;
+                } else if (contactNumberObj instanceof Integer) {
+                    contact1 = ((Integer) contactNumberObj).doubleValue();
+                } else {
+                    // handle error case here
+                }
                 Picasso.get()
                         .load(imagepath).transform(new CropCircleTransformation())
                         .fit()
@@ -115,7 +131,7 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
 
             DecimalFormat df = new DecimalFormat("#");
             df.setMaximumFractionDigits(0);
-            value = df.format(str_contact);
+            value = df.format(contact1);
 
         });
 
@@ -128,8 +144,12 @@ public class client_home extends AppCompatActivity implements NavigationView.OnN
         switch (item.getItemId()){
             case R.id.nav_dashboard:
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new fragment_Dashboard()).setReorderingAllowed(true)
+                fragment_Dashboard employeeDash =  new fragment_Dashboard();
+                FragmentTransaction empdashTransac = getSupportFragmentManager().beginTransaction();
+                Bundle employeedashbundle = new Bundle();
+                employeedashbundle.putString("user_ID",str_UID);
+                employeeDash.setArguments(employeedashbundle);// to pass data
+                empdashTransac.replace(R.id.fragment_container,employeeDash).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
                 break;

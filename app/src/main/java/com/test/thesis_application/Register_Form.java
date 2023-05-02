@@ -143,9 +143,9 @@ public class Register_Form extends AppCompatActivity{
             String selectedUserType = autoCompleteTextView.getText().toString();
             Log.d("Register_Form", "AutoCompleteTextView value: " + selectedUserType);
 
-            if (selectedUserType.equals("Clients")) {
+            if (selectedUserType.equals("Client")) {
                 level.setVisibility(View.INVISIBLE);
-            } else if (selectedUserType.equals("Employees")) {
+            } else if (selectedUserType.equals("Employee")) {
                 level.setVisibility(View.VISIBLE);
             } else {
                 Log.d("Register_Form", "AutoCompleteTextView value: " + selectedUserType);

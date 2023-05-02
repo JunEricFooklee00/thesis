@@ -228,7 +228,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="15dp"
                         android:text="Expected Date of Finish: "
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/startD"
                         app:layout_constraintTop_toBottomOf="@+id/startD" />
 
@@ -241,6 +240,17 @@
                         app:layout_constraintBottom_toBottomOf="@+id/exp"
                         app:layout_constraintStart_toEndOf="@+id/exp"
                         app:layout_constraintTop_toTopOf="@+id/exp" />
+
+                    <Button
+                        android:id="@+id/finishjob"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="JobFinished"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_expecteddate" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -387,7 +397,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="contact"
-                        app:layout_constraintEnd_toEndOf="@+id/avatar2"
+                        app:layout_constraintEnd_toEndOf="@+id/WorkerName2"
                         app:layout_constraintStart_toStartOf="@+id/WorkerName2"
                         app:layout_constraintTop_toBottomOf="@+id/workerjob2" />
 
@@ -408,7 +418,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Job"
-                        app:layout_constraintEnd_toEndOf="@+id/avatar2"
+                        app:layout_constraintEnd_toEndOf="@+id/WorkerName2"
                         app:layout_constraintStart_toStartOf="@+id/WorkerName2"
                         app:layout_constraintTop_toBottomOf="@+id/WorkerName2" />
 
@@ -464,8 +474,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="contact"
-                        app:layout_constraintEnd_toEndOf="@+id/avatar3"
-                        app:layout_constraintStart_toStartOf="@+id/WorkerName3"
+                        app:layout_constraintEnd_toEndOf="@+id/workerjob3"
+                        app:layout_constraintStart_toStartOf="@+id/workerjob3"
                         app:layout_constraintTop_toBottomOf="@+id/workerjob3" />
 
                     <TextView
@@ -541,8 +551,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="contact"
-                        app:layout_constraintEnd_toEndOf="@+id/avatar4"
-                        app:layout_constraintStart_toStartOf="@+id/WorkerName4"
+                        app:layout_constraintEnd_toEndOf="@+id/workerjob4"
+                        app:layout_constraintStart_toStartOf="@+id/workerjob4"
                         app:layout_constraintTop_toBottomOf="@+id/workerjob4" />
 
                     <TextView
@@ -562,7 +572,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Job"
-                        app:layout_constraintEnd_toEndOf="@+id/avatar4"
+                        app:layout_constraintEnd_toEndOf="@+id/WorkerName4"
                         app:layout_constraintStart_toStartOf="@+id/WorkerName4"
                         app:layout_constraintTop_toBottomOf="@+id/WorkerName4" />
 
@@ -618,7 +628,7 @@
                         android:layout_height="wrap_content"
                         android:text="contact"
                         app:layout_constraintEnd_toEndOf="@+id/avatar5"
-                        app:layout_constraintStart_toStartOf="@+id/WorkerName5"
+                        app:layout_constraintStart_toStartOf="@+id/workerjob5"
                         app:layout_constraintTop_toBottomOf="@+id/workerjob5" />
 
                     <TextView

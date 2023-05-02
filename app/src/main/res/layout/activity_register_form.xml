@@ -159,6 +159,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:hint="@string/Fname"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>

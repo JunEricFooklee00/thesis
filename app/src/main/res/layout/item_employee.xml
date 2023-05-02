@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="145dp"
         android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/beige"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="20dp">
 
 
@@ -86,9 +87,9 @@
 
                 <View
                     android:id="@+id/view4"
-                    android:layout_width="4dp"
+                    android:layout_width="2dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
                     android:background="@color/grey"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/employee_avatar"

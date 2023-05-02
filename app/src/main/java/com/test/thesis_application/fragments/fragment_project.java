@@ -64,8 +64,10 @@ public class fragment_project extends Fragment implements Jobinterface {
             userid = projectuserid.getString("user_ID");
             name = projectuserid.getString("name");
             contactnumber = projectuserid.getString("contactnumber");
+            Log.v("MongoDB",contactnumber);
+
         }
-        Log.v("fragmentproject",contactnumber);
+        Log.v("MongoDB",contactnumber);
 //        objectId = new ObjectId(userid);
 
         // all required for mongodb
@@ -147,6 +149,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         bundle.putString("uid", userid); // Example of adding a String to the Bundle
         bundle.putString("name",name);
         bundle.putString("contactnumber",contactnumber);
+
         // Set the Bundle as an argument for your fragment
         fragment.setArguments(bundle);
 

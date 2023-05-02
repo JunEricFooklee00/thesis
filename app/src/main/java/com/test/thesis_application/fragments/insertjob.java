@@ -86,7 +86,7 @@ public class insertjob extends Fragment {
             userid = projectuserid.getString("uid");
             nameuser = projectuserid.getString("name");
             contactnumber1 = projectuserid.getString("contactnumber");
-            Log.v("Insertjob",contactnumber1);
+            Log.v("MongoDB",contactnumber1);
         }
         name.getEditText().setText(nameuser);
         contactnumber.getEditText().setText(contactnumber1);
