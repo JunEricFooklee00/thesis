@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -45,7 +46,7 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.options.UpdateOptions;
 
-public class fragment_maps_employee extends Fragment {
+public class fragment_maps_employee extends Fragment implements OnMapReadyCallback {
 
     FusedLocationProviderClient client;
     SupportMapFragment mapFragment;
@@ -57,10 +58,10 @@ public class fragment_maps_employee extends Fragment {
     MongoDatabase mongoDatabase;
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
-
     private String userid, employeeid;
-    Double employeelongitude, employeelatitude, lat, longitude;
+    Double employeelongitude = 0.0d, employeelatitude = 0.0d, lat, longitude;
     String name;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,9 +73,8 @@ public class fragment_maps_employee extends Fragment {
             userid = projectuserid.getString("user_ID"); //coming from client home
             employeeid = projectuserid.getString("employeeID");
         }
-        Log.v("mapsemployee","user: "+userid+ " "+ "Employee: "+ employeeid);
-        mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.google_map);
+        Log.v("MongoDB", "Employee ID: " + employeeid);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
 
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         client = LocationServices.getFusedLocationProviderClient(requireActivity());
@@ -84,71 +84,34 @@ public class fragment_maps_employee extends Fragment {
         user = app.currentUser();
         assert user != null;
 
-        //{_id: ObjectId('64414c33d746a74fb1cdd9cb')}
 
-//        loademployeelocation();
-        Dexter.withContext(getContext())
-                .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        loademployeelocation();
-                        getmylocation();
-                    }
+        Dexter.withContext(getContext()).withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                getmylocation();
+            }
 
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+            }
 
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
-                    }
-                }).check();
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
 
 
         return view;
     }
 
-    public void loademployeelocation() {
-        mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Users");
-        mongoCollection = mongoDatabase.getCollection("clients");
-        ObjectId employeeId = new ObjectId(userid);
-        // Create a filter using the objectId
-        Document employee = new Document("_id", employeeId);
-        mongoCollection.findOne(employee).getAsync(result1 -> {
-            if (result1.isSuccess()) {
-                Document resultdata = result1.get();
-                Log.v("Mongodb",resultdata.toString());
-                name = resultdata.getString("name");
-                employeelongitude = resultdata.getDouble("longitude") != null ? resultdata.getDouble("longitude") : 0;
-                employeelatitude = resultdata.getDouble("latitude") != null ? resultdata.getDouble("latitude") : 0;
 
-                Log.v("Mongodb",employeelongitude.toString()+" "+employeelatitude.toString());
-                lat = employeelatitude;
-                longitude = employeelongitude;
-            } else {
-                Log.v("maps", "Error");
-            }
-        });
-    }
 
-    private void showLocationNotFoundDialog() {
-        // Show a dialog fragment informing the user that the employee's location was not found
-        LocationNotFoundDialogFragment dialogFragment = new LocationNotFoundDialogFragment();
-        dialogFragment.show(getSupportFragmentManager(), "LocationNotFoundDialogFragment");
-    }
 
-    private FragmentManager getSupportFragmentManager() {
-        return null;
-    }
 
     public void getmylocation() {
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -163,20 +126,16 @@ public class fragment_maps_employee extends Fragment {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
+
                 mongoClient = user.getMongoClient("mongodb-atlas");
                 mongoDatabase = mongoClient.getDatabase("Users");
                 mongoCollection = mongoDatabase.getCollection("employees");
-
                 ObjectId objectId = new ObjectId(employeeid);
-
                 // Create a filter using the objectId
                 Document filter = new Document("_id", objectId);
-
+                Log.v("MongoDB", "UserID: " + objectId);
                 // Create a document with the location data
-                Document update = new Document("$set",
-                        new Document("latitude", location.getLatitude())
-                                .append("longitude", location.getLongitude()));
-
+                Document update = new Document("$set", new Document("latitude", location.getLatitude()).append("longitude", location.getLongitude()));
                 // Use the upsert option to insert a new document if the filter doesn't match any document
                 UpdateOptions options = new UpdateOptions().upsert(true);
 
@@ -189,25 +148,67 @@ public class fragment_maps_employee extends Fragment {
                     }
                 });
 
+
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
-                    @SuppressLint("MissingPermission")
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
-                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        if (employeelatitude != null && employeelongitude != null && employeelatitude != 0 && employeelongitude != 0) {
-                            LatLng employeelatlng = new LatLng(employeelatitude, employeelongitude);
-                            MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title(name);
-                            googleMap.addMarker(employeemarker);
+                        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            return;
                         }
+                        mongoClient = user.getMongoClient("mongodb-atlas");
+                        mongoDatabase = mongoClient.getDatabase("Users");
+                        mongoCollection = mongoDatabase.getCollection("clients");
+                        ObjectId users = new ObjectId(userid);
+                        // Create a filter using the objectId
+                        Document userfind = new Document("_id", users);
+
+                        mongoCollection.findOne(userfind).getAsync(result1 -> {
+                            if (result1.isSuccess()) {
+                                Document resultdata = result1.get();
+                                Log.v("Mongodb", resultdata.toString());
+
+                                name = resultdata.getString("name");
+                                employeelongitude = resultdata.getDouble("longitude");
+                                employeelatitude = resultdata.getDouble("latitude");
+                                Log.v("Mongodb", employeelongitude.toString() + " " + employeelatitude.toString());
+                                Log.v("MongoDB", employeelongitude + "" + employeelatitude + "output pero walang marker :V");
+                                if (employeelatitude != null && employeelongitude != null) {
+                                    LatLng employeelatlng = new LatLng(employeelatitude, employeelongitude);
+                                    MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title(name);
+                                    googleMap.addMarker(employeemarker);
+                                }
+                            } else {
+                                Log.v("MongoDB", "Error");
+                            }
+
+                        });
 
 
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
-
                         googleMap.setMyLocationEnabled(true);
+
+
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        googleMap.setMyLocationEnabled(true);
+
     }
 }

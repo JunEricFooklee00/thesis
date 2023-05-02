@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
 
                             boolean passwordMatch = verifyPassword(password, hashedPassword);
                             if (passwordMatch) {
-                                Toast.makeText(MainActivity.this, "tama", Toast.LENGTH_LONG).show();
                                 Intent homeScreen = new Intent(MainActivity.this, client_home.class);
                                 homeScreen.putExtra("user_ID", id);
                                 startActivity(homeScreen);
@@ -207,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 boolean passwordMatch = verifyPassword(password, hashedPassword2);
                                 if (passwordMatch) {
-                                    Toast.makeText(MainActivity.this, "tama", Toast.LENGTH_LONG).show();
                                     Intent homeScreen = new Intent(MainActivity.this, employee_home.class);
                                     homeScreen.putExtra("user_ID", idEmployee);
                                     startActivity(homeScreen);
