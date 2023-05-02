@@ -22,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.karumi.dexter.Dexter;
@@ -59,7 +60,7 @@ public class fragment_maps_employee extends Fragment {
 
     private String userid, employeeid;
     Double employeelongitude, employeelatitude, lat, longitude;
-
+    String name;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class fragment_maps_employee extends Fragment {
             userid = projectuserid.getString("user_ID"); //coming from client home
             employeeid = projectuserid.getString("employeeID");
         }
+        Log.v("mapsemployee","user: "+userid+ " "+ "Employee: "+ employeeid);
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.google_map);
 
@@ -90,8 +92,8 @@ public class fragment_maps_employee extends Fragment {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        getmylocation();
                         loademployeelocation();
+                        getmylocation();
                     }
 
                     @Override
@@ -114,26 +116,21 @@ public class fragment_maps_employee extends Fragment {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("clients");
         ObjectId employeeId = new ObjectId(userid);
-
         // Create a filter using the objectId
         Document employee = new Document("_id", employeeId);
-
         mongoCollection.findOne(employee).getAsync(result1 -> {
             if (result1.isSuccess()) {
                 Document resultdata = result1.get();
-                if (resultdata == null) {
-                    Log.e("maps", "Error: Document with id " + employeeId + " not found");
-                    showLocationNotFoundDialog();
-                    return;
-                }
-                employeelongitude = resultdata.getDouble("longitude");
-                employeelatitude = resultdata.getDouble("latitude");
-//                Log.v("maps", employeelongitude.toString() + " " + employeelatitude.toString());
+                Log.v("Mongodb",resultdata.toString());
+                name = resultdata.getString("name");
+                employeelongitude = resultdata.getDouble("longitude") != null ? resultdata.getDouble("longitude") : 0;
+                employeelatitude = resultdata.getDouble("latitude") != null ? resultdata.getDouble("latitude") : 0;
+
+                Log.v("Mongodb",employeelongitude.toString()+" "+employeelatitude.toString());
                 lat = employeelatitude;
                 longitude = employeelongitude;
             } else {
                 Log.v("maps", "Error");
-                showLocationNotFoundDialog();
             }
         });
     }
@@ -197,18 +194,12 @@ public class fragment_maps_employee extends Fragment {
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//                        LatLng employeelatlng = new LatLng(employeelatitude,employeelongitude);
-//                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(latLng.toString());
+                        if (employeelatitude != null && employeelongitude != null && employeelatitude != 0 && employeelongitude != 0) {
+                            LatLng employeelatlng = new LatLng(employeelatitude, employeelongitude);
+                            MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title(name);
+                            googleMap.addMarker(employeemarker);
+                        }
 
-//                        MarkerOptions markerOptions1 = new MarkerOptions()
-//                                .position(new LatLng(lat, longitude))
-//                                .title("Marker Title");
-
-                        // Add the marker to the map
-//                        googleMap.addMarker(markerOptions);
-//                        MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title("Employee Location");
-//                        googleMap.addMarker(employeemarker);
-//                        googleMap.addMarker(markerOptions1);
 
 
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));

@@ -1,17 +1,18 @@
 package com.test.thesis_application.employee;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.test.thesis_application.Jobinterface;
@@ -34,7 +35,8 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
-public class mytasks extends Fragment implements Jobinterface {
+
+public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
     //declare variables
     private RecyclerView recyclerView;
     private OrdersAdapter adapter;
@@ -53,16 +55,16 @@ public class mytasks extends Fragment implements Jobinterface {
     String workerIdToFind;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mytasks, container, false);
+        View view = inflater.inflate(R.layout.fragment_employee_history_jobs, container, false);
 
 
-        Bundle projectuserid = getArguments();
-        if (projectuserid != null) {
-            userid = projectuserid.getString("user_ID");
+        Bundle ejh = getArguments();
+        if (ejh != null) {
+            userid = ejh.getString("user_ID");
         }
+        Log.v("historyjobs",userid);
 //        objectId = new ObjectId(userid);
 
         // all required for mongodb
@@ -78,19 +80,18 @@ public class mytasks extends Fragment implements Jobinterface {
 
         orders.clear();
         loadJobsOrders(); // Call the loadJobsOrders() method passing the Realm instance
-        loadJobsOrders2();
-        loadJobsOrders3();
-        loadJobsOrders4();
-        loadJobsOrders5();
+//        loadJobsOrders2();
+//        loadJobsOrders3();
+//        loadJobsOrders4();
+//        loadJobsOrders5();
         // Set up RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView_orders);
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-
         return view;
     }
+
 
     private void loadJobsOrders() {
         Document query1 = new Document("Worker1", workerIdToFind); // create an empty query
@@ -98,14 +99,14 @@ public class mytasks extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
 
                     Document document = results.next();
 
-//                       Log.v("RESULTSDATA",);
+//                  Log.v("RESULTSDATA",);
                     // Change things here if may binago sa database
                     jobOrder.set_id(document.getObjectId("_id"));
                     jobOrder.setUserId(document.getString("idUser"));
@@ -121,7 +122,7 @@ public class mytasks extends Fragment implements Jobinterface {
                     orders.add(jobOrder);
 
                     // Set up adapter
-                    adapter = new OrdersAdapter (orders,this);
+                    adapter = new OrdersAdapter(orders, this);
 //                       adapter.notifyItemInserted();
                     recyclerView.setAdapter(adapter);
                 }
@@ -131,13 +132,14 @@ public class mytasks extends Fragment implements Jobinterface {
 
         });
     }
+
     private void loadJobsOrders2() {
         Document query2 = new Document("Worker2", workerIdToFind); // create an empty query
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(query2).iterator();
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -159,7 +161,7 @@ public class mytasks extends Fragment implements Jobinterface {
                     orders.add(jobOrder);
 
                     // Set up adapter
-                    adapter = new OrdersAdapter (orders,this);
+                    adapter = new OrdersAdapter(orders, this);
 //                       adapter.notifyItemInserted();
                     recyclerView.setAdapter(adapter);
                 }
@@ -170,13 +172,14 @@ public class mytasks extends Fragment implements Jobinterface {
 
         });
     }
+
     private void loadJobsOrders3() {
         Document query3 = new Document("Worker3", workerIdToFind); // create an empty query
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(query3).iterator();
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -199,7 +202,7 @@ public class mytasks extends Fragment implements Jobinterface {
                     orders.add(jobOrder);
 
                     // Set up adapter
-                    adapter = new OrdersAdapter (orders,this);
+                    adapter = new OrdersAdapter(orders, this);
 //                       adapter.notifyItemInserted();
                     recyclerView.setAdapter(adapter);
                 }
@@ -210,13 +213,14 @@ public class mytasks extends Fragment implements Jobinterface {
 
         });
     }
+
     private void loadJobsOrders4() {
         Document query4 = new Document("Worker4", workerIdToFind); // create an empty query
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(query4).iterator();
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -239,7 +243,7 @@ public class mytasks extends Fragment implements Jobinterface {
                     orders.add(jobOrder);
 
                     // Set up adapter
-                    adapter = new OrdersAdapter (orders,this);
+                    adapter = new OrdersAdapter(orders, this);
 //                       adapter.notifyItemInserted();
                     recyclerView.setAdapter(adapter);
                 }
@@ -250,13 +254,14 @@ public class mytasks extends Fragment implements Jobinterface {
 
         });
     }
+
     private void loadJobsOrders5() {
         Document query5 = new Document("Worker5", workerIdToFind); // create an empty query
         RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(query5).iterator();
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -279,7 +284,7 @@ public class mytasks extends Fragment implements Jobinterface {
                     orders.add(jobOrder);
 
                     // Set up adapter
-                    adapter = new OrdersAdapter (orders,this);
+                    adapter = new OrdersAdapter(orders, this);
 //                       adapter.notifyItemInserted();
                     recyclerView.setAdapter(adapter);
                 }
@@ -311,7 +316,7 @@ public class mytasks extends Fragment implements Jobinterface {
         bundle.putString("jobtitle", orders.get(position).getJobTitle());
         bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate());
         bundle.putString("idUser", orders.get(position).getUserId());
-        bundle.putString("employeeid",userid);
+        bundle.putString("employeeid", userid);
         taskopened.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.fragment_container, taskopened);

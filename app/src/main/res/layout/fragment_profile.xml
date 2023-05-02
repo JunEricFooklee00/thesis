@@ -127,10 +127,9 @@
         <EditText
             android:id="@+id/profile_username"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:paddingLeft="15dp"
-
             android:singleLine="true"
             android:text="Vecer"
             android:textColor="#000"
@@ -176,7 +175,7 @@
         <EditText
             android:id="@+id/db_contact"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:paddingLeft="15dp"
             android:text="09562999136"
@@ -194,14 +193,18 @@
         <ImageView
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layout_gravity="center"
             android:src="@drawable/ic_baseline_place_24" />
 
         <EditText
-            android:clickable="true"
             android:id="@+id/db_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:maxLines="5"
+            android:clickable="true"
             android:paddingLeft="15dp"
             android:singleLine="true"
             android:text="Malabon,Metro Manila"

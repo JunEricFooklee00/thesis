@@ -45,6 +45,8 @@
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
+                        android:id="@+id/Completion"
+                        android:clickable="true"
                         android:layout_width="80dp"
 
                         android:layout_height="80dp"
@@ -80,6 +82,8 @@
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
+                        android:id="@+id/History"
+                        android:clickable="true"
                         android:layout_width="80dp"
 
                         android:layout_height="80dp"

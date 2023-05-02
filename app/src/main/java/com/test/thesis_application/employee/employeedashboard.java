@@ -19,8 +19,8 @@ import com.test.thesis_application.fragments.terms;
 
 public class employeedashboard extends Fragment {
 
-    ImageView members1,contributors1,informative1,terms1;
-
+    ImageView members1,contributors1,informative1,terms1,History;
+    String userid;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -30,6 +30,26 @@ public class employeedashboard extends Fragment {
         terms1 = view.findViewById(R.id.terms);
         contributors1 = view.findViewById(R.id.contributors);
         informative1 = view.findViewById(R.id.informative);
+        History = view.findViewById(R.id.History);
+
+        Bundle employeedashbundle = getArguments();
+        if (employeedashbundle != null) {
+            userid = employeedashbundle.getString("user_ID");
+        }
+
+        History.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EmployeeHistoryJobs employeeHistoryJobs =  new EmployeeHistoryJobs();
+                FragmentTransaction empdashTransac = getParentFragmentManager().beginTransaction();
+                Bundle ehj = new Bundle();
+                ehj.putString("user_ID",userid);
+                employeeHistoryJobs.setArguments(ehj);// to pass data
+                empdashTransac.replace(R.id.fragment_container,employeeHistoryJobs).setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         terms1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

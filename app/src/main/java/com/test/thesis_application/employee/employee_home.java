@@ -69,14 +69,19 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
         navName = headerView.findViewById(R.id.user_name);
         navUsername = headerView.findViewById(R.id.user_username);
         nav_avatar = headerView.findViewById(R.id.user_profilePic);
-
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new employeedashboard()).commit();
-            navigationView.setCheckedItem(R.id.nav_dashboard);
-        }
         Intent account = getIntent();
         str_UID = account.getStringExtra("user_ID");
+
+        if(savedInstanceState == null){
+            employeedashboard employeeDash =  new employeedashboard();
+            FragmentTransaction empdashTransac = getSupportFragmentManager().beginTransaction();
+            Bundle employeedashbundle = new Bundle();
+            employeedashbundle.putString("user_ID",str_UID);
+            employeeDash.setArguments(employeedashbundle);// to pass data
+            empdashTransac.replace(R.id.fragment_container,employeeDash).setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit();
+        }
 
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
@@ -122,10 +127,15 @@ public class employee_home extends AppCompatActivity implements NavigationView.O
         switch (item.getItemId()){
             case R.id.nav_dashboard:
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new employeedashboard()).setReorderingAllowed(true)
+                employeedashboard employeeDash =  new employeedashboard();
+                FragmentTransaction empdashTransac = getSupportFragmentManager().beginTransaction();
+                Bundle employeedashbundle = new Bundle();
+                employeedashbundle.putString("user_ID",str_UID);
+                employeeDash.setArguments(employeedashbundle);// to pass data
+                empdashTransac.replace(R.id.fragment_container,employeeDash).setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
+
                 break;
             case R.id.Mycalendar:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

@@ -3,54 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.contributors"
-    android:background="@drawable/bg_puti">
+    android:background="@drawable/bg_puti"
+    tools:context=".fragments.contributors">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MEMEBERS"
-            android:textColor="@color/black"
-            android:textSize="30sp"
             android:layout_gravity="center"
-
-            />
-
+            android:text="Proponents"
+            android:layout_marginBottom="40dp"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables"
-            >
+            tools:ignore="UseCompoundDrawables">
+
 
             <ImageView
-
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/charles"
-                tools:ignore="ContentDescription"
-
-                />
+                android:layout_width="235dp"
+                android:layout_height="234dp"
+                android:src="@drawable/charlescirc"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="PFH Construction Services"
+
+                android:text="Charles Kendrick S. Magalued"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
+
         </LinearLayout>
-
-
 
 
         <LinearLayout
@@ -64,47 +57,40 @@
 
             <ImageView
 
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/eric"
-                tools:ignore="ContentDescription"
-                />
+                android:layout_width="235dp"
+                android:layout_height="234dp"
+                android:src="@drawable/ericcircle"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Engr. John Rei Gomez"
+                android:text="Jun Eric B. Paclibar"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </LinearLayout>
 
 
-
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:gravity="center"
             android:orientation="vertical"
             android:padding="50dp"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/kim"
-                tools:ignore="ContentDescription"
-                />
+                android:layout_width="235dp"
+                android:layout_height="234dp"
+                android:src="@drawable/kimcircle"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Engr. Roy B. Magno"
+                android:text="Kim F. Hernandez"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -112,17 +98,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:gravity="center"
             android:orientation="vertical"
             android:padding="50dp"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/roy"
+                android:layout_width="235dp"
+                android:layout_height="234dp"
+                android:src="@drawable/royveecircle"
                 tools:ignore="ContentDescription"
 
                 />
@@ -131,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Engr. Roy B. Magno"
+                android:text="Royvee A. Magno"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -139,30 +123,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:gravity="center"
             android:orientation="vertical"
             android:padding="50dp"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/gen"
-                tools:ignore="ContentDescription"
-                />
+                android:layout_width="235dp"
+                android:layout_height="234dp"
+                android:src="@drawable/genci"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Engr. Roy B. Magno"
+                android:text="Genesis Fernandez"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </LinearLayout>
-
-
 
 
     </LinearLayout>
