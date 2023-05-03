@@ -557,7 +557,6 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                     Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
                     mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
                     mongoCollection = mongoDatabase.getCollection("joborders");
-
                     mongoCollection.insertOne(test.append("created", new Date())).getAsync(result2 -> {
                         if (result2.isSuccess()){
                             requireActivity().getSupportFragmentManager().popBackStack();

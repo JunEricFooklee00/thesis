@@ -1,5 +1,6 @@
 package com.test.thesis_application.employee;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -24,6 +25,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.mongodb.App;
@@ -73,17 +75,18 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
         mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
-        mongoCollection = mongoDatabase.getCollection("acceptedorders");
+        mongoCollection = mongoDatabase.getCollection("jobhistories");
         workerIdToFind = userid; // replace this with the ID sent by your application
+        Log.v("MongoDB","Worker id" +workerIdToFind);
         Log.d("MyApp", "Starting to load job orders");
 
 
         orders.clear();
         loadJobsOrders(); // Call the loadJobsOrders() method passing the Realm instance
-//        loadJobsOrders2();
-//        loadJobsOrders3();
-//        loadJobsOrders4();
-//        loadJobsOrders5();
+        loadJobsOrders2();
+        loadJobsOrders3();
+        loadJobsOrders4();
+        loadJobsOrders5();
         // Set up RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView_orders);
         recyclerView.setHasFixedSize(true);
@@ -111,7 +114,6 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
                     jobOrder.set_id(document.getObjectId("_id"));
                     jobOrder.setUserId(document.getString("idUser"));
                     jobOrder.setName(document.getString("ClientName"));
-                    jobOrder.setContactNumber(document.getDouble("ContactNumber"));
                     jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                     jobOrder.setJobTitle(document.getString("ProjectName"));
                     jobOrder.setArea(document.getString("Area"));
@@ -150,7 +152,6 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
                     jobOrder.set_id(document.getObjectId("_id"));
                     jobOrder.setUserId(document.getString("idUser"));
                     jobOrder.setName(document.getString("ClientName"));
-                    jobOrder.setContactNumber(document.getDouble("ContactNumber"));
                     jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                     jobOrder.setJobTitle(document.getString("ProjectName"));
                     jobOrder.setArea(document.getString("Area"));
@@ -191,7 +192,6 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
                     jobOrder.set_id(document.getObjectId("_id"));
                     jobOrder.setUserId(document.getString("idUser"));
                     jobOrder.setName(document.getString("ClientName"));
-                    jobOrder.setContactNumber(document.getDouble("ContactNumber"));
                     jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                     jobOrder.setJobTitle(document.getString("ProjectName"));
                     jobOrder.setArea(document.getString("Area"));
@@ -232,7 +232,6 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
                     jobOrder.set_id(document.getObjectId("_id"));
                     jobOrder.setUserId(document.getString("idUser"));
                     jobOrder.setName(document.getString("ClientName"));
-                    jobOrder.setContactNumber(document.getDouble("ContactNumber"));
                     jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                     jobOrder.setJobTitle(document.getString("ProjectName"));
                     jobOrder.setArea(document.getString("Area"));
@@ -273,7 +272,6 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
                     jobOrder.set_id(document.getObjectId("_id"));
                     jobOrder.setUserId(document.getString("idUser"));
                     jobOrder.setName(document.getString("ClientName"));
-                    jobOrder.setContactNumber(document.getDouble("ContactNumber"));
                     jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                     jobOrder.setJobTitle(document.getString("ProjectName"));
                     jobOrder.setArea(document.getString("Area"));
@@ -298,30 +296,12 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
 
     @Override
     public void onItemclick(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage("Feature not yet available.");
+        builder.setPositiveButton("Ok.", (dialog, which) -> {
 
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        openedtask taskopened = new openedtask();
-
-        // Create a Bundle to pass your data
-        Bundle bundle = new Bundle();
-        bundle.putString("Name", orders.get(position).getName());  // from joborderclass
-        bundle.putDouble("contactNumber", orders.get(position).getContactNumber());
-        bundle.putString("Unit", orders.get(position).getUnit());
-        bundle.putString("scopeofwork", orders.get(position).getScopeofwork());
-        bundle.putString("area", orders.get(position).getArea());
-        bundle.putString("location", orders.get(position).getLocation());
-        bundle.putString("startingdate", orders.get(position).getStartingDate());
-        bundle.putString("_id", orders.get(position).get_id().toString());
-        bundle.putString("jobtitle", orders.get(position).getJobTitle());
-        bundle.putString("expectedfinishdate", orders.get(position).getExpectedFinishDate());
-        bundle.putString("idUser", orders.get(position).getUserId());
-        bundle.putString("employeeid", userid);
-        taskopened.setArguments(bundle);
-
-        fragmentTransaction.replace(R.id.fragment_container, taskopened);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-        Toast.makeText(requireContext(), orders.get(position).getJobTitle(), Toast.LENGTH_LONG).show();
+        });// end of DialogInterface :D
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

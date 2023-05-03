@@ -16,8 +16,111 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dashboard"
+            android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="30sp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/jobhistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bluegreen"
+            android:clickable="true"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/jobhistoryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Job History"
+                    android:textColor="@color/light_blue"
+                    android:textSize="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/numberofcompletedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingBottom="10dp"
+
+                    android:text="No. of Completed Jobs: "
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@+id/jobhistoryTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/jobhistoryTitle" />
+
+                <TextView
+                    android:id="@+id/numberofcompletedholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="None"
+                    android:textColor="@color/light_blue"
+
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toEndOf="@+id/numberofcompletedText"
+                    app:layout_constraintTop_toTopOf="@+id/numberofcompletedText" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/validatedJobs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/validatedJobsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ongoing Jobs"
+                    android:textColor="@color/light_blue"
+                    android:textSize="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/numberofvalidatedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="No. of Validated Jobs: "
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@+id/validatedJobsTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/validatedJobsTitle" />
+
+                <TextView
+                    android:id="@+id/numberofvalidatedholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="None"
+                    android:textColor="@color/light_blue"
+
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toEndOf="@+id/numberofvalidatedText"
+                    app:layout_constraintTop_toTopOf="@+id/numberofvalidatedText" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <GridLayout
             android:layout_width="match_parent"
@@ -27,41 +130,7 @@
             android:columnOrderPreserved="false"
             android:rowCount="3">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/bluegreen"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <ImageView
-                        android:id="@+id/Completion"
-                        android:clickable="true"
-                        android:layout_width="80dp"
-
-                        android:layout_height="80dp"
-                        android:src="@drawable/baseline_percent_24"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="12dp"
-                        android:text="Completion"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
 
             <androidx.cardview.widget.CardView

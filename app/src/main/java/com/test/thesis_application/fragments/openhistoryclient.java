@@ -1,7 +1,9 @@
 package com.test.thesis_application.fragments;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.test.thesis_application.R;
@@ -22,9 +19,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -34,7 +28,7 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
-public class OngoinJobs extends Fragment {
+public class openhistoryclient extends Fragment {
     String userId, id, nameuser, Unitstr, ScopeofWork, area, Location, ExpectedFinishDate, jobtitle, Startingdate, Worker1, Worker2, Worker3, Worker4, Worker5;
     TextView tv_jobID, tv_name, Tv_contactNumber, tv_scope, tv_Area, Tv_unit, tv_location, tv_startingdate, tv_expecteddate, textView_jobTitle;
     TextView WorkerName1, WorkerName2, WorkerName3, WorkerName4, WorkerName5;
@@ -50,31 +44,24 @@ public class OngoinJobs extends Fragment {
     MongoDatabase mongoDatabase;
     MongoClient mongoClient;
     MongoCollection<Document> mongoCollection;
-    RecyclerView recyclerView;
-    List<pendingemployeesClass> orders = new ArrayList<>();
     Double contact1,contact2,contact3,contact4,contact5;
-    int forecastednum,suggestednum;
-    Button finishjob;
-    String areastr;
-    Document finished;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_ongoin_jobs, container, false);
+        View view = inflater.inflate(R.layout.fragment_openhistoryclient, container, false);
+
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
         user = app.currentUser();
         assert user != null;
         mongoClient = user.getMongoClient("mongodb-atlas");
-        mongoDatabase = mongoClient.getDatabase("Users");
-        mongoCollection = mongoDatabase.getCollection("employees");
 
-        finishjob = view.findViewById(R.id.finishjob);
         textView_jobTitle = view.findViewById(R.id.textView_jobTitle);
         tv_jobID = view.findViewById(R.id.tv_jobID);
         tv_name = view.findViewById(R.id.tv_name);
-        Tv_contactNumber = view.findViewById(R.id.Tv_contactNumber);
+
         tv_scope = view.findViewById(R.id.tv_scope);
         tv_Area = view.findViewById(R.id.tv_Area);
         Tv_unit = view.findViewById(R.id.Tv_unit);
@@ -86,111 +73,55 @@ public class OngoinJobs extends Fragment {
         Workerjob1 = view.findViewById(R.id.workerjob1);
         workercontact1 = view.findViewById(R.id.workercontact1);
         avatar1 = view.findViewById(R.id.avatar1);
-        location1 = view.findViewById(R.id.location1);
+
 
         WorkerName2 = view.findViewById(R.id.WorkerName2);
         Workerjob2 = view.findViewById(R.id.workerjob2);
         workercontact2 = view.findViewById(R.id.workercontact2);
         avatar2 = view.findViewById(R.id.avatar2);
-        location2 = view.findViewById(R.id.location2);
+
 
         WorkerName3 = view.findViewById(R.id.WorkerName3);
         Workerjob3 = view.findViewById(R.id.workerjob3);
         workercontact3 = view.findViewById(R.id.workercontact3);
         avatar3 = view.findViewById(R.id.avatar3);
-        location3 = view.findViewById(R.id.location3);
 
 
         WorkerName4 = view.findViewById(R.id.WorkerName4);
         Workerjob4 = view.findViewById(R.id.workerjob4);
         workercontact4 = view.findViewById(R.id.workercontact4);
         avatar4 = view.findViewById(R.id.avatar4);
-        location4 = view.findViewById(R.id.location4);
 
 
         WorkerName5 = view.findViewById(R.id.WorkerName5);
         Workerjob5 = view.findViewById(R.id.workerjob5);
         workercontact5 = view.findViewById(R.id.workercontact5);
         avatar5 = view.findViewById(R.id.avatar5);
-        location5 = view.findViewById(R.id.location5);
 
         Bundle data = getArguments();
         if (data != null) {//from
             userId = data.getString("idUser");
             id = data.getString("_id");// id ni job
-            Log.v("MongoDB", "ID ni job " + id +" "+ data);
-
+            Log.v("MongoDB", "ID ni job " + userId + " " + data);
             mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
-            mongoCollection = mongoDatabase.getCollection("acceptedorders");
-            ObjectId idjob = new ObjectId(id);
-            Document find = new Document("_id", idjob);
-            mongoCollection.findOne(find).getAsync(result -> {
-                Document resultdataid = result.get();
-                if (result.isSuccess()) {
-                    Log.v("MongoDB", resultdataid.toString());
-                    nameuser = resultdataid.getString("ClientName");
-                    Unitstr = resultdataid.getString("Unit");
-                    ScopeofWork = resultdataid.getString("TypeOfWork");
-                    area = resultdataid.getString("Area");
-                    Location = resultdataid.getString("Location");
-                    ExpectedFinishDate = resultdataid.getString("ExpectedFinishDate");
-                    jobtitle = resultdataid.getString("ProjectName");
-                    Startingdate = resultdataid.getString("StartingDate");
-                    forecastednum = resultdataid.getInteger("ForecastedNum");
-                    suggestednum = resultdataid.getInteger("SuggestedNum");
+            mongoCollection = mongoDatabase.getCollection("jobhistories");
+            ObjectId jobidfind = new ObjectId(id);
+            Document query = new Document("_id",jobidfind);
+            mongoCollection.findOne(query).getAsync(result -> {
+                if (result.isSuccess()){
+                    Document resultdata = result.get();
+                    Log.v("MongoDB","DataFound: "+resultdata);
 
-                    Worker1 = resultdataid.getString("Worker1") != null ? resultdataid.getString("Worker1") : "";
-                    Worker2 = resultdataid.getString("Worker2") != null ? resultdataid.getString("Worker2") : "";
-                    Worker3 = resultdataid.getString("Worker3") != null ? resultdataid.getString("Worker3") : "";
-                    Worker4 = resultdataid.getString("Worker4") != null ? resultdataid.getString("Worker4") : "";
-                    Worker5 = resultdataid.getString("Worker5") != null ? resultdataid.getString("Worker5") : "";
-                    Log.v("MongoDB", "ID" + id);
-                    Log.v("MongoDB", "Worker1 " + Worker1);
-                    Log.v("MongoDB", "Worker2 " + Worker2);
-                    Log.v("MongoDB", "Worker3 " + Worker3);
-                    Log.v("MongoDB", "Worker4 " + Worker4);
-                    Log.v("MongoDB", "Worker5 " + Worker5);
+                    nameuser = resultdata.getString("ClientName");
+                    Unitstr = resultdata.getString("Unit");
+                    ScopeofWork = resultdata.getString("TypeOfWork");
+                    area = resultdata.getString("Area");
+                    Location = resultdata.getString("Location");
+                    ExpectedFinishDate = resultdata.getString("ExpectedFinishDate");
+                    jobtitle = resultdata.getString("ProjectName");
+                    Startingdate = resultdata.getString("StartingDate");
 
-                    Object contactNumberObj = resultdataid.get("ContactNumber");
-                    if (contactNumberObj instanceof Double) {
-                        contact1 = (Double) contactNumberObj;
-                    } else if (contactNumberObj instanceof Integer) {
-                        contact1 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
-                        // handle error case here
-                    }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    Tv_contactNumber.setText(df.format(contact1));
-//                    areastr = df.format(area);
-                    if (Worker1 != null && !Worker1.isEmpty()) {
-                        LoadEmployee1();
-                        Log.v("Mongodb","Worker1 id: "+ Worker1);
-                    }
-                    if (Worker2 != null && !Worker2.isEmpty()) {
-                        LoadEmployee2();
 
-                    } else {
-                        location2.setEnabled(false);
-                    }
-                    if (Worker3 != null && !Worker3.isEmpty()) {
-                        LoadEmployee3();
-
-                    } else {
-                        location3.setEnabled(false);
-                    }
-                    if (Worker4 != null && !Worker4.isEmpty()) {
-                        LoadEmployee4();
-
-                    } else {
-                        location4.setEnabled(false);
-                    }
-                    if (Worker5 != null && !Worker5.isEmpty()) {
-                        LoadEmployee5();
-
-                    } else {
-                        location5.setEnabled(false);
-                    }
 
                     textView_jobTitle.setText(jobtitle);
                     tv_jobID.setText(id);
@@ -202,161 +133,59 @@ public class OngoinJobs extends Fragment {
                     tv_location.setText(Location);
                     tv_startingdate.setText(Startingdate);
                     tv_expecteddate.setText(ExpectedFinishDate);
+
+                    Worker1 = resultdata.getString("Worker1") != null ? resultdata.getString("Worker1") : "";
+                    Worker2 = resultdata.getString("Worker2") != null ? resultdata.getString("Worker2") : "";
+                    Worker3 = resultdata.getString("Worker3") != null ? resultdata.getString("Worker3") : "";
+                    Worker4 = resultdata.getString("Worker4") != null ? resultdata.getString("Worker4") : "";
+                    Worker5 = resultdata.getString("Worker5") != null ? resultdata.getString("Worker5") : "";
+                    Log.v("MongoDB", "ID" + id);
+                    Log.v("MongoDB", "Worker1 " + Worker1);
+                    Log.v("MongoDB", "Worker2 " + Worker2);
+                    Log.v("MongoDB", "Worker3 " + Worker3);
+                    Log.v("MongoDB", "Worker4 " + Worker4);
+                    Log.v("MongoDB", "Worker5 " + Worker5);
+                    if (Worker1 != null && !Worker1.isEmpty()) {
+                        Log.v("Mongodb","Worker1 id: "+ Worker1);
+                        LoadEmployee1();
+                    }
+                    if (Worker2 != null && !Worker2.isEmpty()) {
+                        Log.v("Mongodb","Worker2 id: "+ Worker2);
+                        LoadEmployee2();
+
+                    }
+                    if (Worker3 != null && !Worker3.isEmpty()) {
+                        Log.v("Mongodb","Worker3 id: "+ Worker3);
+
+                        LoadEmployee3();
+                    }
+                    if (Worker4 != null && !Worker4.isEmpty()) {
+                        Log.v("Mongodb","Worker4 id: "+ Worker4);
+                        LoadEmployee4();
+                    }
+                    if (Worker5 != null && !Worker5.isEmpty()) {
+                        Log.v("Mongodb","Worker5 id: "+ Worker5);
+                        LoadEmployee5();
+
+                    }
                 }
+
             });
 
+
+
+//            Object contactNumberObj = data.get("ContactNumber");
+//            if (contactNumberObj instanceof Double) {
+//                contact1 = (Double) contactNumberObj;
+//            } else if (contactNumberObj instanceof Integer) {
+//                contact1 = ((Integer) contactNumberObj).doubleValue();
+//            } else {
+//                // handle error case here
+//            }
+//            DecimalFormat df = new DecimalFormat("#");
+//            df.setMaximumFractionDigits(0);
+//            Tv_contactNumber.setText(df.format(contact1));
         }
-
-
-        location1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragment_maps fragmentMaps = new fragment_maps();
-                Bundle mapsuid = new Bundle();
-                mapsuid.putString("user_ID", userId); // to fragment_maps()
-                mapsuid.putString("employeeID", Worker1);
-                fragmentMaps.setArguments(mapsuid);
-
-                FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        location2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragment_maps fragmentMaps = new fragment_maps();
-                Bundle mapsuid = new Bundle();
-                mapsuid.putString("user_ID", userId); // to fragment_maps()
-                mapsuid.putString("employeeID", Worker2);
-                fragmentMaps.setArguments(mapsuid);
-
-                FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        location3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragment_maps fragmentMaps = new fragment_maps();
-                Bundle mapsuid = new Bundle();
-                mapsuid.putString("user_ID", userId); // to fragment_maps()
-                mapsuid.putString("employeeID", Worker3);
-                fragmentMaps.setArguments(mapsuid);
-
-                FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        location4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragment_maps fragmentMaps = new fragment_maps();
-                Bundle mapsuid = new Bundle();
-                mapsuid.putString("user_ID", userId); // to fragment_maps()
-                mapsuid.putString("employeeID", Worker4);
-                fragmentMaps.setArguments(mapsuid);
-
-                FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        location5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragment_maps fragmentMaps = new fragment_maps();
-                Bundle mapsuid = new Bundle();
-                mapsuid.putString("user_ID", userId); // to fragment_maps()
-                mapsuid.putString("employeeID", Worker5);
-                fragmentMaps.setArguments(mapsuid);
-
-                FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        finishjob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ObjectId idjobs = new ObjectId(id);
-
-                 finished = new Document("_id",idjobs).append("idUser",userId).append("ProjectName",jobtitle).append("ClientName",nameuser).append("ContactNumber",contact1).append("TypeOfWork", ScopeofWork).append("Area",area).append("Unit",Unitstr).append("Location",Location)
-                        .append("StartingDate",Startingdate).append("ExpectedFinishDate",ExpectedFinishDate).append("ForecastedNum",Integer.valueOf(forecastednum)).append("SuggestedNum",Integer.valueOf(suggestednum)); //
-                if (Worker1 != null && !Worker1.isEmpty()) {
-                    Log.v("Mongodb","Worker1 id: "+ Worker1);
-                    finished.append("Worker1",Worker1).append("WorkerName1",WorkerName1.getText().toString());
-                }
-                if (Worker2 != null && !Worker2.isEmpty()) {
-                    Log.v("Mongodb","Worker2 id: "+ Worker2);
-
-                    finished.append("Worker2",Worker2).append("WorkerName2",WorkerName2.getText().toString());
-
-                }
-                if (Worker3 != null && !Worker3.isEmpty()) {
-                    Log.v("Mongodb","Worker3 id: "+ Worker3);
-
-                    finished.append("Worker2",Worker3).append("WorkerName3",WorkerName3.getText().toString());
-
-                }
-                if (Worker4 != null && !Worker4.isEmpty()) {
-                    Log.v("Mongodb","Worker4 id: "+ Worker4);
-
-                    finished.append("Worker2",Worker4).append("WorkerName4",WorkerName4.getText().toString());
-
-                }
-                if (Worker5 != null && !Worker5.isEmpty()) {
-                    Log.v("Mongodb","Worker5 id: "+ Worker5);
-
-                    finished.append("Worker2",Worker5).append("WorkerName5",WorkerName5.getText().toString());
-
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                builder.setMessage("Are you sure that this job is finished?");
-                builder.setPositiveButton("Yes, Job is done.", (dialog, which) -> {
-                    ObjectId objectId = new ObjectId(id);
-                    Document filter = new Document("_id", objectId);
-                    mongoCollection.findOneAndDelete(filter).getAsync(result1 -> {
-                        if (result1.isSuccess()) {
-                            Log.v("MongoDB"," result finished task: "+result1.toString());
-                            Log.v("MongoDB","Finished Document: "+finished.toString());
-                            mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
-                            mongoCollection = mongoDatabase.getCollection("jobhistories");
-                            mongoCollection.insertOne(finished.append("created", new Date())).getAsync(result2 -> {
-                                if (result2.isSuccess()){
-                                    requireActivity().getSupportFragmentManager().popBackStack();
-                                }else{
-                                    Toast.makeText(requireContext(),"failed",Toast.LENGTH_LONG).show();
-                                }
-                            });
-                            Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
-//                            // Close the current fragment and go back to the previous one
-//                            requireActivity().getSupportFragmentManager().popBackStack();
-                        } else {
-                            Toast.makeText(requireContext(), "Deletion failed.", Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                });// end of DialogInterface :D
-                builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
         return view;
     }
 
@@ -542,3 +371,4 @@ public class OngoinJobs extends Fragment {
         }
     }
 }
+

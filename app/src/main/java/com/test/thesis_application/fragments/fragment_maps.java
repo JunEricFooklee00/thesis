@@ -2,6 +2,7 @@ package com.test.thesis_application.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -166,8 +168,16 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
                                 name = resultdata.getString("name");
                                 employeelongitude = resultdata.getDouble("longitude");
                                 employeelatitude = resultdata.getDouble("latitude");
-                                Log.v("Mongodb", employeelongitude.toString() + " " + employeelatitude.toString());
-                                Log.v("MongoDB", employeelongitude + "" + employeelatitude + "output pero walang marker :V");
+                                if (employeelongitude == null){
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                                    builder.setMessage("Employee Has not Logged in yet");
+                                    builder.setPositiveButton("Ok, i understand.", (dialog, which) -> dialog.dismiss());// end of DialogInterface :D
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
+//                                Log.v("Mongodb", employeelongitude.toString() + " " + employeelatitude.toString());
+//                                Log.v("MongoDB", employeelongitude + "" + employeelatitude + "output pero walang marker :V");
                                 if (employeelatitude != null && employeelongitude != null) {
                                     LatLng employeelatlng = new LatLng(employeelatitude, employeelongitude);
                                     MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title(name);

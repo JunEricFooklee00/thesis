@@ -199,7 +199,7 @@ public class fragment_Dashboard extends Fragment {
                     results.next();
                 }
                 numberofqueueholder.setText(String.valueOf(size));
-                Log.v("MongoDB", "Results size: " + size);
+                Log.v("MongoDB", "ID of user is "+userid+" Results size: " + size);
             } else {
                 Log.e("MongoDB", "failed to find documents with: ", task.getError());
             }
