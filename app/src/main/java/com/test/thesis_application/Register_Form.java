@@ -332,11 +332,11 @@ public class Register_Form extends AppCompatActivity{
         }
     }
     private boolean validateusertype() {
-        if (autoCompleteTextView.getText().toString().equals("Clients")) {
+        if (autoCompleteTextView.getText().toString().equals("Client")) {
             autoCompleteTextView.setError(null);
 
             return true;
-        } else if (autoCompleteTextView.getText().toString().equals("Employees")) {
+        } else if (autoCompleteTextView.getText().toString().equals("Employee")) {
             autoCompleteTextViewgender.setError(null);
 
             return true;
@@ -733,8 +733,8 @@ public class Register_Form extends AppCompatActivity{
 
 
         // do something with the hash
-        String depende = autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT);
-        if (depende.equals("employees")){
+        String depende = autoCompleteTextView.getText().toString();
+        if (depende.equals("Employee")){
             mongoCollection = mongoDatabase.getCollection("employees");
             Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
                     .append("jobType",jobselect.getText().toString())
@@ -759,7 +759,7 @@ public class Register_Form extends AppCompatActivity{
                     Log.v("Mongodb", "Error:" + result.getError().toString());
                 }
             });
-        } else if (depende.equals("clients")) {
+        } else if (depende.equals("Client")) {
             mongoCollection = mongoDatabase.getCollection("clients");
             Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
                     .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())

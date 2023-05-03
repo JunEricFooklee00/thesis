@@ -73,8 +73,9 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
         if (projectuserid != null) {
             userid = projectuserid.getString("user_ID"); //coming from client home
             employeeid = projectuserid.getString("employeeID");
+            Log.v("MapsClient", "Employee ID:    " + employeeid +" "+"userid   "+userid);
+
         }
-        Log.v("MongoDB", "Employee ID: " + employeeid);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
 
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -89,7 +90,7 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
         Dexter.withContext(getContext()).withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                getmylocation();
+//                getmylocation();
             }
 
             @Override
@@ -110,13 +111,6 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
     public void getmylocation() {
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 

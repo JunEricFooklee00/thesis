@@ -249,7 +249,6 @@ public class insertjob extends Fragment {
             e.printStackTrace();
         }
     }
-
     private boolean validatetitle() {
         String strtitle = Objects.requireNonNull(title.getEditText()).getText().toString().trim();
         if (strtitle.isEmpty()) {
@@ -262,7 +261,6 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-
     private boolean validatename() {
         String strname = Objects.requireNonNull(name.getEditText()).getText().toString().trim();
         if (strname.isEmpty()) {
@@ -275,7 +273,6 @@ public class insertjob extends Fragment {
             return true;
         }
     }
-
     private boolean validateScopeofWork() {
         String sow = Objects.requireNonNull(ScopeOfWork.getText()).toString().trim();
 
@@ -533,11 +530,12 @@ public class insertjob extends Fragment {
         mongoCollection.insertOne(orderDocument).getAsync(result -> {
 
             if (result.isSuccess()) {
-                Toast.makeText(requireContext(), result.get().toString(), Toast.LENGTH_LONG).show();
                 Log.v("Data", "Data successfully addedd");
                 getActivity().onBackPressed();
+
+
             } else {
-                Toast.makeText(requireContext(), "di ko alam", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), "Network Issue.", Toast.LENGTH_LONG).show();
                 Log.v("Data", "Error:" + result.getError().toString());
             }
         });
