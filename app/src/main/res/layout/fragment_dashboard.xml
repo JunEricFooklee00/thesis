@@ -29,7 +29,7 @@
             android:clickable="true"
             app:cardCornerRadius="20dp"
             app:cardElevation="5dp"
-            app:cardPreventCornerOverlap="false"
+            app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,9 +40,11 @@
                     android:id="@+id/jobhistoryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="Job History"
                     android:textColor="@color/light_blue"
-                    android:textSize="50dp"
+                    android:textSize="30dp"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,7 +53,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:paddingBottom="10dp"
 
                     android:text="No. of Completed Jobs: "
                     android:textSize="16dp"
@@ -66,6 +67,7 @@
                     android:textColor="@color/light_blue"
 
                     android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/numberofcompletedText"
                     app:layout_constraintStart_toEndOf="@+id/numberofcompletedText"
                     app:layout_constraintTop_toTopOf="@+id/numberofcompletedText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -79,7 +81,7 @@
             android:clickable="true"
             app:cardCornerRadius="20dp"
             app:cardElevation="5dp"
-            app:cardPreventCornerOverlap="false"
+            app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,9 +92,11 @@
                     android:id="@+id/jobqueutitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="Your Job Queue"
+
                     android:textColor="@color/light_blue"
-                    android:textSize="50dp"
+                    android:textSize="30dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,7 +107,6 @@
                     android:layout_marginStart="10dp"
                     android:text="No. of queues: "
                     android:textSize="16dp"
-                    android:paddingBottom="10dp"
 
                     app:layout_constraintStart_toStartOf="@+id/jobqueutitle"
                     app:layout_constraintTop_toBottomOf="@+id/jobqueutitle" />
@@ -116,6 +119,7 @@
 
                     android:textColor="@color/light_blue"
                     android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/numberofqueueText"
                     app:layout_constraintStart_toEndOf="@+id/numberofqueueText"
                     app:layout_constraintTop_toTopOf="@+id/numberofqueueText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -129,7 +133,7 @@
             android:clickable="true"
             app:cardCornerRadius="20dp"
             app:cardElevation="5dp"
-            app:cardPreventCornerOverlap="false"
+            app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -140,9 +144,10 @@
                     android:id="@+id/validatedJobsTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:text="Validated Jobs"
                     android:textColor="@color/light_blue"
-                    android:textSize="50dp"
+                    android:textSize="30dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -152,7 +157,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
-                    android:paddingBottom="10dp"
                     android:text="No. of Validated Jobs: "
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="@+id/validatedJobsTitle"
@@ -166,6 +170,7 @@
                     android:textColor="@color/light_blue"
 
                     android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/numberofvalidatedText"
                     app:layout_constraintStart_toEndOf="@+id/numberofvalidatedText"
                     app:layout_constraintTop_toTopOf="@+id/numberofvalidatedText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -179,10 +184,6 @@
             android:columnCount="2"
             android:columnOrderPreserved="false"
             android:rowCount="3">
-
-
-
-
 
 
             <androidx.cardview.widget.CardView

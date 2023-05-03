@@ -65,6 +65,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
+                        android:inputType="textPersonName"
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +90,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/TIET_ContactNum"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:digits="0123456789"
                         android:hint="@string/Contact_Number"
                         android:inputType="number" />
@@ -245,7 +246,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="32dp"
-                    android:hint="@string/Expectedfinishdate"
+                    android:hint="Number of Working Days"
                     android:textColorHint="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

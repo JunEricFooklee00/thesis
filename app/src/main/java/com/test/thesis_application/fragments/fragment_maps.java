@@ -73,8 +73,9 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
         if (projectuserid != null) {
             userid = projectuserid.getString("user_ID"); //coming from client home
             employeeid = projectuserid.getString("employeeID");
+            Log.v("MapsClient", "Employee ID:    " + employeeid +" "+"userid   "+userid);
+
         }
-        Log.v("MongoDB", "Employee ID: " + employeeid);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
 
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -110,13 +111,6 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
     public void getmylocation() {
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
@@ -125,27 +119,7 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(final Location location) {
 
-                mongoClient = user.getMongoClient("mongodb-atlas");
-                mongoDatabase = mongoClient.getDatabase("Users");
-                mongoCollection = mongoDatabase.getCollection("clients");
-                ObjectId objectId = new ObjectId(userid);
-                // Create a filter using the objectId
-                Document filter = new Document("_id", objectId);
-                Log.v("MongoDB", "UserID: " + objectId);
-                // Create a document with the location data
-                Document update = new Document("$set", new Document("latitude", location.getLatitude()).append("longitude", location.getLongitude()));
-                // Use the upsert option to insert a new document if the filter doesn't match any document
-                UpdateOptions options = new UpdateOptions().upsert(true);
-
-                // Update the document in the collection
-                mongoCollection.updateOne(filter, update, options).getAsync(result -> {
-                    if (result.isSuccess()) {
-                        Log.v("MongoDB", "Document updated successfully!");
-                    } else {
-                        Log.e("MongoDB", "Failed to update document: " + result.getError().getErrorMessage());
-                    }
-                });
-
+//
 
                 mapFragment.getMapAsync(new OnMapReadyCallback() {
                     @Override
@@ -153,48 +127,11 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
                         if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             return;
                         }
-                        mongoClient = user.getMongoClient("mongodb-atlas");
-                        mongoDatabase = mongoClient.getDatabase("Users");
-                        mongoCollection = mongoDatabase.getCollection("employees");
-                        ObjectId employeeId = new ObjectId(employeeid);
-                        // Create a filter using the objectId
-                        Document employee = new Document("_id", employeeId);
-
-                        mongoCollection.findOne(employee).getAsync(result1 -> {
-                            if (result1.isSuccess()) {
-                                Document resultdata = result1.get();
-                                Log.v("Mongodb", resultdata.toString());
-
-                                name = resultdata.getString("name");
-                                employeelongitude = resultdata.getDouble("longitude");
-                                employeelatitude = resultdata.getDouble("latitude");
-                                if (employeelongitude == null){
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                                    builder.setMessage("Employee Has not Logged in yet");
-                                    builder.setPositiveButton("Ok, i understand.", (dialog, which) -> dialog.dismiss());// end of DialogInterface :D
-
-                                    AlertDialog dialog = builder.create();
-                                    dialog.show();
-                                }
-//                                Log.v("Mongodb", employeelongitude.toString() + " " + employeelatitude.toString());
-//                                Log.v("MongoDB", employeelongitude + "" + employeelatitude + "output pero walang marker :V");
-                                if (employeelatitude != null && employeelongitude != null) {
-                                    LatLng employeelatlng = new LatLng(employeelatitude, employeelongitude);
-                                    MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title(name);
-                                    googleMap.addMarker(employeemarker);
-                                }
-                            } else {
-                                Log.v("MongoDB", "Error");
-                            }
-
-                        });
-
 
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
                         googleMap.setMyLocationEnabled(true);
-
 
                     }
                 });
