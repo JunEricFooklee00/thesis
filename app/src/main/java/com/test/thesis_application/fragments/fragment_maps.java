@@ -90,7 +90,7 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
         Dexter.withContext(getContext()).withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                getmylocation();
+//                getmylocation();
             }
 
             @Override
