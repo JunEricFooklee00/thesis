@@ -510,7 +510,8 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             List<JSONObject> checkedItems1 = skilledAdapter.getCheckedItems();
             List<JSONObject> checkedItems2 = unskilledAdapter.getCheckedItems();
             Document test = new Document();
-            Log.v("charleskendrickmagalued",checkedItems1.toString());
+            Log.v("MongoDB", String.valueOf(checkedItems1.get(0)) + " " + String.valueOf(checkedItems1.get(1)));
+            Log.v("MongoDB",checkedItems2.toString());
 //  check that at least one item is selected in each list
             if (!validateforecast()) {
                 return;
@@ -525,28 +526,25 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             int n = 0;
             int z = 0;
             // add items from the first list to the StringBuilder
-            for (JSONObject item : checkedItems1) {
+            for (int i = 0; i < checkedItems1.size(); i++) {
+                JSONObject item = checkedItems1.get(i);
                 String objectId = item.optString("employeeId");
                 String name = item.optString("name");
                 String employeeId = extractEmployeeId(objectId);
-                for (int i = 0; i < totalskilled; i++) {
-                      n = i +1;
-                     test.append("Worker" + n, employeeId).append("WorkerName"+n, name);
-                    // Do something with the 'test' Document object here
-                }
+                n = i + 1;
+                test.append("Worker" + n, employeeId).append("WorkerName" + n, name);
             }
 
-            // add items from the second list to the StringBuilder
-            for (JSONObject item : checkedItems2) {
+            for (int i = 0; i < checkedItems2.size(); i++) {
+                JSONObject item = checkedItems2.get(i);
                 String objectId = item.optString("employeeId");
-                String employeeId = extractEmployeeId(objectId);
                 String name = item.optString("name");
-
-                for (int i = 0; i < totalunskilled; i++) {
-                    z = n +i+1;
-                    test.append("Worker" + z, employeeId).append("WorkerName"+z, name);
-                }
+                String employeeId = extractEmployeeId(objectId);
+                z = n +i+1;
+                test.append("Worker" + z, employeeId).append("WorkerName" + z, name);
             }
+
+//
 
             String testString = test.toJson();
 
