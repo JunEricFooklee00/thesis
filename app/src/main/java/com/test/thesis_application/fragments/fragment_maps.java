@@ -41,6 +41,8 @@ import com.test.thesis_application.R;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.Date;
+
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.User;
@@ -49,7 +51,7 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.options.UpdateOptions;
 
-public class fragment_maps extends Fragment implements OnMapReadyCallback {
+public class fragment_maps extends Fragment {
     FusedLocationProviderClient client;
     SupportMapFragment mapFragment;
 
@@ -68,90 +70,82 @@ public class fragment_maps extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        client = LocationServices.getFusedLocationProviderClient(requireActivity());
+        requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            Bundle projectuserid = getArguments();
-            if (projectuserid != null) {
-                userid = projectuserid.getString("user_ID"); //coming from client home
-                employeeid = projectuserid.getString("employeeID");
-                Log.v("MapsClient", "Employee ID:    " + employeeid +" "+"userid   "+userid);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
 
+        Bundle projectuserid = getArguments();
+        if (projectuserid != null) {
+            userid = projectuserid.getString("user_ID"); //coming from client home
+            employeeid = projectuserid.getString("employeeID");
+        }
+        Log.v("MapsClient", "Employee ID:    " + employeeid + " " + "userid   " + userid);
+
+
+        // all required for mongodb
+        app = new App(new AppConfiguration.Builder(Appid).build());
+        user = app.currentUser();
+        assert user != null;
+
+
+        Dexter.withContext(getContext()).withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                getMyLocation();
             }
-            mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
 
-            requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            client = LocationServices.getFusedLocationProviderClient(requireActivity());
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
 
-            // all required for mongodb
-            app = new App(new AppConfiguration.Builder(Appid).build());
-            user = app.currentUser();
-            assert user != null;
-
-
-            Dexter.withContext(getContext()).withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
-                @Override
-                public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-    //                getmylocation();
-                }
-
-                @Override
-                public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                }
-
-                @Override
-                public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                    permissionToken.continuePermissionRequest();
-                }
-            }).check();
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
 
 
-            return view;
+        return view;
+    }
+
+
+    public void getMyLocation() {
+        Log.v("MapsCharles", "Tae");
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
 
+        Task<Location> task = client.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(final Location location) {
+                mapFragment.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
 
-        public void getmylocation() {
+                        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
 
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
 
-            Task<Location> task = client.getLastLocation();
-            task.addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(final Location location) {
-
-    //
-
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                return;
-                            }
-
+                        if (location != null) {
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
                             googleMap.setMyLocationEnabled(true);
-
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                            builder.setMessage("No location is found.");
+                            builder.setNegativeButton("Ok.", (dialog, which) -> dialog.dismiss());
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                         }
-                    });
-                }
-            });
-        }
-
-        @Override
-        public void onMapReady(@NonNull GoogleMap googleMap) {
-            if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+                    }
+                });
             }
-            googleMap.setMyLocationEnabled(true);
-
-        }
+        });
     }
+}
+
+

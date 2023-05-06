@@ -92,6 +92,7 @@ public class employee_profile extends Fragment {
                 address = resultdata.getString("address");
                 utype = resultdata.getString("jobType");
 
+
                 DecimalFormat df = new DecimalFormat("#");
                 df.setMaximumFractionDigits(0);
                 userType.setText(utype);

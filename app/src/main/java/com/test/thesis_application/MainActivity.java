@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         String hashedPassword = resultData.getString("password");
                         Log.v("resultpassword",hashedPassword);
                         Log.v("resultpassword",password);
-                        if (resultData != null && resultData.getString("user").equals("Client")) {
+                        if (resultData != null) {
 
                             boolean passwordMatch = verifyPassword(password, hashedPassword);
                             if (passwordMatch) {
@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Check if the user is an employee
+                    mongoDatabase = mongoClient.getDatabase("Users");
                     mongoCollection = mongoDatabase.getCollection("employees");
                     Document employeeQuery = new Document("email", email);
                     mongoCollection.findOne(employeeQuery).getAsync(result1 -> {
@@ -194,16 +195,17 @@ public class MainActivity extends AppCompatActivity {
                             String idEmployee = resultData1.getObjectId("_id").toString();
                             Log.v("resultData",idEmployee);
                             String hashedPassword2 = resultData1.getString("password");
-
-                            if (resultData1 != null && resultData1.getString("user").equals("Employee")) {
-
+                            Log.v("resultData", "hashed password: " + hashedPassword2 + "unhashed(stored): "+ password + "unstored current input: " + get_password.getEditText().getText().toString());
+                            if (resultData1 != null) {
+                                Log.v("resultData","pumasok sa verification ng password");
                                 boolean passwordMatch = verifyPassword(password, hashedPassword2);
                                 if (passwordMatch) {
+                                    Log.v("resultData","Tama ang password");
                                     Intent homeScreen = new Intent(MainActivity.this, employee_home.class);
                                     homeScreen.putExtra("user_ID", idEmployee);
                                     startActivity(homeScreen);
                                 } else {
-                                    Toast.makeText(MainActivity.this,"Wrong password",Toast.LENGTH_LONG).show();
+                                    Log.v("resultData","Wrong password");
                                 }
 
                                 return;
@@ -211,10 +213,6 @@ public class MainActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                        // User not found
-                        Toast.makeText(MainActivity.this, "Wrong password or username", Toast.LENGTH_LONG).show();
-                        Log.v("resultAccount", "Account doesn't exist.");
                     });
                 });
 
