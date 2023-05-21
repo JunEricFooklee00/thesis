@@ -60,7 +60,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
     Button stringbuilder;
     String workertype;
     TextInputLayout output, skilled, unskilled, suggested;
-    TextView cv4tv;
+    TextView tv8;
     TextView TV_jobTitle;
     TextView TV_jobid;
     TextView TV_scope;
@@ -122,6 +122,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         titleUnskilled = view.findViewById(R.id.unskilledtitle);
         Tv_contactNumber = view.findViewById(R.id.Tv_contactNumber);
         Unitval = view.findViewById(R.id.Tv_unit);
+        tv8 = view.findViewById(R.id.tv8);
 
         Bundle data = getArguments();
         if (data != null) {//from
@@ -138,7 +139,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             Startingdate = data.getString("startingdate");
         }
 
-        Log.v("doublevaluedapat",contactNumber.toString());
+
         DecimalFormat contactformat = new DecimalFormat("#");
         contactformat.setMaximumFractionDigits(0);
         String tae = contactformat.format(contactNumber);
@@ -159,7 +160,6 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         Double stringdouble = Double.valueOf(Tv_contactNumber.getText().toString());
 
         List<String> checkedItems = new ArrayList<>();
-
 
         // all required for mongodb
         App app = new App(new AppConfiguration.Builder(Appid).build());
@@ -229,7 +229,9 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                     }
                     suggested.getEditText().setText("0");
                     output.setVisibility(View.VISIBLE);
+                    tv8.setText("*note to user the value above is the forecasted optimal number of workers for the job.");
                     suggested.setVisibility(View.INVISIBLE);
+
                     Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
 
 //            Log.v("Model Output", outputString);
@@ -242,13 +244,17 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                 output.getEditText().setText("0");
                 output.setVisibility(View.INVISIBLE);
                 suggested.setVisibility(View.VISIBLE);
+//                recyclerView2.setVisibility(View.VISIBLE);
+
+                tv8.setText("*note to user the amount cannot be more than 5.");
+
                 Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
             }
         } else if (firstLetter.equals("D")) {
             workertype = "Plumber";
             titleskilled.setText("Recommended "+workertype  );
             if (firstTwoLetters.equals("D2")){
-                Toast.makeText(requireContext(), "D2", Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), "D2", Toast.LENGTH_LONG).show();
                 try {
                     hours = hours * 8;
                     Float RateOfWork = 1f;
@@ -275,17 +281,19 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                         outputString = Math.round(value);
                     }
                     Objects.requireNonNull(output.getEditText()).setText(String.valueOf(outputString));
+                    suggested.setVisibility(View.INVISIBLE);
 
                     suggested.getEditText().setText("0");
                     output.setVisibility(View.VISIBLE);
-                    suggested.setVisibility(View.INVISIBLE);
+                    tv8.setText("*note to user the value above is the forecasted optimal number of workers for the job.");
                     model.close();
                 } catch (IOException e) {
                     // TODO Handle the exception
                 }
             } else if (firstTwoLetters.equals("D3")) {//TV_scope.getText().equals("D3 - Drainage Pipeline Installation")
-                Toast.makeText(requireContext(), "D3", Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), "D3", Toast.LENGTH_LONG).show();
                 try {
+//                    Toast.makeText(requireContext(),"D3",Toast.LENGTH_LONG).show();
                     hours = hours * 8;
                     Float RateOfWork = 0.8f;
                     result = (RateOfWork * area) / hours;
@@ -314,6 +322,9 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                     suggested.getEditText().setText("0");
                     output.setVisibility(View.VISIBLE);
                     suggested.setVisibility(View.INVISIBLE);
+
+                    tv8.setText("*note to user the value above is the forecasted optimal number of workers for the job.");
+
                     model.close();
                 } catch (IOException e) {
                     // TODO Handle the exception
@@ -323,6 +334,9 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                 output.getEditText().setText("0");
                 output.setVisibility(View.INVISIBLE);
                 suggested.setVisibility(View.VISIBLE);
+                tv8.setText("*note to user the amount cannot be more than 5.");
+                recyclerView2.setVisibility(View.VISIBLE);
+
                 Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
             }
 
@@ -332,7 +346,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             titleskilled.setText("Recommended "+workertype  );
 
             if (firstTwoLetters.equals("B2")){
-                Toast.makeText(requireContext(), "B2", Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), "B2", Toast.LENGTH_LONG).show();
                 try {
                     hours = hours * 8;
                     Float RateOfWork = 2.6667f;
@@ -363,6 +377,9 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                     suggested.getEditText().setText("0");
                     output.setVisibility(View.VISIBLE);
                     suggested.setVisibility(View.INVISIBLE);
+                    tv8.setText("*note to user the value above is the forecasted optimal number of workers for the job.");
+
+
                     model.close();
                 } catch (IOException e) {
                     // TODO Handle the exception
@@ -371,6 +388,9 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                 //if it doesnt have any model to forecast
                 output.getEditText().setText("0");
                 output.setVisibility(View.INVISIBLE);
+                tv8.setText("*note to user the amount cannot be more than 5.");
+//                recyclerView2.setVisibility(View.VISIBLE);
+
                 suggested.setVisibility(View.VISIBLE);
                 Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
             }
@@ -381,6 +401,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
 
             output.getEditText().setText("0");
             output.setVisibility(View.INVISIBLE);
+            tv8.setText("*note to user the amount cannot be more than 5.");
             suggested.setVisibility(View.VISIBLE);
             Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
 
@@ -390,6 +411,8 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             titleskilled.setText("Recommended "+workertype);
             output.getEditText().setText("0");
             output.setVisibility(View.INVISIBLE);
+            tv8.setText("*note to user the amount cannot be more than 5.");
+
             suggested.setVisibility(View.VISIBLE);
             Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
 
@@ -401,6 +424,8 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             output.getEditText().setText("0");
             output.setVisibility(View.INVISIBLE);
             suggested.setVisibility(View.VISIBLE);
+            tv8.setText("*note to user the amount cannot be more than 5.");
+
             Toast.makeText(requireContext(), "Selected Type of Work Doesnt have a forecasting model yet.", Toast.LENGTH_LONG).show();
 
 
@@ -419,6 +444,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             if (!validateforecastsize() |!validateSuggested()) {
                 return;
             }
+
             ProgressBar progressBar = requireView().findViewById(R.id.progressBar);
             ProgressBar progressBar2 = requireView().findViewById(R.id.progressBar2);
             progressBar.setVisibility(View.VISIBLE);
@@ -445,7 +471,7 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
 
                 Log.d("resultdata", jsonResult);
                 handler.post(() -> {
-//                     update the UI here
+                    //update recyclerview here
                     recyclerView = requireView().findViewById(R.id.recyclerView);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                     recyclerView.setLayoutManager(layoutManager);
@@ -488,12 +514,6 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
                     progressBar2.setVisibility(View.GONE);
                     cv5.setVisibility(View.VISIBLE);
 
-//                    for (int i = 0; i < unskilledAdapter.getItemCount(); i++) {
-//                        if (unskilledAdapter.getItem(i).isChecked()) {
-//                            checkedItems.add(unskilledAdapter.getItem(i).getEmployeeName());
-//                        }
-//                    }
-                    // you can now access the checked items list here
                     Log.d("checkedItems", checkedItems.toString());
                 });
             }).start();
@@ -505,60 +525,62 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             // get the checked items from the adapter
             int totalunskilled = unskilledAdapter.getCheckedItems().size();
             int totalskilled = skilledAdapter.getCheckedItems().size();
-            Toast.makeText(requireContext(), String.valueOf(totalskilled),Toast.LENGTH_LONG).show();
-            Toast.makeText(requireContext(),String.valueOf(totalunskilled),Toast.LENGTH_LONG).show();
+            //Toast.makeText(requireContext(), String.valueOf(totalskilled),Toast.LENGTH_LONG).show();
+            //Toast.makeText(requireContext(),String.valueOf(totalunskilled),Toast.LENGTH_LONG).show();
             List<JSONObject> checkedItems1 = skilledAdapter.getCheckedItems();
             List<JSONObject> checkedItems2 = unskilledAdapter.getCheckedItems();
             Document test = new Document();
             Log.v("charleskendrickmagalued",checkedItems1.toString());
-//  check that at least one item is selected in each list
+            //check that at least one item is selected in each list
             if (!validateforecast()) {
-                return;
+            return;
             }
             DecimalFormat df = new DecimalFormat("#");
             df.setMaximumFractionDigits(0);
             ObjectId jobid = new ObjectId(id);
-            test.append("_id",jobid).append("idUser",userId).append("ProjectName",jobtitle).append("ClientName",nameuser).append("ContactNumber",stringdouble).append("TypeOfWork", ScopeofWork).append("Area",df.format(area)).append("Unit",Unitstr).append("Location",Location)
+            test.append("_id",jobid).append("idUser",userId).append("ProjectName",jobtitle).append("ClientName",nameuser).append("ContactNumber",stringdouble).append("TypeOfWork", ScopeofWork).append("Area",area.toString()).append("Unit",Unitstr).append("Location",Location)
                     .append("StartingDate",Startingdate).append("ExpectedFinishDate",ExpectedFinishDate).append("ForecastedNum",Integer.valueOf(output.getEditText().getText().toString())).append("SuggestedNum",Integer.valueOf(suggested.getEditText().getText().toString())); //
-
 
             int n = 0;
             int z = 0;
-            // add items from the first list to the StringBuilder
-            for (JSONObject item : checkedItems1) {
+            // add items from the first list to the StringBuilder // TODO: Fix
+            for (int i = 0; i < checkedItems1.size(); i++) {
+                JSONObject item = checkedItems1.get(i);
                 String objectId = item.optString("employeeId");
                 String name = item.optString("name");
                 String employeeId = extractEmployeeId(objectId);
-                for (int i = 0; i < totalskilled; i++) {
-                      n = i +1;
-                     test.append("Worker" + n, employeeId).append("WorkerName"+n, name);
-                    // Do something with the 'test' Document object here
-                }
+                n = i + 1;
+                test.append("Worker" + n, employeeId).append("WorkerName" + n, name);
             }
 
-            // add items from the second list to the StringBuilder
-            for (JSONObject item : checkedItems2) {
+            for (int i = 0; i < checkedItems2.size(); i++) {
+                JSONObject item = checkedItems2.get(i);
                 String objectId = item.optString("employeeId");
-                String employeeId = extractEmployeeId(objectId);
                 String name = item.optString("name");
+                String employeeId = extractEmployeeId(objectId);
+                z = n +i+1;
+                test.append("Worker" + z, employeeId).append("WorkerName" + z, name);
 
-                for (int i = 0; i < totalunskilled; i++) {
-                    z = n +i+1;
-                    test.append("Worker" + z, employeeId).append("WorkerName"+z, name);
-                }
             }
 
             String testString = test.toJson();
 
             ObjectId objectId = new ObjectId(id);
             Document filter = new Document("_id", objectId);
+            Log.v("MongoDB",filter.toString());
             mongoCollection.findOneAndDelete(filter).getAsync(result1 -> {
                 if (result1.isSuccess()) {
-                    Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
                     mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
                     mongoCollection = mongoDatabase.getCollection("joborders");
                     mongoCollection.insertOne(test.append("created", new Date())).getAsync(result2 -> {
                         if (result2.isSuccess()){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                            builder.setMessage("Job has been added to the pendings list, Please Wait for it to be accepted.")
+                                    .setPositiveButton("OK", (dialog, id) -> {
+                                        //
+                                    });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                             requireActivity().getSupportFragmentManager().popBackStack();
                         }else{
                             Toast.makeText(requireContext(),"failed",Toast.LENGTH_LONG).show();
@@ -594,6 +616,17 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
             return true;
         }
     }
+    private boolean validateforecastsizevalue(){
+        int stroutput = Integer.parseInt(output.getEditText().getText().toString().trim());
+        if (stroutput <= 5){
+            output.setError(null);
+
+            return true;
+        }  else  {
+            output.setError("Forecasted value is more than required. please change the value ranging from 1 to 5.");
+            return false;
+        }
+    }
     private boolean validateSuggested(){
         String stroutput = Objects.requireNonNull(suggested.getEditText().getText().toString().trim());
         if (stroutput.isEmpty()){
@@ -602,6 +635,17 @@ public class jobsinfo extends Fragment implements CompoundButton.OnCheckedChange
         } else  {
             suggested.setError(null);
             return true;
+        }
+    }
+    private boolean validateSuggestedvalue(){
+        int valuestr = Integer.parseInt(suggested.getEditText().getText().toString().trim());
+        if (valuestr <= 5){
+            suggested.setError(null);
+
+            return true;
+        }else {
+            suggested.setError("Value cannot be more than 5 or 0");
+            return false;
         }
     }
     private boolean validateforecast(){

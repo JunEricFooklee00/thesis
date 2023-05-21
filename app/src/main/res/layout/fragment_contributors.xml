@@ -3,109 +3,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.contributors"
-    android:background="@drawable/bg_puti">
+    android:background="@drawable/bg_puti"
+    tools:context=".fragments.contributors">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="CONTRIBUTORS"
             android:textColor="@color/black"
             android:textSize="30sp"
-            android:layout_gravity="center"
 
             />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="50dp"
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                tools:ignore="UseCompoundDrawables"
-                >
+            tools:ignore="UseCompoundDrawables">
 
-                <ImageView
+            <ImageView
 
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:src="@drawable/pfh"
-                    tools:ignore="ContentDescription"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/sirnelson"
+                tools:ignore="ContentDescription"
 
-                    />
+                />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:text="PFH Construction Services"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thesis Advisor"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dr. Nelson C Rodelas, PCPE"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="50dp"
 
+            tools:ignore="UseCompoundDrawables">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <ImageView
 
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="50dp"
-                tools:ignore="UseCompoundDrawables">
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/pfh"
+                tools:ignore="ContentDescription"
 
-                <ImageView
+                />
 
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:src="@drawable/gomez"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:text="Engr. John Rei Gomez"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="PFH Construction Services"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="50dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/gomez"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="Engr. John Rei Gomez"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="50dp"
-                tools:ignore="UseCompoundDrawables">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="50dp"
+            tools:ignore="UseCompoundDrawables">
 
-                <ImageView
+            <ImageView
 
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:src="@drawable/titoroy"
-                    tools:ignore="ContentDescription" />
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/titoroy"
+                tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:text="Engr. Roy B. Magno"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="Engr. Roy B. Magno"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
 
 
     </LinearLayout>

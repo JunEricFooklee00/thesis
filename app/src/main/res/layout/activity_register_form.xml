@@ -57,6 +57,7 @@
                         android:id="@+id/filled_exposed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="Client"
                         android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -267,7 +268,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:hint="@string/get_Address"
+                        android:hint="@string/house_number"
                         android:maxLines="1"
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -289,7 +290,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:hint="@string/house_number"
+                        android:hint="@string/get_Address"
                         android:maxLines="1"
                         android:scrollHorizontally="true" />
                 </com.google.android.material.textfield.TextInputLayout>

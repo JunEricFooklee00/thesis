@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView registerButton;
 
     private SharedPreferences preferences;
-    Button button3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         get_email = findViewById(R.id.TIL_Emailinput);
         get_password = findViewById(R.id.TIL_PasswordInput);
         registerButton = findViewById(R.id.btn_register);
-        button3 = findViewById(R.id.button3);
+
 
         mPermissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
             @Override
@@ -137,13 +137,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent bcrypt = new Intent(MainActivity.this, bcryptest.class);
-                startActivity(bcrypt);
-            }
-        });
 
         requestPermission();
     }// end of onCreate

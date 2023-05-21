@@ -1,9 +1,6 @@
 package com.test.thesis_application.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 import com.test.thesis_application.R;
@@ -121,8 +120,6 @@ public class openhistoryclient extends Fragment {
                     jobtitle = resultdata.getString("ProjectName");
                     Startingdate = resultdata.getString("StartingDate");
 
-
-
                     textView_jobTitle.setText(jobtitle);
                     tv_jobID.setText(id);
                     tv_name.setText(nameuser);
@@ -139,12 +136,12 @@ public class openhistoryclient extends Fragment {
                     Worker3 = resultdata.getString("Worker3") != null ? resultdata.getString("Worker3") : "";
                     Worker4 = resultdata.getString("Worker4") != null ? resultdata.getString("Worker4") : "";
                     Worker5 = resultdata.getString("Worker5") != null ? resultdata.getString("Worker5") : "";
-                    Log.v("MongoDB", "ID" + id);
-                    Log.v("MongoDB", "Worker1 " + Worker1);
-                    Log.v("MongoDB", "Worker2 " + Worker2);
-                    Log.v("MongoDB", "Worker3 " + Worker3);
-                    Log.v("MongoDB", "Worker4 " + Worker4);
-                    Log.v("MongoDB", "Worker5 " + Worker5);
+                    Log.v("MongoDB", "Job ID: " + id);
+                    Log.v("MongoDB", "Worker1: " + Worker1);
+                    Log.v("MongoDB", "Worker2: " + Worker2);
+                    Log.v("MongoDB", "Worker3: " + Worker3);
+                    Log.v("MongoDB", "Worker4: " + Worker4);
+                    Log.v("MongoDB", "Worker5: " + Worker5);
                     if (Worker1 != null && !Worker1.isEmpty()) {
                         Log.v("Mongodb","Worker1 id: "+ Worker1);
                         LoadEmployee1();
@@ -152,20 +149,18 @@ public class openhistoryclient extends Fragment {
                     if (Worker2 != null && !Worker2.isEmpty()) {
                         Log.v("Mongodb","Worker2 id: "+ Worker2);
                         LoadEmployee2();
-
                     }
                     if (Worker3 != null && !Worker3.isEmpty()) {
                         Log.v("Mongodb","Worker3 id: "+ Worker3);
-
                         LoadEmployee3();
                     }
                     if (Worker4 != null && !Worker4.isEmpty()) {
                         Log.v("Mongodb","Worker4 id: "+ Worker4);
-                        LoadEmployee4();
+//                        LoadEmployee4();
                     }
                     if (Worker5 != null && !Worker5.isEmpty()) {
                         Log.v("Mongodb","Worker5 id: "+ Worker5);
-                        LoadEmployee5();
+//                        LoadEmployee5();
 
                     }
                 }
@@ -192,28 +187,37 @@ public class openhistoryclient extends Fragment {
     public void LoadEmployee1() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
-        if (Worker1 != null) {
-            ObjectId objectId = new ObjectId(Worker1);
-            Document filter = new Document("_id", objectId);
-            mongoCollection.findOne(filter).getAsync(result -> {
+        if (Worker1 != null && !Worker1.isEmpty()) {
+            Log.v("MongoDB","Value of worker1: "+ Worker1);
+            ObjectId workerid = new ObjectId(Worker1);
+            Document filter1 = new Document("_id", workerid);
+            mongoCollection.findOne(filter1).getAsync(result -> {
                 if (result.isSuccess()) {
                     Document resultdata = result.get();
                     Log.v("MongoDB",resultdata.toString());
                     String display1 = resultdata.getString("avatar");
                     String name1 = resultdata.getString("name");
-                    String address1 = resultdata.getString("address");
 
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact1 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
                     } else if (contactNumberObj instanceof Integer) {
                         contact1 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact1 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
+                    }else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact1));
+
 
 
                     String job1 = resultdata.getString("jobType");
@@ -225,12 +229,11 @@ public class openhistoryclient extends Fragment {
                 }
             });
         }
-
-    }
+    }//end
     public void LoadEmployee2() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
-        if (Worker2 != null) {
+        if (Worker2 != null && !Worker2.isEmpty()) {
             ObjectId objectId = new ObjectId(Worker2);
             Document filter = new Document("_id", objectId);
             mongoCollection.findOne(filter).getAsync(result -> {
@@ -238,18 +241,26 @@ public class openhistoryclient extends Fragment {
                     Document resultdata = result.get();
                     String display2 = resultdata.getString("avatar");
                     String name2 = resultdata.getString("name");
-                    String address2 = resultdata.getString("address");
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact2 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
                     } else if (contactNumberObj instanceof Integer) {
                         contact2 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
+                    } else if (contactNumberObj instanceof Long) {
+                        contact1 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
+                    }else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact2.setText(df.format(contact2));
+
 
                     String job2 = resultdata.getString("jobType");
                     WorkerName2.setText(name2);
@@ -267,7 +278,7 @@ public class openhistoryclient extends Fragment {
     public void LoadEmployee3() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
-        if (Worker3 != null) {
+        if (Worker3 != null && !Worker3.isEmpty()) {
             ObjectId objectId = new ObjectId(Worker3);
             Document filter = new Document("_id", objectId);
             mongoCollection.findOne(filter).getAsync(result -> {
@@ -275,20 +286,28 @@ public class openhistoryclient extends Fragment {
                     Document resultdata = result.get();
                     String display3 = resultdata.getString("avatar");
                     String name3 = resultdata.getString("name");
-                    String address3 = resultdata.getString("address");
                     String job3 = resultdata.getString("jobType");
 
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact3 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
                     } else if (contactNumberObj instanceof Integer) {
                         contact3 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact3 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact3));
+
 
                     WorkerName3.setText(name3);
                     Workerjob3.setText(job3);
@@ -302,7 +321,7 @@ public class openhistoryclient extends Fragment {
     public void LoadEmployee4() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
-        if (Worker4 != null) {
+        if (Worker4 != null && !Worker4.isEmpty()) {
             ObjectId objectId = new ObjectId(Worker4);
             Document filter = new Document("_id", objectId);
             mongoCollection.findOne(filter).getAsync(result -> {
@@ -310,20 +329,28 @@ public class openhistoryclient extends Fragment {
                     Document resultdata = result.get();
                     String display4 = resultdata.getString("avatar");
                     String name4 = resultdata.getString("name");
-                    String address4 = resultdata.getString("address");
                     String job4 = resultdata.getString("jobType");
 
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact4 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
                     } else if (contactNumberObj instanceof Integer) {
                         contact4 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
+                    } else if (contactNumberObj instanceof Long) {
+                        contact4 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact4));
+
 
                     WorkerName4.setText(name4);
                     Workerjob4.setText(job4);
@@ -337,7 +364,7 @@ public class openhistoryclient extends Fragment {
     public void LoadEmployee5() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
-        if (Worker5 != null) {
+        if (Worker5 != null && !Worker5.isEmpty()) {
             ObjectId objectId = new ObjectId(Worker5);
             Document filter = new Document("_id", objectId);
             mongoCollection.findOne(filter).getAsync(result -> {
@@ -345,20 +372,28 @@ public class openhistoryclient extends Fragment {
                     Document resultdata = result.get();
                     String display5 = resultdata.getString("avatar");
                     String name5 = resultdata.getString("name");
-                    String address5 = resultdata.getString("address");
                     String job5 = resultdata.getString("jobType");
 
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact5 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
                     } else if (contactNumberObj instanceof Integer) {
                         contact5 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact5 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact5));
+
 
                     WorkerName5.setText(name5);
 

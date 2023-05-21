@@ -1,7 +1,6 @@
 package com.test.thesis_application.employee;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -32,7 +30,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.test.thesis_application.LocationNotFoundDialogFragment;
 import com.test.thesis_application.R;
 
 import org.bson.Document;
@@ -112,13 +109,6 @@ public class fragment_maps_employee extends Fragment implements OnMapReadyCallba
     public void getmylocation() {
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
@@ -170,8 +160,6 @@ public class fragment_maps_employee extends Fragment implements OnMapReadyCallba
                                 name = resultdata.getString("name");
                                 employeelongitude = resultdata.getDouble("longitude");
                                 employeelatitude = resultdata.getDouble("latitude");
-                                Log.v("Mongodb", employeelongitude.toString() + " " + employeelatitude.toString());
-                                Log.v("MongoDB", employeelongitude + "" + employeelatitude + "output pero walang marker :V");
                                 if (employeelatitude != null && employeelongitude != null) {
                                     LatLng employeelatlng = new LatLng(employeelatitude, employeelongitude);
                                     MarkerOptions employeemarker = new MarkerOptions().position(employeelatlng).title(name);
@@ -180,16 +168,10 @@ public class fragment_maps_employee extends Fragment implements OnMapReadyCallba
                             } else {
                                 Log.v("MongoDB", "Error");
                             }
-
                         });
-
-
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
                         googleMap.setMyLocationEnabled(true);
-
-
                     }
                 });
             }

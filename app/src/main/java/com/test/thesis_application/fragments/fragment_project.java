@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -103,7 +102,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
                if (task.isSuccess()) {
                    MongoCursor<Document> results = task.get();
-                   Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+//                   Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
                    Log.v("EXAMPLE", results.toString());
                    while (results.hasNext()) {
                        JobsOrderClass jobOrder = new JobsOrderClass();
@@ -156,7 +155,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         fragmentTransaction.replace(R.id.fragment_container,fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        Toast.makeText(requireContext(),userid,Toast.LENGTH_LONG).show();
+//        Toast.makeText(requireContext(),userid,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -186,7 +185,7 @@ public class fragment_project extends Fragment implements Jobinterface {
         fragmentTransaction.replace(R.id.fragment_container,fragmentjob);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();
+//        Toast.makeText(requireContext(),orders.get(position).getJobTitle(),Toast.LENGTH_LONG).show();
     }
 }
 

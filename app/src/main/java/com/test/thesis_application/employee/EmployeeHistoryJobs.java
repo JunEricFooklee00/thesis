@@ -2,18 +2,14 @@ package com.test.thesis_application.employee;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.test.thesis_application.Jobinterface;
@@ -25,7 +21,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.realm.mongodb.App;
@@ -102,7 +97,7 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -141,7 +136,7 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -180,7 +175,7 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -220,7 +215,7 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -260,7 +255,7 @@ public class EmployeeHistoryJobs extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), results.toString(), Toast.LENGTH_LONG).show();
                 Log.v("EXAMPLE", results.toString());
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();

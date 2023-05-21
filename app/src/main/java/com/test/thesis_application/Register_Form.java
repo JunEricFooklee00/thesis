@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -219,17 +218,19 @@ public class Register_Form extends AppCompatActivity{
             }
         });
         register.setOnClickListener(v -> {
-           if(autoCompleteTextView.getText().toString().equals("Employees")){
+           if(autoCompleteTextView.getText().toString().equals("Employee")){
                if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
                        !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage() |!validateJobType() |!termsandconditions()) {
                    return;
                }
-           }else {
+           }else if (autoCompleteTextView.getText().toString().equals("Client")){
                if (!validateemail() | !validatePassword() | !validateAvatar() | !validatecontactnum() | !validateusername() | !validatefullname() | !validateConfirmPassword() | !validategender() |
                        !validateusertype() | !validatezipcode() | !validateaddress() | !validatehousenumber() | !validatebarangay() | !validatecity() | !validateprovince() | !validateage() | !validateImage()  |!termsandconditions()) {
-                   Toast.makeText(this,"Clients ang pinili",Toast.LENGTH_LONG).show();
+//                   Toast.makeText(this,"Clients ang pinili",Toast.LENGTH_LONG).show();
                    return;
                }
+           }else {
+               return;
            }
             register.setEnabled(false);
             new Handler().postDelayed(new Runnable() {
@@ -320,8 +321,6 @@ public class Register_Form extends AppCompatActivity{
             jobselect.setError("this field cannot be empty.");
 
             return false;
-        }else if(autoCompleteTextView.getText().toString().equals("Clients")){
-            return true;
         }else if (sow.equals("Unit")) {
             jobselect.setError("Please Choose a user type.");
             return false;
@@ -332,11 +331,11 @@ public class Register_Form extends AppCompatActivity{
         }
     }
     private boolean validateusertype() {
-        if (autoCompleteTextView.getText().toString().equals("Clients")) {
+        if (autoCompleteTextView.getText().toString().equals("Client")) {
             autoCompleteTextView.setError(null);
 
             return true;
-        } else if (autoCompleteTextView.getText().toString().equals("Employees")) {
+        } else if (autoCompleteTextView.getText().toString().equals("Employee")) {
             autoCompleteTextViewgender.setError(null);
 
             return true;
@@ -733,8 +732,8 @@ public class Register_Form extends AppCompatActivity{
 
 
         // do something with the hash
-        String depende = autoCompleteTextView.getText().toString().toLowerCase(Locale.ROOT);
-        if (depende.equals("employees")){
+        String depende = autoCompleteTextView.getText().toString();
+        if (depende.equals("Employee")){
             mongoCollection = mongoDatabase.getCollection("employees");
             Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
                     .append("jobType",jobselect.getText().toString())
@@ -751,7 +750,7 @@ public class Register_Form extends AppCompatActivity{
 
             mongoCollection.insertOne(registerAccount).getAsync(result -> {
                 if (result.isSuccess()) {
-                    Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
                     Log.v("Data", "Data successfully addedd");
                     Intent intent = new Intent(Register_Form.this, splashScreen.class);
                     startActivity(intent);
@@ -759,7 +758,7 @@ public class Register_Form extends AppCompatActivity{
                     Log.v("Mongodb", "Error:" + result.getError().toString());
                 }
             });
-        } else if (depende.equals("clients")) {
+        } else if (depende.equals("Client")) {
             mongoCollection = mongoDatabase.getCollection("clients");
             Document registerAccount = new Document().append("user", autoCompleteTextView.getText().toString())
                     .append("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim())
@@ -775,7 +774,7 @@ public class Register_Form extends AppCompatActivity{
 
             mongoCollection.insertOne(registerAccount).getAsync(result -> {
                 if (result.isSuccess()) {
-                    Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(Register_Form.this, result.get().toString(), Toast.LENGTH_LONG).show();
                     Log.v("Data", "Data successfully addedd");
                     Intent intent = new Intent(Register_Form.this, splashScreen.class);
                     startActivity(intent);

@@ -52,14 +52,14 @@ public class OngoinJobs extends Fragment {
     MongoCollection<Document> mongoCollection;
     RecyclerView recyclerView;
     List<pendingemployeesClass> orders = new ArrayList<>();
-    Double contact1,contact2,contact3,contact4,contact5;
-    int forecastednum,suggestednum;
+    Double contact1, contact2, contact3, contact4, contact5;
+    int forecastednum, suggestednum;
     Button finishjob;
     String areastr;
     Document finished;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_ongoin_jobs, container, false);
         // all required for mongodb
@@ -118,7 +118,7 @@ public class OngoinJobs extends Fragment {
         if (data != null) {//from
             userId = data.getString("idUser");
             id = data.getString("_id");// id ni job
-            Log.v("MongoDB", "ID ni job " + id +" "+ data);
+            Log.v("MongoDB", "ID ni job " + id + " " + data);
 
             mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
             mongoCollection = mongoDatabase.getCollection("acceptedorders");
@@ -154,18 +154,27 @@ public class OngoinJobs extends Fragment {
                     Object contactNumberObj = resultdataid.get("ContactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact1 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        Tv_contactNumber.setText(df.format(contact1));
                     } else if (contactNumberObj instanceof Integer) {
                         contact1 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        Tv_contactNumber.setText(df.format(contact1));
+                    } else if (contactNumberObj instanceof Long) {
+                        contact1 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        Tv_contactNumber.setText(df.format(contact1));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    Tv_contactNumber.setText(df.format(contact1));
+
 //                    areastr = df.format(area);
                     if (Worker1 != null && !Worker1.isEmpty()) {
                         LoadEmployee1();
-                        Log.v("Mongodb","Worker1 id: "+ Worker1);
+                        Log.v("Mongodb", "Worker1 id: " + Worker1);
                     }
                     if (Worker2 != null && !Worker2.isEmpty()) {
                         LoadEmployee2();
@@ -218,10 +227,7 @@ public class OngoinJobs extends Fragment {
                 fragmentMaps.setArguments(mapsuid);
 
                 FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
+                mapsTransaction.replace(R.id.fragment_container, fragmentMaps).setReorderingAllowed(true).addToBackStack(null).commit();
             }
         });
         location2.setOnClickListener(new View.OnClickListener() {
@@ -234,10 +240,7 @@ public class OngoinJobs extends Fragment {
                 fragmentMaps.setArguments(mapsuid);
 
                 FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
+                mapsTransaction.replace(R.id.fragment_container, fragmentMaps).setReorderingAllowed(true).addToBackStack(null).commit();
             }
         });
         location3.setOnClickListener(new View.OnClickListener() {
@@ -250,10 +253,7 @@ public class OngoinJobs extends Fragment {
                 fragmentMaps.setArguments(mapsuid);
 
                 FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
+                mapsTransaction.replace(R.id.fragment_container, fragmentMaps).setReorderingAllowed(true).addToBackStack(null).commit();
             }
         });
         location4.setOnClickListener(new View.OnClickListener() {
@@ -266,10 +266,7 @@ public class OngoinJobs extends Fragment {
                 fragmentMaps.setArguments(mapsuid);
 
                 FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
+                mapsTransaction.replace(R.id.fragment_container, fragmentMaps).setReorderingAllowed(true).addToBackStack(null).commit();
             }
         });
         location5.setOnClickListener(new View.OnClickListener() {
@@ -282,10 +279,7 @@ public class OngoinJobs extends Fragment {
                 fragmentMaps.setArguments(mapsuid);
 
                 FragmentTransaction mapsTransaction = getParentFragmentManager().beginTransaction();
-                mapsTransaction.replace(R.id.fragment_container, fragmentMaps)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
+                mapsTransaction.replace(R.id.fragment_container, fragmentMaps).setReorderingAllowed(true).addToBackStack(null).commit();
             }
         });
 
@@ -294,58 +288,57 @@ public class OngoinJobs extends Fragment {
             public void onClick(View v) {
                 ObjectId idjobs = new ObjectId(id);
 
-                 finished = new Document("_id",idjobs).append("idUser",userId).append("ProjectName",jobtitle).append("ClientName",nameuser).append("ContactNumber",contact1).append("TypeOfWork", ScopeofWork).append("Area",area).append("Unit",Unitstr).append("Location",Location)
-                        .append("StartingDate",Startingdate).append("ExpectedFinishDate",ExpectedFinishDate).append("ForecastedNum",Integer.valueOf(forecastednum)).append("SuggestedNum",Integer.valueOf(suggestednum)); //
+                finished = new Document("_id", idjobs).append("idUser", userId).append("ProjectName", jobtitle).append("ClientName", nameuser).append("ContactNumber", contact1).append("TypeOfWork", ScopeofWork).append("Area", area).append("Unit", Unitstr).append("Location", Location).append("StartingDate", Startingdate).append("ExpectedFinishDate", ExpectedFinishDate).append("ForecastedNum", Integer.valueOf(forecastednum)).append("SuggestedNum", Integer.valueOf(suggestednum)); //
                 if (Worker1 != null && !Worker1.isEmpty()) {
-                    Log.v("Mongodb","Worker1 id: "+ Worker1);
-                    finished.append("Worker1",Worker1).append("WorkerName1",WorkerName1.getText().toString());
+                    Log.v("Mongodb", "Worker1 id: " + Worker1);
+                    finished.append("Worker1", Worker1).append("WorkerName1", WorkerName1.getText().toString());
                 }
                 if (Worker2 != null && !Worker2.isEmpty()) {
-                    Log.v("Mongodb","Worker2 id: "+ Worker2);
+                    Log.v("Mongodb", "Worker2 id: " + Worker2);
 
-                    finished.append("Worker2",Worker2).append("WorkerName2",WorkerName2.getText().toString());
+                    finished.append("Worker2", Worker2).append("WorkerName2", WorkerName2.getText().toString());
 
                 }
                 if (Worker3 != null && !Worker3.isEmpty()) {
-                    Log.v("Mongodb","Worker3 id: "+ Worker3);
+                    Log.v("Mongodb", "Worker3 id: " + Worker3);
 
-                    finished.append("Worker2",Worker3).append("WorkerName3",WorkerName3.getText().toString());
+                    finished.append("Worker2", Worker3).append("WorkerName3", WorkerName3.getText().toString());
 
                 }
                 if (Worker4 != null && !Worker4.isEmpty()) {
-                    Log.v("Mongodb","Worker4 id: "+ Worker4);
+                    Log.v("Mongodb", "Worker4 id: " + Worker4);
 
-                    finished.append("Worker2",Worker4).append("WorkerName4",WorkerName4.getText().toString());
+                    finished.append("Worker2", Worker4).append("WorkerName4", WorkerName4.getText().toString());
 
                 }
                 if (Worker5 != null && !Worker5.isEmpty()) {
-                    Log.v("Mongodb","Worker5 id: "+ Worker5);
+                    Log.v("Mongodb", "Worker5 id: " + Worker5);
 
-                    finished.append("Worker2",Worker5).append("WorkerName5",WorkerName5.getText().toString());
+                    finished.append("Worker2", Worker5).append("WorkerName5", WorkerName5.getText().toString());
 
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setMessage("Are you sure that this job is finished?");
                 builder.setPositiveButton("Yes, Job is done.", (dialog, which) -> {
+                    mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
+                    mongoCollection = mongoDatabase.getCollection("acceptedorders");
                     ObjectId objectId = new ObjectId(id);
                     Document filter = new Document("_id", objectId);
                     mongoCollection.findOneAndDelete(filter).getAsync(result1 -> {
                         if (result1.isSuccess()) {
-                            Log.v("MongoDB"," result finished task: "+result1.toString());
-                            Log.v("MongoDB","Finished Document: "+finished.toString());
+                            Log.v("MongoDB", " result finished task: " + result1.toString());
+                            Log.v("MongoDB", "Finished Document: " + finished.toString());
                             mongoDatabase = mongoClient.getDatabase("ReviewJobOrder");
                             mongoCollection = mongoDatabase.getCollection("jobhistories");
                             mongoCollection.insertOne(finished.append("created", new Date())).getAsync(result2 -> {
-                                if (result2.isSuccess()){
+                                if (result2.isSuccess()) {
                                     requireActivity().getSupportFragmentManager().popBackStack();
-                                }else{
-                                    Toast.makeText(requireContext(),"failed",Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(requireContext(), "failed", Toast.LENGTH_LONG).show();
                                 }
                             });
                             Toast.makeText(requireContext(), "Deleted successfully.", Toast.LENGTH_LONG).show();
-//                            // Close the current fragment and go back to the previous one
-//                            requireActivity().getSupportFragmentManager().popBackStack();
                         } else {
                             Toast.makeText(requireContext(), "Deletion failed.", Toast.LENGTH_LONG).show();
                         }
@@ -369,7 +362,7 @@ public class OngoinJobs extends Fragment {
             mongoCollection.findOne(filter).getAsync(result -> {
                 if (result.isSuccess()) {
                     Document resultdata = result.get();
-                    Log.v("MongoDB",resultdata.toString());
+                    Log.v("MongoDB", resultdata.toString());
                     String display1 = resultdata.getString("avatar");
                     String name1 = resultdata.getString("name");
                     String address1 = resultdata.getString("address");
@@ -377,14 +370,24 @@ public class OngoinJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact1 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
+
                     } else if (contactNumberObj instanceof Integer) {
                         contact1 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
+
+                    } else if (contactNumberObj instanceof Long) {
+                        contact1 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact1));
 
 
                     String job1 = resultdata.getString("jobType");
@@ -398,6 +401,7 @@ public class OngoinJobs extends Fragment {
         }
 
     }
+
     public void LoadEmployee2() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
@@ -413,14 +417,23 @@ public class OngoinJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact2 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
                     } else if (contactNumberObj instanceof Integer) {
                         contact2 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
+                    } else if (contactNumberObj instanceof Long) {
+                        contact2 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact2.setText(df.format(contact2));
+
 
                     String job2 = resultdata.getString("jobType");
                     WorkerName2.setText(name2);
@@ -435,6 +448,7 @@ public class OngoinJobs extends Fragment {
             });
         }
     }
+
     public void LoadEmployee3() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
@@ -452,14 +466,23 @@ public class OngoinJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact3 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
                     } else if (contactNumberObj instanceof Integer) {
                         contact3 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact3 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
+                    }  else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact3));
+
 
                     WorkerName3.setText(name3);
                     Workerjob3.setText(job3);
@@ -470,6 +493,7 @@ public class OngoinJobs extends Fragment {
             });
         }
     }
+
     public void LoadEmployee4() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
@@ -481,20 +505,28 @@ public class OngoinJobs extends Fragment {
                     Document resultdata = result.get();
                     String display4 = resultdata.getString("avatar");
                     String name4 = resultdata.getString("name");
-                    String address4 = resultdata.getString("address");
                     String job4 = resultdata.getString("jobType");
 
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact4 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
                     } else if (contactNumberObj instanceof Integer) {
                         contact4 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact4 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
+                    }  else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact4));
+
 
                     WorkerName4.setText(name4);
                     Workerjob4.setText(job4);
@@ -505,6 +537,7 @@ public class OngoinJobs extends Fragment {
             });
         }
     }
+
     public void LoadEmployee5() {
         mongoDatabase = mongoClient.getDatabase("Users");
         mongoCollection = mongoDatabase.getCollection("employees");
@@ -522,14 +555,23 @@ public class OngoinJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact5 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
                     } else if (contactNumberObj instanceof Integer) {
                         contact5 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact5 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
+                    }  else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact5));
+
 
                     WorkerName5.setText(name5);
 

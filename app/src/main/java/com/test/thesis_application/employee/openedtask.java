@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.squareup.picasso.Picasso;
 import com.test.thesis_application.R;
-import com.test.thesis_application.fragments.fragment_maps;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -129,11 +128,32 @@ public class openedtask extends Fragment {
                 Document resultdata = result.get();
                 String display1 = resultdata.getString("avatar");
                 String name1 = resultdata.getString("name");
-                Double contact1 = resultdata.getDouble("contactNumber");
-                DecimalFormat df = new DecimalFormat("#");
-                df.setMaximumFractionDigits(0);
+                Double contact1 =0.0;
+                Object contactNumberObj = resultdata.get("contactNumber");
+                if (contactNumberObj instanceof Double) {
+                    contact1 = (Double) contactNumberObj;
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    clientcontact1.setText(df.format(contact1));
+                } else if (contactNumberObj instanceof Integer) {
+                    contact1 = ((Integer) contactNumberObj).doubleValue();
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    clientcontact1.setText(df.format(contact1));
+                } else if (contactNumberObj instanceof Long) {
+                    contact1 = ((Long) contactNumberObj).doubleValue();
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    clientcontact1.setText(df.format(contact1));
+                } else {
+                    // handle error case here
+                }
 
-                clientcontact1.setText(df.format(contact1));
+//                Double contact1 = resultdata.getDouble("contactNumber");
+//                DecimalFormat df = new DecimalFormat("#");
+//                df.setMaximumFractionDigits(0);
+//
+//                clientcontact1.setText(df.format(contact1));
                 ClientName1.setText(name1);
                 Picasso.get().load(display1).transform(new CropCircleTransformation()).into(avatar1);
             } else {

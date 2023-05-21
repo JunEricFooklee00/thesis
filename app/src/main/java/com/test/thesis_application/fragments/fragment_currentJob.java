@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,6 +18,7 @@ import com.test.thesis_application.R;
 
 import org.bson.Document;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class fragment_currentJob extends Fragment implements Jobinterface {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<Document> results = task.get();
-                Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(),results.toString(),Toast.LENGTH_LONG).show();
 
                 while (results.hasNext()) {
                     JobsOrderClass jobOrder = new JobsOrderClass();
@@ -89,7 +89,29 @@ public class fragment_currentJob extends Fragment implements Jobinterface {
                     jobOrder.set_id(document.getObjectId("_id"));
                     jobOrder.setUserId(document.getString("idUser"));
                     jobOrder.setName(document.getString("ClientName"));
-                    jobOrder.setContactNumber(document.getDouble("ContactNumber"));
+                    Double contact1=0.;
+                    Object contactNumberObj = document.get("contactNumber");
+                    if (contactNumberObj instanceof Double) {
+                        contact1 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+//                        workercontact1.setText(df.format(contact1));
+
+                    } else if (contactNumberObj instanceof Integer) {
+                        contact1 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+//                        workercontact1.setText(df.format(contact1));
+
+                    } else if (contactNumberObj instanceof Long) {
+                        contact1 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+//                        workercontact1.setText(df.format(contact1));
+                    } else {
+                        // handle error case here
+                    }
+                    jobOrder.setContactNumber(contact1);
                     jobOrder.setScopeofwork(document.getString("TypeOfWork"));
                     jobOrder.setJobTitle(document.getString("ProjectName"));
                     jobOrder.setArea(document.getString("Area"));

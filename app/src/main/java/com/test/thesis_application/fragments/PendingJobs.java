@@ -211,14 +211,24 @@ public class PendingJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact1 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
+
                     } else if (contactNumberObj instanceof Integer) {
                         contact1 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
+
+                    } else if (contactNumberObj instanceof Long) {
+                        contact1 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact1.setText(df.format(contact1));
+                    }else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact1.setText(df.format(contact1));
 
 
                     String job1 = resultdata.getString("jobType");
@@ -248,14 +258,23 @@ public class PendingJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact2 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
                     } else if (contactNumberObj instanceof Integer) {
                         contact2 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact2 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact2.setText(df.format(contact2));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact2.setText(df.format(contact2));
+
 
                     String job2 = resultdata.getString("jobType");
                     WorkerName2.setText(name2);
@@ -289,14 +308,23 @@ public class PendingJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact3 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
                     } else if (contactNumberObj instanceof Integer) {
                         contact3 = ((Integer) contactNumberObj).doubleValue();
-                    } else {
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
+                    } else if (contactNumberObj instanceof Long) {
+                        contact3 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact3.setText(df.format(contact3));
+                    }else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact3.setText(df.format(contact3));
+
                     WorkerName3.setText(name3);
                     workeraddress3.setText(address3);
                     Workerjob3.setText(job3);
@@ -324,14 +352,24 @@ public class PendingJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact4 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
                     } else if (contactNumberObj instanceof Integer) {
                         contact4 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact4 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact4.setText(df.format(contact4));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact4.setText(df.format(contact4));
+
+
                     WorkerName4.setText(name4);
                     workeraddress4.setText(address4);
                     Workerjob4.setText(job4);
@@ -359,14 +397,23 @@ public class PendingJobs extends Fragment {
                     Object contactNumberObj = resultdata.get("contactNumber");
                     if (contactNumberObj instanceof Double) {
                         contact5 = (Double) contactNumberObj;
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
                     } else if (contactNumberObj instanceof Integer) {
                         contact5 = ((Integer) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
+                    }else if (contactNumberObj instanceof Long) {
+                        contact5 = ((Long) contactNumberObj).doubleValue();
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(0);
+                        workercontact5.setText(df.format(contact5));
                     } else {
                         // handle error case here
                     }
-                    DecimalFormat df = new DecimalFormat("#");
-                    df.setMaximumFractionDigits(0);
-                    workercontact5.setText(df.format(contact5));
+
 
                     WorkerName5.setText(name5);
                     workeraddress5.setText(address5);

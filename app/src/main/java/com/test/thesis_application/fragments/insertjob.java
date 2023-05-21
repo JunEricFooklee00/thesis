@@ -7,6 +7,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,6 +62,7 @@ public class insertjob extends Fragment {
     private TextInputLayout title, area, unit, TILlocation, Sdate, expected, name,contactnumber;
     private int mYear;
     private int mMonth;
+    TextInputEditText contactnum;
     private int mDayOfMonth;
     private TextInputEditText TietAge;
     //    private TextInputLayout  ;
@@ -78,6 +79,7 @@ public class insertjob extends Fragment {
         unit = view.findViewById(R.id.TIL_unit);
         TILlocation = view.findViewById(R.id.TIL_location);
         contactnumber = view.findViewById(R.id.TIL_ContactNumber);
+        contactnum = view.findViewById(R.id.TIET_ContactNum);
         Sdate = view.findViewById(R.id.TIL_Age);
         expected = view.findViewById(R.id.TIL_expected);
         name = view.findViewById(R.id.TIL_name);
@@ -90,7 +92,8 @@ public class insertjob extends Fragment {
         }
         name.getEditText().setText(nameuser);
         contactnumber.getEditText().setText(contactnumber1);
-
+        InputFilter[] filters = new InputFilter[]{new InputFilter.LengthFilter(10), new InputFilter.AllCaps()};
+        contactnum.setFilters(filters);
         TietAge.setOnClickListener(v -> {
             // Get the current date
             Calendar calendar = Calendar.getInstance();
@@ -140,7 +143,7 @@ public class insertjob extends Fragment {
                 TypeOfWork.setAdapter(carpentry);
                 actv_unit.setText("Square Meter");
                 TypeOfWork.setText("");
-                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
             } else if (ScopeOfWork.getText().toString().equals("Electrical Works")) {//
                 TypeOfWork.setAdapter(Electrical);
                 TypeOfWork.setText("");
@@ -157,19 +160,19 @@ public class insertjob extends Fragment {
                 actv_unit.setText("");
                 actv_unit.setAdapter(Unit);
 
-                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
             } else if (ScopeOfWork.getText().toString().equals("Plumbing Works")) {
                 TypeOfWork.setAdapter(plumbing);
                 TypeOfWork.setText("");
                 actv_unit.setText("Linear Meter");
 
 
-                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
             } else if (ScopeOfWork.getText().toString().equals("Painting Works")) {
                 TypeOfWork.setAdapter(painting);
                 TypeOfWork.setText("");
                 actv_unit.setText("Square Meter");
-                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), ScopeOfWork.getText().toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -520,7 +523,7 @@ public class insertjob extends Fragment {
                 .append("ContactNumber",Double.parseDouble(contactnumber.getEditText().getText().toString()))
                 .append("TypeOfWork", TypeOfWork.getText().toString())
                 .append("ProjectName", Objects.requireNonNull(title.getEditText()).getText().toString().trim())
-                .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString().trim())
+                .append("Area", Objects.requireNonNull(area.getEditText()).getText().toString())
                 .append("Unit", Objects.requireNonNull(unit.getEditText()).getText().toString().trim())
                 .append("Location", Objects.requireNonNull(TILlocation.getEditText()).getText().toString().trim())
                 .append("StartingDate", Objects.requireNonNull(Sdate.getEditText()).getText().toString().trim())
@@ -533,11 +536,10 @@ public class insertjob extends Fragment {
         mongoCollection.insertOne(orderDocument).getAsync(result -> {
 
             if (result.isSuccess()) {
-                Toast.makeText(requireContext(), result.get().toString(), Toast.LENGTH_LONG).show();
                 Log.v("Data", "Data successfully addedd");
                 getActivity().onBackPressed();
             } else {
-                Toast.makeText(requireContext(), "di ko alam", Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireContext(), "di ko alam", Toast.LENGTH_LONG).show();
                 Log.v("Data", "Error:" + result.getError().toString());
             }
         });

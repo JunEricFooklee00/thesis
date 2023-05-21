@@ -88,12 +88,35 @@ public class employee_profile extends Fragment {
                 email = resultdata.getString("email");
                 resume = resultdata.getString("avatar");
                 username = resultdata.getString("username");
-                contactNumber = resultdata.getDouble("contactNumber");
+
                 address = resultdata.getString("address");
                 utype = resultdata.getString("user");
+                Double contact1 = 0.0d;
+                Object contactNumberObj = resultdata.get("contactNumber");
+                if (contactNumberObj instanceof Double) {
+                    contact1 = (Double) contactNumberObj;
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    tv_contactNumber.setText(df.format(contact1));
+                } else if (contactNumberObj instanceof Integer) {
+                    contact1 = ((Integer) contactNumberObj).doubleValue();
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    tv_contactNumber.setText(df.format(contact1));
+                }else if (contactNumberObj instanceof Long) {
+                    contact1 = ((Long) contactNumberObj).doubleValue();
+                    DecimalFormat df = new DecimalFormat("#");
+                    df.setMaximumFractionDigits(0);
+                    tv_contactNumber.setText(df.format(contact1));
+                } else {
+                    // handle error case here
+                }
 
-                DecimalFormat df = new DecimalFormat("#");
-                df.setMaximumFractionDigits(0);
+
+
+
+
+
                 userType.setText(utype);
 //                tv_contactNumber.setText(""+df.format(contactNumber));
                 tv_address.setText(address);
